@@ -1,10 +1,12 @@
+%{
+#include <ctype.h>
+%}
 
 %option noyywrap
-UPPER [A-Z]
 
 %%
 
-{UPPER} { }
+[^\] { printf("%d\n",*yytext); }
 
 %%
 

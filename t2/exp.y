@@ -26,17 +26,17 @@ extern char *yytext;
 
 %start program
 %%
-program : exp { printf("Result: %d\n", $1); }
-        | program ';' exp { printf("Result: %d\n", $3); }
+program : exp {printf("program : exp \n"); ;printf("Result: %d\n", $1); }
+        | program ';' exp {printf("program : program ';' exp \n"); printf("Result: %d\n", $3); }
         ;
 
-exp : exp '+' exp { $$ = $1 + $3; }
-    | exp '-' exp { $$ = $1 - $3; }
-    | exp '*' exp { $$ = $1 * $3; }
-    | exp '^' exp { $$ = pow($1, $3); }
-    | exp '/' exp { $$ = $1 / $3; }
-    | '-' exp %prec OP_UMINUS { $$ = -$2; }
-    | NUMBER { $$ = $1; }
+exp : exp '+' exp {printf("exp : exp '+' exp  \n"); $$ = $1 + $3; }
+    | exp '-' exp {printf("exp : exp '-' exp \n"); $$ = $1 - $3; }
+    | exp '*' exp {printf("exp : exp '*' exp \n"); $$ = $1 * $3; }
+    | exp '^' exp {printf("exp : exp '^' exp \n"); $$ = pow($1, $3); }
+    | exp '/' exp {printf("exp : exp '/' exp \n"); $$ = $1 / $3; }
+    | '-' exp %prec OP_UMINUS {printf("exp : '-' exp prec OP_UMINUS \n"); $$ = -$2; }
+    | NUMBER {printf("exp : NUMBER \n"); $$ = $1; }
     ;
 %%
 void yyerror(const char *msg) {

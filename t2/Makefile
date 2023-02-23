@@ -6,7 +6,7 @@ OBJECTS = $(filter-out %.h, $(SOURCES))
 all : $(EXEC_NAME)
 
 $(EXEC_NAME) : $(OBJECTS)
-	gcc -o $@ $^
+	gcc -o $@ $^ -lm
 
 %.parser.h : %.parser.c
 
