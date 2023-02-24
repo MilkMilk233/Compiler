@@ -62,17 +62,32 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 1 "exp.y" /* yacc.c:339  */
+#line 1 "micro.y" /* yacc.c:339  */
 
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 
 void yyerror(const char *);
 int yylex();
 extern FILE *yyin;
 extern char *yytext;
 
-#line 76 "exp.parser.c" /* yacc.c:339  */
+// Official name for MIPS code generation
+char sr_name[8][5] = {"$s0", "$s1", "$s2", "$s3", "$s4", "$s5", "$s6", "$s7"};
+char tr_name[8][5] = {"$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7"};
+
+// 占用情况
+int sr_regs_status = 0;
+int tr_regs_status[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+
+// 和SR相匹配的Token name，用于搜索
+char sr_id_name[100][32];
+
+// TODO: Extra space in memory
+
+
+#line 91 "micro.parser.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -91,9 +106,9 @@ extern char *yytext;
 #endif
 
 /* In a future release of Bison, this section will be replaced
-   by #include "exp.parser.h".  */
-#ifndef YY_YY_EXP_PARSER_H_INCLUDED
-# define YY_YY_EXP_PARSER_H_INCLUDED
+   by #include "micro.parser.h".  */
+#ifndef YY_YY_MICRO_PARSER_H_INCLUDED
+# define YY_YY_MICRO_PARSER_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -101,6 +116,53 @@ extern char *yytext;
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 26 "micro.y" /* yacc.c:355  */
+
+
+  struct id_list_struct{
+    int capacity;
+    char id_l_struct[50][32];
+  };
+  
+  struct exp_struct{
+    char first_reg_name[10];
+    char sec_reg_name[10];
+    int first_int_value;
+    int sign;   // 0 for add, 1 for sub
+    int reg_capacity;
+    int int_capacity;
+  };
+
+  struct exp_list_struct{
+    int capacity;
+    struct exp_struct exp_l_struct[50];
+  };
+
+  struct primary_struct{
+    int is_int;
+    int int_value;
+    char reg_name[10];
+  };
+  
+  void clean_tr();
+  int find_id(char* name);
+  void id_to_pri(char* id, struct primary_struct *primary_str);
+  void int_to_pri(int value, struct primary_struct *primary_str);
+  void assign(struct exp_struct *e_str, char* dst);
+  void read_id_list(struct id_list_struct *id_l_struct);
+  void write_exp_list(struct exp_list_struct *exp_l_struct);
+  void first_add_to_id_list(struct id_list_struct *id_l_struct, char* name);
+  void first_add_to_exp_list(struct exp_list_struct *exp_l_struct, struct exp_struct *exp_str);
+  void add_to_id_list(struct id_list_struct *id_l_struct, char* name);
+  void add_to_exp_list(struct exp_list_struct *exp_l_struct, int value);
+  void pri_to_exp(struct primary_struct *primary_str, exp_struct *exp_str);
+  void neg_pri_to_exp(struct primary_struct *primary_str, exp_struct *exp_str);
+  void exp_to_pri(struct exp_struct *exp_str, struct primary_struct *primary_str);
+  void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct primary_struct *source2, int applied_sign);
+
+
+#line 166 "micro.parser.c" /* yacc.c:355  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -108,8 +170,19 @@ extern int yydebug;
   enum yytokentype
   {
     LEX_ERR = 258,
-    NUMBER = 259,
-    OP_UMINUS = 260
+    BEGIN_ = 259,
+    END = 260,
+    READ = 261,
+    WRITE = 262,
+    INTLITERAL = 263,
+    ID = 264,
+    LPAREN = 265,
+    RPAREN = 266,
+    COMMA = 267,
+    ASSIGNOP = 268,
+    PLUOP = 269,
+    MINUSOP = 270,
+    SCEANOF = 271
   };
 #endif
 
@@ -118,11 +191,16 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 10 "exp.y" /* yacc.c:355  */
+#line 71 "micro.y" /* yacc.c:355  */
 
+  char id[32];
   int value;
+  struct exp_list_struct exp_list_str;
+  struct id_list_struct id_list_str;
+  struct exp_struct exp_str;
+  struct primary_struct primary_str;
 
-#line 126 "exp.parser.c" /* yacc.c:355  */
+#line 204 "micro.parser.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -135,11 +213,11 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_EXP_PARSER_H_INCLUDED  */
+#endif /* !YY_YY_MICRO_PARSER_H_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
 
-#line 143 "exp.parser.c" /* yacc.c:358  */
+#line 221 "micro.parser.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -379,23 +457,23 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  6
+#define YYFINAL  9
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   20
+#define YYLAST   42
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  12
+#define YYNTOKENS  18
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  3
+#define YYNNTS  9
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  10
+#define YYNRULES  19
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  19
+#define YYNSTATES  42
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   260
+#define YYMAXUTOK   271
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -408,12 +486,12 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     7,     5,     2,     6,     2,     8,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    11,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    17,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     9,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -430,15 +508,16 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-      10
+       5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
+      15,    16
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    29,    29,    30,    33,    34,    35,    36,    37,    38,
-      39
+       0,    95,    95,    98,   101,   102,   105,   106,   107,   110,
+     111,   114,   115,   118,   119,   120,   121,   124,   125,   126
 };
 #endif
 
@@ -447,8 +526,11 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "LEX_ERR", "NUMBER", "'+'", "'-'", "'*'",
-  "'/'", "'^'", "OP_UMINUS", "';'", "$accept", "program", "exp", YY_NULLPTR
+  "$end", "error", "$undefined", "LEX_ERR", "BEGIN_", "END", "READ",
+  "WRITE", "INTLITERAL", "ID", "LPAREN", "RPAREN", "COMMA", "ASSIGNOP",
+  "PLUOP", "MINUSOP", "SCEANOF", "';'", "$accept", "system_goal",
+  "program", "statement_list", "statement", "id_list", "exp_list", "exp",
+  "primary", YY_NULLPTR
 };
 #endif
 
@@ -457,15 +539,15 @@ static const char *const yytname[] =
    (internal) symbol number NUM (which must be that of a token).  */
 static const yytype_uint16 yytoknum[] =
 {
-       0,   256,   257,   258,   259,    43,    45,    42,    47,    94,
-     260,    59
+       0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
+     265,   266,   267,   268,   269,   270,   271,    59
 };
 # endif
 
-#define YYPACT_NINF -5
+#define YYPACT_NINF -21
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-5)))
+  (!!((Yystate) == (-21)))
 
 #define YYTABLE_NINF -1
 
@@ -476,8 +558,11 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      14,    -5,    14,     0,    -4,    -5,    -5,    14,    14,    14,
-      14,    14,    14,    -4,     1,     1,    -3,    -3,    -5
+      17,    -1,    14,     6,    27,    28,    19,    10,   -21,   -21,
+     -21,    18,    -6,    -6,   -21,   -21,   -21,    22,   -21,   -21,
+      -6,    21,    24,    -4,   -21,    11,    23,    30,     9,   -21,
+      25,    -6,    21,    21,   -21,   -21,   -21,   -21,   -21,    -4,
+     -21,   -21
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -485,20 +570,23 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,    10,     0,     0,     2,     9,     1,     0,     0,     0,
-       0,     0,     0,     3,     4,     5,     6,     8,     7
+       0,     0,     0,     0,     0,     0,     0,     0,     4,     1,
+       2,     0,     0,     0,     3,     5,     9,     0,    19,    18,
+       0,     0,     0,    11,    13,     0,     0,     0,     0,    16,
+       0,     0,     0,     0,     6,     7,    10,    17,     8,    12,
+      14,    15
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -5,    -5,     5
+     -21,   -21,   -21,   -21,    34,   -21,   -21,   -13,   -20
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     3,     4
+      -1,     2,     3,     7,     8,    17,    22,    23,    24
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -506,38 +594,45 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-       6,     8,     9,    10,    11,    12,    12,     5,    10,    11,
-      12,     7,    13,    14,    15,    16,    17,    18,     1,     0,
-       2
+      25,    29,    18,    19,    20,     4,     5,    28,     6,    21,
+      32,    33,    40,    41,     9,    14,     4,     5,    39,     6,
+      37,     1,    10,    32,    33,    32,    33,    16,    34,    18,
+      19,    20,    13,    26,    27,    30,    31,    11,    12,    36,
+      35,    15,    38
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_uint8 yycheck[] =
 {
-       0,     5,     6,     7,     8,     9,     9,     2,     7,     8,
-       9,    11,     7,     8,     9,    10,    11,    12,     4,    -1,
-       6
+      13,    21,     8,     9,    10,     6,     7,    20,     9,    15,
+      14,    15,    32,    33,     0,     5,     6,     7,    31,     9,
+      11,     4,    16,    14,    15,    14,    15,     9,    17,     8,
+       9,    10,    13,    11,    12,    11,    12,    10,    10,     9,
+      17,     7,    17
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     4,     6,    13,    14,    14,     0,    11,     5,     6,
-       7,     8,     9,    14,    14,    14,    14,    14,    14
+       0,     4,    19,    20,     6,     7,     9,    21,    22,     0,
+      16,    10,    10,    13,     5,    22,     9,    23,     8,     9,
+      10,    15,    24,    25,    26,    25,    11,    12,    25,    26,
+      11,    12,    14,    15,    17,    17,     9,    11,    17,    25,
+      26,    26
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    12,    13,    13,    14,    14,    14,    14,    14,    14,
-      14
+       0,    18,    19,    20,    21,    21,    22,    22,    22,    23,
+      23,    24,    24,    25,    25,    25,    25,    26,    26,    26
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     1,     3,     3,     3,     3,     3,     3,     2,
-       1
+       0,     2,     2,     3,     1,     2,     4,     5,     5,     1,
+       3,     1,     3,     1,     3,     3,     2,     3,     1,     1
 };
 
 
@@ -1214,61 +1309,115 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 29 "exp.y" /* yacc.c:1646  */
-    {printf("program : exp \n"); ;printf("Result: %d\n", (yyvsp[0].value)); }
-#line 1220 "exp.parser.c" /* yacc.c:1646  */
+#line 95 "micro.y" /* yacc.c:1646  */
+    {;}
+#line 1315 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 30 "exp.y" /* yacc.c:1646  */
-    {printf("program : program ';' exp \n"); printf("Result: %d\n", (yyvsp[0].value)); }
-#line 1226 "exp.parser.c" /* yacc.c:1646  */
+#line 98 "micro.y" /* yacc.c:1646  */
+    {;}
+#line 1321 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 33 "exp.y" /* yacc.c:1646  */
-    {printf("exp : exp '+' exp  \n"); (yyval.value) = (yyvsp[-2].value) + (yyvsp[0].value); }
-#line 1232 "exp.parser.c" /* yacc.c:1646  */
+#line 101 "micro.y" /* yacc.c:1646  */
+    {;}
+#line 1327 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 34 "exp.y" /* yacc.c:1646  */
-    {printf("exp : exp '-' exp \n"); (yyval.value) = (yyvsp[-2].value) - (yyvsp[0].value); }
-#line 1238 "exp.parser.c" /* yacc.c:1646  */
+#line 102 "micro.y" /* yacc.c:1646  */
+    {;}
+#line 1333 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 35 "exp.y" /* yacc.c:1646  */
-    {printf("exp : exp '*' exp \n"); (yyval.value) = (yyvsp[-2].value) * (yyvsp[0].value); }
-#line 1244 "exp.parser.c" /* yacc.c:1646  */
+#line 105 "micro.y" /* yacc.c:1646  */
+    {assign(&((yyvsp[-1].exp_str)), &((yyvsp[-3].id)));}
+#line 1339 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 36 "exp.y" /* yacc.c:1646  */
-    {printf("exp : exp '^' exp \n"); (yyval.value) = pow((yyvsp[-2].value), (yyvsp[0].value)); }
-#line 1250 "exp.parser.c" /* yacc.c:1646  */
+#line 106 "micro.y" /* yacc.c:1646  */
+    {read_id_list(&((yyvsp[-2].id_list_str)));}
+#line 1345 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 37 "exp.y" /* yacc.c:1646  */
-    {printf("exp : exp '/' exp \n"); (yyval.value) = (yyvsp[-2].value) / (yyvsp[0].value); }
-#line 1256 "exp.parser.c" /* yacc.c:1646  */
+#line 107 "micro.y" /* yacc.c:1646  */
+    {write_exp_list(&((yyvsp[-2].exp_list_str)));}
+#line 1351 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 38 "exp.y" /* yacc.c:1646  */
-    {printf("exp : '-' exp prec OP_UMINUS \n"); (yyval.value) = -(yyvsp[0].value); }
-#line 1262 "exp.parser.c" /* yacc.c:1646  */
+#line 110 "micro.y" /* yacc.c:1646  */
+    {first_add_to_id_list(&((yyval.id_list_str)), (yyvsp[0].id));}
+#line 1357 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 39 "exp.y" /* yacc.c:1646  */
-    {printf("exp : NUMBER \n"); (yyval.value) = (yyvsp[0].value); }
-#line 1268 "exp.parser.c" /* yacc.c:1646  */
+#line 111 "micro.y" /* yacc.c:1646  */
+    {add_to_id_list(&((yyvsp[-2].id_list_str)), (yyvsp[0].id));}
+#line 1363 "micro.parser.c" /* yacc.c:1646  */
+    break;
+
+  case 11:
+#line 114 "micro.y" /* yacc.c:1646  */
+    {first_add_to_exp_list(&((yyval.exp_list_str)), (yyvsp[0].exp_str)); }
+#line 1369 "micro.parser.c" /* yacc.c:1646  */
+    break;
+
+  case 12:
+#line 115 "micro.y" /* yacc.c:1646  */
+    {add_to_exp_list(&((yyvsp[-2].exp_list_str)), (yyvsp[0].exp_str)); }
+#line 1375 "micro.parser.c" /* yacc.c:1646  */
+    break;
+
+  case 13:
+#line 118 "micro.y" /* yacc.c:1646  */
+    {pri_to_exp(&((yyvsp[0].primary_str)), &((yyval.exp_str))); }
+#line 1381 "micro.parser.c" /* yacc.c:1646  */
+    break;
+
+  case 14:
+#line 119 "micro.y" /* yacc.c:1646  */
+    {exp_add_pri(&((yyval.exp_str)), &((yyvsp[-2].exp_str)), &((yyvsp[0].primary_str)), 0); }
+#line 1387 "micro.parser.c" /* yacc.c:1646  */
+    break;
+
+  case 15:
+#line 120 "micro.y" /* yacc.c:1646  */
+    {exp_add_pri(&((yyval.exp_str)), &((yyvsp[-2].exp_str)), &((yyvsp[0].primary_str)), 1); }
+#line 1393 "micro.parser.c" /* yacc.c:1646  */
+    break;
+
+  case 16:
+#line 121 "micro.y" /* yacc.c:1646  */
+    {neg_pri_to_exp(&((yyvsp[0].primary_str)), &((yyval.exp_str))); }
+#line 1399 "micro.parser.c" /* yacc.c:1646  */
+    break;
+
+  case 17:
+#line 124 "micro.y" /* yacc.c:1646  */
+    {exp_to_pri(&((yyvsp[-1].exp_str)), &((yyval.primary_str)));}
+#line 1405 "micro.parser.c" /* yacc.c:1646  */
+    break;
+
+  case 18:
+#line 125 "micro.y" /* yacc.c:1646  */
+    {id_to_pri(&((yyvsp[0].id)), &((yyval.primary_str)));}
+#line 1411 "micro.parser.c" /* yacc.c:1646  */
+    break;
+
+  case 19:
+#line 126 "micro.y" /* yacc.c:1646  */
+    {int_to_pri((yyvsp[0].value), &((yyval.primary_str))); }
+#line 1417 "micro.parser.c" /* yacc.c:1646  */
     break;
 
 
-#line 1272 "exp.parser.c" /* yacc.c:1646  */
+#line 1421 "micro.parser.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1496,13 +1645,278 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 41 "exp.y" /* yacc.c:1906  */
+#line 128 "micro.y" /* yacc.c:1906  */
 
+
+
+// Assist functions
+void clean_tr(){
+  tr_regs_status = {0,0,0,0,0,0,0,0};
+}
+
+int find_id(char* name){
+  // Check if the name has preserved in some SR. If yes, return the id of the SR.
+  int i;
+  for(i = 0; i < 100; i++){
+    if(strcmp(name, sr_id_name[i]) == 0){
+      return i;
+    }
+  }
+
+  // If not, bind it to an new SR and return the name of the SR.
+  sr_id_name[sr_regs_status] = name;
+  sr_regs_status++;
+  return sr_regs_status - 1;
+}
+
+void id_to_pri(char* id, struct primary_struct *primary_str){
+  primary_str->is_int = 0;
+  primary_str->reg_name = id;
+}
+
+void int_to_pri(int value, struct primary_struct *primary_str){
+  primary_str->is_int = 1;
+  primary_str->int_value = value;
+}
+
+// Member functions
+void assign(struct exp_struct *e_str, char* dst){
+  char[15] s_name, target, c1, c2;
+
+  // Find the SR id according to the token name.
+  int SR_id = find_id(dst);
+  if(SR_id < 8){
+    target = sr_name[SR_id];
+  }
+  // Todo: Memory expansion 
+  
+  if(e_str->reg_capacity == 2){
+    if(e_str->sign){
+      s_name = "sub";
+    }
+    else{
+      s_name = "add";
+    }
+    c1 = e_str->first_reg_name;
+    c2 = e_str->sec_reg_name;
+  }
+  else if(e_str->reg_capacity == 1 && e_str->int_capacity == 1){
+    if(e_str->sign){
+      s_name = "subi";
+    }
+    else{
+      s_name = "addi";
+    }
+    c1 = e_str->first_reg_name;
+    atoi(e_str->first_int_value, c2, 10);
+  }
+  else if(e_str->reg_capacity == 1){
+    s_name = "add";
+    c1 = e_str->first_reg_name;
+    c2 = "$zero";
+  }
+  else if(e_str->reg_capacity == 1){
+    s_name = "addi";
+    atoi(e_str->first_int_value, c1, 10);
+    c2 = "$zero";
+  }
+
+  // Print out the info.
+  printf("%s, %s, %s, %s\n", s_name, target, c1, c2);
+}
+
+void read_id_list(struct id_list_struct *id_l_struct){
+  int i;
+  for(i = 0; i < id_l_struct->capacity; i++){
+    if(i < 8){
+      printf("addi $v0, $zero, 5\n");
+      printf("syscall\n");
+      assign(&(id_l_struct->id_l_struct[i]), "$s0");
+    }
+    // TODO: Memory expansion
+  }
+}
+
+void write_exp_list(struct exp_list_struct *exp_l_struct){
+  int i;
+  for(i = 0; i < exp_l_struct->capacity; i++){
+    if(i < 8){
+      printf("addi $v0, $zero, 1\n");
+      assign(&(id_l_struct->id_l_struct[i]), "$s0");
+      printf("syscall\n");
+    }
+    // TODO: Memory expansion
+  }
+
+}
+void first_add_to_id_list(struct id_list_struct *id_l_struct, char* name){
+  id_l_struct->capacity = 1;
+  id_l_struct->id_l_struct[0] = name;
+}
+void first_add_to_exp_list(struct exp_list_struct *exp_l_struct, struct exp_struct *exp_str){
+  exp_l_struct->capacity = 1;
+  exp_l_struct->exp_l_struct[0] = exp_str;
+  
+}
+void add_to_id_list(struct id_list_struct *id_l_struct, char* name){
+  id_l_struct->id_l_struct[id_l_struct->capacity] = name;
+  id_l_struct->capacity++;
+}
+void add_to_exp_list(struct exp_list_struct *exp_l_struct, int value){
+  exp_l_struct->exp_l_struct[exp_l_struct->capacity] = exp_str;
+  exp_l_struct->capacity++;
+}
+
+void pri_to_exp(struct primary_struct *primary_str, exp_struct *exp_str){
+  // Step 1, bind to an unoccupied TR
+  int i;
+  for(i = 0; i < 8; i++){
+    if(tr_regs_status[i] == 0) break;
+  }
+  // Step 2, initialize the exp struct
+  exp_str->first_reg_name = tr_name[i];
+  exp_str->sign = 0;
+  exp_str->reg_capacity = 1;
+  exp_str->int_capacity = 0;
+}
+
+void neg_pri_to_exp(struct primary_struct *primary_str, exp_struct *exp_str){
+  struct exp_struct new_exp_str;
+  new_exp_str->reg_capacity = 2;
+  new_exp_str->int_capacity = 0;
+  new_exp_str->sign = 1;
+  new_exp_str->first_reg_name = "$zero";
+  new_exp_str->sec_reg_name = primary_str->reg_name;
+  int i;
+  for(i = 0; i < 8; i++){
+    if(tr_regs_status[i] == 0) break;
+  }
+  tr_regs_status[i] = 1;
+  assign(&new_exp_str, tr_name[i]);
+  exp_str->first_reg_name = tr_name[i];
+  exp_str->int_capacity = 0;
+  exp_str->reg_capacity = 1;
+}
+
+void exp_to_pri(struct exp_struct *exp_str, struct primary_struct *primary_str){
+  // Only valid when exp_str has two register loads.
+  // assert(exp_str->reg_capacity == 2);
+
+  // Step 1: Find possible TR
+  int i, is_first_TR, is_second_TR;
+  is_first_TR = is_second_TR = 0;
+  for(i = 0; i < 8; i++){
+    if(strcmp(tr_name[i], exp_str->first_reg_name) == 0){
+      is_first_TR = i+1;
+    }
+    if(strcmp(tr_name[i], exp_str->first_reg_name) == 0){
+      is_second_TR = i+1;
+    }
+  }
+  // Step 2: If == 0, allocate new one; if == 2, eliminate one.
+  if(is_first_TR && is_second_TR){
+    // Eliminate one
+    tr_regs_status[is_second_TR-1] = 0;
+    primary_str->reg_name = tr_name[is_first_TR-1];
+  }
+  else if(!is_first_TR && is_second_TR){
+    // allocate new one
+    for(i = 0; i < 8; i++){
+      if(tr_regs_status[i] == 0){
+        tr_regs_status[i] = 1;
+        break;
+      }
+    }
+    primary_str->reg_name = tr_name[i];
+  }
+  else{
+    // Migrate name in exp to primary. 
+    if(is_first_TR){
+      primary_str->reg_name = tr_name[is_first_TR-1];
+    }
+    else if(is_second_TR){
+      primary_str->reg_name = tr_name[is_second_TR-1];
+    }
+  }
+  // Step 3: Print out the MIPS code.
+  assign(&exp_str, &(primary_str->reg_name));
+  primary_str->is_int = 0;
+}
+
+void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct primary_struct *source2, int applied_sign){
+  if(source1->reg_capacity == 2){
+    struct primary_struct new_prime;
+    exp_to_pri(&(source1), &(new_prime));
+    target->first_reg_name = new_prime->reg_name;
+    target->sign = applied_sign;
+    if(source2->is_int){
+      target->first_int_value = source2->int_value;
+      target->reg_capacity = 1;
+      target->int_capacity = 1;
+    }
+    else{
+      target->sec_reg_name = source2->reg_name;
+      target->reg_capacity = 2;
+      target->int_capacity = 0;
+    }
+  }
+  else if(source1->reg_capacity == 1 && source1->int_capacity == 1){
+    if(source2->is_int){
+      target->first_int_value += source2->int_value;
+    }
+    else{
+      // Adding two of the regs. 
+      int temp = source1->first_int_value;
+      int temp_sign = source1->sign;
+      source1->sec_reg_name = source2->reg_name;
+      source1->sign = applied_sign;
+      source1->reg_capacity = 2;
+      source2->int_capacity = 0;
+      struct primary_struct new_prime;
+      exp_to_pri(&(source1), &(new_prime));
+      target->first_reg_name = new_prime->reg_name;
+      target->sign = temp_sign;
+      target->first_int_value = temp;
+      target->int_capacity = 1;
+      target->reg_capacity = 1;
+    }
+  }
+  else if(source1->reg_capacity == 1){
+    target->first_reg_name = source1->first_reg_name;
+    if(source2->is_int){
+      target->first_int_value = source2->int_value * pow(-1, applied_sign);
+      target->int_capacity = 1;
+      target->reg_capacity = 1;
+    }
+    else{
+      target->sec_reg_name = source2->reg_name;
+      target->int_capacity = 0;
+      target->reg_capacity = 2;
+    }
+    
+  }
+  else if(source1->int_capacity == 1){
+    if(source2->is_int){
+      target->first_int_value += source2->int_value * pow(-1, applied_sign);
+      target->int_capacity = 1;
+      target->reg_capacity = 0;
+    }
+    else{
+      target->first_reg_name = source2->reg_name;
+      target->int_capacity = 1;
+      target->reg_capacity = 1;
+    }
+  }
+}
+
+// Bison (YYEX) functions
 void yyerror(const char *msg) {
   if (yychar == LEX_ERR)
     fprintf(stderr, "Lexical error: unkown token '%s'\n", yytext);
   else fprintf(stderr, "%s\n", msg);
 }
+
+// Main function
 int main(int argc, char **argv) {
   if (argc < 2) {
     fprintf(stderr, "Missing input file!\n");

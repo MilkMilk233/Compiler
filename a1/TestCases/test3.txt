@@ -1,0 +1,40 @@
+Get into comment mode!
+Quitting comment mode!
+begin
+id_list : ID  
+id_list : id_list COMMA ID
+statement : READ LPAREN id_list RPAREN ';'
+statement_list : statement  
+primary : ID 
+exp : primary 
+ primary : INTLITERAL
+exp : primary 
+primary : ID 
+exp : exp MINUSOP primary 
+ primary : LPAREN exp RPAREN 
+ exp : exp PLUOP primary
+ primary : INTLITERAL
+ exp : exp PLUOP primary
+statement : ID ASSIGNOP exp ';'
+statement_list :  statement_list statement 
+primary : ID 
+exp : primary 
+ primary : INTLITERAL
+ exp : exp PLUOP primary
+statement : ID ASSIGNOP exp ';'
+statement_list :  statement_list statement 
+write
+primary : ID 
+exp : primary 
+exp_list :  exp
+primary : ID 
+exp : primary 
+exp_list : exp_list COMMA exp 
+primary : ID 
+exp : primary 
+primary : ID 
+ exp : exp PLUOP primary
+exp_list : exp_list COMMA exp 
+statement : WRITE LPAREN exp_list RPAREN ';' 
+statement_list :  statement_list statement 
+end

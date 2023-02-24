@@ -1,0 +1,32 @@
+Get into comment mode!
+Quitting comment mode!
+begin
+ primary : INTLITERAL
+exp : MINUSOP primary
+ primary : INTLITERAL
+exp : exp MINUSOP primary 
+ primary : INTLITERAL
+exp : exp MINUSOP primary 
+ primary : INTLITERAL
+ exp : exp PLUOP primary
+ primary : INTLITERAL
+exp : exp MINUSOP primary 
+ primary : INTLITERAL
+exp : MINUSOP primary
+ primary : INTLITERAL
+ exp : exp PLUOP primary
+ primary : INTLITERAL
+exp : exp MINUSOP primary 
+ primary : INTLITERAL
+exp : exp MINUSOP primary 
+ primary : LPAREN exp RPAREN 
+exp : exp MINUSOP primary 
+ primary : INTLITERAL
+exp : MINUSOP primary
+ primary : INTLITERAL
+exp : exp MINUSOP primary 
+ primary : LPAREN exp RPAREN 
+exp : exp MINUSOP primary 
+statement : ID ASSIGNOP exp ';'
+statement_list : statement  
+end

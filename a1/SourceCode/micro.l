@@ -17,7 +17,7 @@ LETTER [a-zA-Z]
 <INITIAL>"read" {return READ; }
 <INITIAL>"write" {printf("write\n");return WRITE; }
 <INITIAL>{DIGIT}+ { yylval.value = atoi(yytext); return INTLITERAL; }
-<INITIAL>{LETTER}({DIGIT}|{LETTER})* {yylval.value = 0; return ID; }
+<INITIAL>{LETTER}({DIGIT}|{LETTER})* {sscanf(yytext, "%s", yylval.id); return ID; }
 <INITIAL>"(" {return LPAREN; }
 <INITIAL>")" {return RPAREN; }
 <INITIAL>";" {return ';'; }
