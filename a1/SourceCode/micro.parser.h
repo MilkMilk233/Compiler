@@ -45,7 +45,7 @@ extern int yydebug;
 
   struct id_list_struct{
     int capacity;
-    char id_l_struct[50][32];
+    int id_l_struct[50];    // Store index of SR
   };
   
   struct exp_struct{
@@ -78,9 +78,9 @@ extern int yydebug;
   void first_add_to_id_list(struct id_list_struct *id_l_struct, char* name);
   void first_add_to_exp_list(struct exp_list_struct *exp_l_struct, struct exp_struct *exp_str);
   void add_to_id_list(struct id_list_struct *id_l_struct, char* name);
-  void add_to_exp_list(struct exp_list_struct *exp_l_struct, int value);
-  void pri_to_exp(struct primary_struct *primary_str, exp_struct *exp_str);
-  void neg_pri_to_exp(struct primary_struct *primary_str, exp_struct *exp_str);
+  void add_to_exp_list(struct exp_list_struct *exp_l_struct, struct exp_struct *exp_str);
+  void pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str);
+  void neg_pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str);
   void exp_to_pri(struct exp_struct *exp_str, struct primary_struct *primary_str);
   void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct primary_struct *source2, int applied_sign);
 

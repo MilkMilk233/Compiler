@@ -122,7 +122,7 @@ extern int yydebug;
 
   struct id_list_struct{
     int capacity;
-    char id_l_struct[50][32];
+    int id_l_struct[50];    // Store index of SR
   };
   
   struct exp_struct{
@@ -155,9 +155,9 @@ extern int yydebug;
   void first_add_to_id_list(struct id_list_struct *id_l_struct, char* name);
   void first_add_to_exp_list(struct exp_list_struct *exp_l_struct, struct exp_struct *exp_str);
   void add_to_id_list(struct id_list_struct *id_l_struct, char* name);
-  void add_to_exp_list(struct exp_list_struct *exp_l_struct, int value);
-  void pri_to_exp(struct primary_struct *primary_str, exp_struct *exp_str);
-  void neg_pri_to_exp(struct primary_struct *primary_str, exp_struct *exp_str);
+  void add_to_exp_list(struct exp_list_struct *exp_l_struct, struct exp_struct *exp_str);
+  void pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str);
+  void neg_pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str);
   void exp_to_pri(struct exp_struct *exp_str, struct primary_struct *primary_str);
   void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct primary_struct *source2, int applied_sign);
 
@@ -1334,7 +1334,7 @@ yyreduce:
 
   case 6:
 #line 105 "micro.y" /* yacc.c:1646  */
-    {assign(&((yyvsp[-1].exp_str)), &((yyvsp[-3].id)));}
+    {assign(&((yyvsp[-1].exp_str)), (yyvsp[-3].id));}
 #line 1339 "micro.parser.c" /* yacc.c:1646  */
     break;
 
@@ -1364,13 +1364,13 @@ yyreduce:
 
   case 11:
 #line 114 "micro.y" /* yacc.c:1646  */
-    {first_add_to_exp_list(&((yyval.exp_list_str)), (yyvsp[0].exp_str)); }
+    {first_add_to_exp_list(&((yyval.exp_list_str)), &((yyvsp[0].exp_str))); }
 #line 1369 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 12:
 #line 115 "micro.y" /* yacc.c:1646  */
-    {add_to_exp_list(&((yyvsp[-2].exp_list_str)), (yyvsp[0].exp_str)); }
+    {add_to_exp_list(&((yyvsp[-2].exp_list_str)), &((yyvsp[0].exp_str))); }
 #line 1375 "micro.parser.c" /* yacc.c:1646  */
     break;
 
@@ -1406,7 +1406,7 @@ yyreduce:
 
   case 18:
 #line 125 "micro.y" /* yacc.c:1646  */
-    {id_to_pri(&((yyvsp[0].id)), &((yyval.primary_str)));}
+    {id_to_pri((yyvsp[0].id), &((yyval.primary_str)));}
 #line 1411 "micro.parser.c" /* yacc.c:1646  */
     break;
 
@@ -1651,7 +1651,10 @@ yyreturn:
 
 // Assist functions
 void clean_tr(){
-  tr_regs_status = {0,0,0,0,0,0,0,0};
+  int i;
+  for(i = 0; i < 8; i++){
+    tr_regs_status[i] = 0;
+  }
 }
 
 int find_id(char* name){
@@ -1664,14 +1667,14 @@ int find_id(char* name){
   }
 
   // If not, bind it to an new SR and return the name of the SR.
-  sr_id_name[sr_regs_status] = name;
+  strcpy(sr_id_name[sr_regs_status], name);
   sr_regs_status++;
   return sr_regs_status - 1;
 }
 
 void id_to_pri(char* id, struct primary_struct *primary_str){
   primary_str->is_int = 0;
-  primary_str->reg_name = id;
+  strcpy(primary_str->reg_name, id);
 }
 
 void int_to_pri(int value, struct primary_struct *primary_str){
@@ -1681,44 +1684,47 @@ void int_to_pri(int value, struct primary_struct *primary_str){
 
 // Member functions
 void assign(struct exp_struct *e_str, char* dst){
-  char[15] s_name, target, c1, c2;
+  char s_name[15];
+  char target[15];
+  char c1[15];
+  char c2[15];
 
   // Find the SR id according to the token name.
   int SR_id = find_id(dst);
   if(SR_id < 8){
-    target = sr_name[SR_id];
+    strcpy(target, sr_name[SR_id]);
   }
   // Todo: Memory expansion 
   
   if(e_str->reg_capacity == 2){
     if(e_str->sign){
-      s_name = "sub";
+      strcpy(s_name, "sub");
     }
     else{
-      s_name = "add";
+      strcpy(s_name, "add");
     }
-    c1 = e_str->first_reg_name;
-    c2 = e_str->sec_reg_name;
+    strcpy(c1, e_str->first_reg_name);
+    strcpy(c2, e_str->sec_reg_name);
   }
   else if(e_str->reg_capacity == 1 && e_str->int_capacity == 1){
     if(e_str->sign){
-      s_name = "subi";
+      strcpy(s_name, "subi");
     }
     else{
-      s_name = "addi";
+      strcpy(s_name, "addi");
     }
-    c1 = e_str->first_reg_name;
+    strcpy(c1, e_str->first_reg_name);
     atoi(e_str->first_int_value, c2, 10);
   }
   else if(e_str->reg_capacity == 1){
-    s_name = "add";
-    c1 = e_str->first_reg_name;
-    c2 = "$zero";
+    strcpy(s_name, "add");
+    strcpy(c1, e_str->first_reg_name);
+    strcpy(c2, "$zero");
   }
   else if(e_str->reg_capacity == 1){
-    s_name = "addi";
+    strcpy(s_name, "addi");
     atoi(e_str->first_int_value, c1, 10);
-    c2 = "$zero";
+    strcpy(c2, "$zero");
   }
 
   // Print out the info.
@@ -1731,7 +1737,7 @@ void read_id_list(struct id_list_struct *id_l_struct){
     if(i < 8){
       printf("addi $v0, $zero, 5\n");
       printf("syscall\n");
-      assign(&(id_l_struct->id_l_struct[i]), "$s0");
+      printf("%s, %s%d, %s, %s\n", "add", "$s",i , "$v0", "$zero");
     }
     // TODO: Memory expansion
   }
@@ -1742,7 +1748,7 @@ void write_exp_list(struct exp_list_struct *exp_l_struct){
   for(i = 0; i < exp_l_struct->capacity; i++){
     if(i < 8){
       printf("addi $v0, $zero, 1\n");
-      assign(&(id_l_struct->id_l_struct[i]), "$s0");
+      assign(&(exp_l_struct->exp_l_struct[i]), "$s0");
       printf("syscall\n");
     }
     // TODO: Memory expansion
@@ -1750,50 +1756,92 @@ void write_exp_list(struct exp_list_struct *exp_l_struct){
 
 }
 void first_add_to_id_list(struct id_list_struct *id_l_struct, char* name){
+  // Step 1: see if the name already has been declared.
+  int i, found;
+  found = 0;
+  for(i = 0; i < sr_regs_status; i++){
+    if(!strcmp(name, sr_id_name[i])){
+      found = 1;
+      break;
+    }
+  }
+  // Step 2: if not, declare a new one, archive.
+  if(found){
+    id_l_struct->id_l_struct[0] = i;
+  }
+  else{
+    id_l_struct->id_l_struct[0] = sr_regs_status;
+    sr_regs_status++;
+  }
   id_l_struct->capacity = 1;
-  id_l_struct->id_l_struct[0] = name;
+
+}
+
+void exp_copy(struct exp_struct *e1, struct exp_struct *e2){
+  e1->first_int_value = e2->first_int_value;
+  strcpy(e1->first_reg_name, e2->first_reg_name);
+  strcpy(e1->sec_reg_name, e2->sec_reg_name);
+  e1->int_capacity = e2->int_capacity;
+  e1->reg_capacity = e2->reg_capacity;
+  e1->sign = e2->sign;
 }
 void first_add_to_exp_list(struct exp_list_struct *exp_l_struct, struct exp_struct *exp_str){
   exp_l_struct->capacity = 1;
-  exp_l_struct->exp_l_struct[0] = exp_str;
+  exp_copy(&(exp_l_struct->exp_l_struct[0]), exp_str);
   
 }
 void add_to_id_list(struct id_list_struct *id_l_struct, char* name){
-  id_l_struct->id_l_struct[id_l_struct->capacity] = name;
+  // Step 1: see if the name already has been declared.
+  int i, found;
+  found = 0;
+  for(i = 0; i < sr_regs_status; i++){
+    if(!strcmp(name, sr_id_name[i])){
+      found = 1;
+      break;
+    }
+  }
+  // Step 2: if not, declare a new one, archive.
+  if(found){
+    id_l_struct->id_l_struct[id_l_struct->capacity] = i;
+  }
+  else{
+    id_l_struct->id_l_struct[id_l_struct->capacity] = sr_regs_status;
+    sr_regs_status++;
+  }
   id_l_struct->capacity++;
 }
-void add_to_exp_list(struct exp_list_struct *exp_l_struct, int value){
-  exp_l_struct->exp_l_struct[exp_l_struct->capacity] = exp_str;
+void add_to_exp_list(struct exp_list_struct *exp_l_struct, struct exp_struct *exp_str){
+  exp_copy(&(exp_l_struct->exp_l_struct[exp_l_struct->capacity]), exp_str);
   exp_l_struct->capacity++;
 }
 
-void pri_to_exp(struct primary_struct *primary_str, exp_struct *exp_str){
+void pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str){
   // Step 1, bind to an unoccupied TR
   int i;
   for(i = 0; i < 8; i++){
     if(tr_regs_status[i] == 0) break;
   }
   // Step 2, initialize the exp struct
-  exp_str->first_reg_name = tr_name[i];
+  strcpy(exp_str->first_reg_name, tr_name[i]);
   exp_str->sign = 0;
   exp_str->reg_capacity = 1;
   exp_str->int_capacity = 0;
 }
 
-void neg_pri_to_exp(struct primary_struct *primary_str, exp_struct *exp_str){
+void neg_pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str){
   struct exp_struct new_exp_str;
-  new_exp_str->reg_capacity = 2;
-  new_exp_str->int_capacity = 0;
-  new_exp_str->sign = 1;
-  new_exp_str->first_reg_name = "$zero";
-  new_exp_str->sec_reg_name = primary_str->reg_name;
+  new_exp_str.reg_capacity = 2;
+  new_exp_str.int_capacity = 0;
+  new_exp_str.sign = 1;
+  strcpy(new_exp_str.first_reg_name, "$zero");
+  strcpy(new_exp_str.sec_reg_name, primary_str->reg_name);
   int i;
   for(i = 0; i < 8; i++){
     if(tr_regs_status[i] == 0) break;
   }
   tr_regs_status[i] = 1;
   assign(&new_exp_str, tr_name[i]);
-  exp_str->first_reg_name = tr_name[i];
+  strcpy(exp_str->first_reg_name, tr_name[i]);
   exp_str->int_capacity = 0;
   exp_str->reg_capacity = 1;
 }
@@ -1817,7 +1865,7 @@ void exp_to_pri(struct exp_struct *exp_str, struct primary_struct *primary_str){
   if(is_first_TR && is_second_TR){
     // Eliminate one
     tr_regs_status[is_second_TR-1] = 0;
-    primary_str->reg_name = tr_name[is_first_TR-1];
+    strcpy(primary_str->reg_name, tr_name[is_first_TR-1]);
   }
   else if(!is_first_TR && is_second_TR){
     // allocate new one
@@ -1827,27 +1875,27 @@ void exp_to_pri(struct exp_struct *exp_str, struct primary_struct *primary_str){
         break;
       }
     }
-    primary_str->reg_name = tr_name[i];
+    strcpy(primary_str->reg_name, tr_name[i]);
   }
   else{
     // Migrate name in exp to primary. 
     if(is_first_TR){
-      primary_str->reg_name = tr_name[is_first_TR-1];
+      strcpy(primary_str->reg_name, tr_name[is_first_TR-1]);
     }
     else if(is_second_TR){
-      primary_str->reg_name = tr_name[is_second_TR-1];
+      strcpy(primary_str->reg_name, tr_name[is_second_TR-1]);
     }
   }
   // Step 3: Print out the MIPS code.
-  assign(&exp_str, &(primary_str->reg_name));
+  assign(exp_str, primary_str->reg_name);
   primary_str->is_int = 0;
 }
 
 void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct primary_struct *source2, int applied_sign){
   if(source1->reg_capacity == 2){
     struct primary_struct new_prime;
-    exp_to_pri(&(source1), &(new_prime));
-    target->first_reg_name = new_prime->reg_name;
+    exp_to_pri(source1, &(new_prime));
+    strcpy(target->first_reg_name, new_prime.reg_name);
     target->sign = applied_sign;
     if(source2->is_int){
       target->first_int_value = source2->int_value;
@@ -1855,7 +1903,7 @@ void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct p
       target->int_capacity = 1;
     }
     else{
-      target->sec_reg_name = source2->reg_name;
+      strcpy(target->sec_reg_name, source2->reg_name);
       target->reg_capacity = 2;
       target->int_capacity = 0;
     }
@@ -1868,13 +1916,13 @@ void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct p
       // Adding two of the regs. 
       int temp = source1->first_int_value;
       int temp_sign = source1->sign;
-      source1->sec_reg_name = source2->reg_name;
+      strcpy(source1->sec_reg_name, source2->reg_name);
       source1->sign = applied_sign;
       source1->reg_capacity = 2;
-      source2->int_capacity = 0;
+      source1->int_capacity = 0;
       struct primary_struct new_prime;
-      exp_to_pri(&(source1), &(new_prime));
-      target->first_reg_name = new_prime->reg_name;
+      exp_to_pri(source1, &(new_prime));
+      strcpy(target->first_reg_name, new_prime.reg_name);
       target->sign = temp_sign;
       target->first_int_value = temp;
       target->int_capacity = 1;
@@ -1882,14 +1930,14 @@ void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct p
     }
   }
   else if(source1->reg_capacity == 1){
-    target->first_reg_name = source1->first_reg_name;
+    strcpy(target->first_reg_name, source1->first_reg_name);
     if(source2->is_int){
       target->first_int_value = source2->int_value * pow(-1, applied_sign);
       target->int_capacity = 1;
       target->reg_capacity = 1;
     }
     else{
-      target->sec_reg_name = source2->reg_name;
+      strcpy(target->sec_reg_name, source2->reg_name);
       target->int_capacity = 0;
       target->reg_capacity = 2;
     }
@@ -1902,7 +1950,7 @@ void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct p
       target->reg_capacity = 0;
     }
     else{
-      target->first_reg_name = source2->reg_name;
+      strcpy(target->first_reg_name, source2->reg_name);
       target->int_capacity = 1;
       target->reg_capacity = 1;
     }
