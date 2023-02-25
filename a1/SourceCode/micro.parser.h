@@ -40,7 +40,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 26 "micro.y" /* yacc.c:1909  */
+#line 27 "micro.y" /* yacc.c:1909  */
 
 
   struct id_list_struct{
@@ -73,6 +73,7 @@ extern int yydebug;
   void id_to_pri(char* id, struct primary_struct *primary_str);
   void int_to_pri(int value, struct primary_struct *primary_str);
   void assign(struct exp_struct *e_str, char* dst);
+  void assign_and_search(struct exp_struct *e_str, char* id_sr);
   void read_id_list(struct id_list_struct *id_l_struct);
   void write_exp_list(struct exp_list_struct *exp_l_struct);
   void first_add_to_id_list(struct id_list_struct *id_l_struct, char* name);
@@ -85,7 +86,7 @@ extern int yydebug;
   void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct primary_struct *source2, int applied_sign);
 
 
-#line 89 "micro.parser.h" /* yacc.c:1909  */
+#line 90 "micro.parser.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -114,7 +115,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 71 "micro.y" /* yacc.c:1909  */
+#line 73 "micro.y" /* yacc.c:1909  */
 
   char id[32];
   int value;
@@ -123,7 +124,7 @@ union YYSTYPE
   struct exp_struct exp_str;
   struct primary_struct primary_str;
 
-#line 127 "micro.parser.h" /* yacc.c:1909  */
+#line 128 "micro.parser.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

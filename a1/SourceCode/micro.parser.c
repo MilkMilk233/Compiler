@@ -67,6 +67,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+#include <stdlib.h>
 
 void yyerror(const char *);
 int yylex();
@@ -87,7 +88,7 @@ char sr_id_name[100][32];
 // TODO: Extra space in memory
 
 
-#line 91 "micro.parser.c" /* yacc.c:339  */
+#line 92 "micro.parser.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -117,7 +118,7 @@ char sr_id_name[100][32];
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 26 "micro.y" /* yacc.c:355  */
+#line 27 "micro.y" /* yacc.c:355  */
 
 
   struct id_list_struct{
@@ -150,6 +151,7 @@ extern int yydebug;
   void id_to_pri(char* id, struct primary_struct *primary_str);
   void int_to_pri(int value, struct primary_struct *primary_str);
   void assign(struct exp_struct *e_str, char* dst);
+  void assign_and_search(struct exp_struct *e_str, char* id_sr);
   void read_id_list(struct id_list_struct *id_l_struct);
   void write_exp_list(struct exp_list_struct *exp_l_struct);
   void first_add_to_id_list(struct id_list_struct *id_l_struct, char* name);
@@ -162,7 +164,7 @@ extern int yydebug;
   void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct primary_struct *source2, int applied_sign);
 
 
-#line 166 "micro.parser.c" /* yacc.c:355  */
+#line 168 "micro.parser.c" /* yacc.c:355  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -191,7 +193,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 71 "micro.y" /* yacc.c:355  */
+#line 73 "micro.y" /* yacc.c:355  */
 
   char id[32];
   int value;
@@ -200,7 +202,7 @@ union YYSTYPE
   struct exp_struct exp_str;
   struct primary_struct primary_str;
 
-#line 204 "micro.parser.c" /* yacc.c:355  */
+#line 206 "micro.parser.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -217,7 +219,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 221 "micro.parser.c" /* yacc.c:358  */
+#line 223 "micro.parser.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -516,8 +518,8 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    95,    95,    98,   101,   102,   105,   106,   107,   110,
-     111,   114,   115,   118,   119,   120,   121,   124,   125,   126
+       0,    97,    97,   100,   103,   104,   107,   108,   109,   112,
+     113,   116,   117,   120,   121,   122,   123,   126,   127,   128
 };
 #endif
 
@@ -1309,115 +1311,115 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 95 "micro.y" /* yacc.c:1646  */
+#line 97 "micro.y" /* yacc.c:1646  */
     {;}
-#line 1315 "micro.parser.c" /* yacc.c:1646  */
+#line 1317 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 98 "micro.y" /* yacc.c:1646  */
+#line 100 "micro.y" /* yacc.c:1646  */
     {;}
-#line 1321 "micro.parser.c" /* yacc.c:1646  */
+#line 1323 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 101 "micro.y" /* yacc.c:1646  */
+#line 103 "micro.y" /* yacc.c:1646  */
     {;}
-#line 1327 "micro.parser.c" /* yacc.c:1646  */
+#line 1329 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 102 "micro.y" /* yacc.c:1646  */
+#line 104 "micro.y" /* yacc.c:1646  */
     {;}
-#line 1333 "micro.parser.c" /* yacc.c:1646  */
+#line 1335 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 105 "micro.y" /* yacc.c:1646  */
-    {assign(&((yyvsp[-1].exp_str)), (yyvsp[-3].id));}
-#line 1339 "micro.parser.c" /* yacc.c:1646  */
+#line 107 "micro.y" /* yacc.c:1646  */
+    {printf("statement : ID ASSIGNOP exp ';' \n"); assign_and_search(&((yyvsp[-1].exp_str)), (yyvsp[-3].id));}
+#line 1341 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 106 "micro.y" /* yacc.c:1646  */
-    {read_id_list(&((yyvsp[-2].id_list_str)));}
-#line 1345 "micro.parser.c" /* yacc.c:1646  */
+#line 108 "micro.y" /* yacc.c:1646  */
+    {printf("statement : READ LPAREN id_list RPAREN ';' \n"); read_id_list(&((yyvsp[-2].id_list_str)));}
+#line 1347 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 107 "micro.y" /* yacc.c:1646  */
-    {write_exp_list(&((yyvsp[-2].exp_list_str)));}
-#line 1351 "micro.parser.c" /* yacc.c:1646  */
+#line 109 "micro.y" /* yacc.c:1646  */
+    {printf("statement : WRITE LPAREN exp_list RPAREN\n"); write_exp_list(&((yyvsp[-2].exp_list_str)));}
+#line 1353 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 110 "micro.y" /* yacc.c:1646  */
-    {first_add_to_id_list(&((yyval.id_list_str)), (yyvsp[0].id));}
-#line 1357 "micro.parser.c" /* yacc.c:1646  */
+#line 112 "micro.y" /* yacc.c:1646  */
+    {printf("id_list : ID\n"); first_add_to_id_list(&((yyval.id_list_str)), (yyvsp[0].id));}
+#line 1359 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 111 "micro.y" /* yacc.c:1646  */
-    {add_to_id_list(&((yyvsp[-2].id_list_str)), (yyvsp[0].id));}
-#line 1363 "micro.parser.c" /* yacc.c:1646  */
+#line 113 "micro.y" /* yacc.c:1646  */
+    {printf("id_list : id_list COMMA ID\n"); add_to_id_list(&((yyvsp[-2].id_list_str)), (yyvsp[0].id));}
+#line 1365 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 114 "micro.y" /* yacc.c:1646  */
-    {first_add_to_exp_list(&((yyval.exp_list_str)), &((yyvsp[0].exp_str))); }
-#line 1369 "micro.parser.c" /* yacc.c:1646  */
+#line 116 "micro.y" /* yacc.c:1646  */
+    {printf("exp_list : exp\n"); first_add_to_exp_list(&((yyval.exp_list_str)), &((yyvsp[0].exp_str))); }
+#line 1371 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 115 "micro.y" /* yacc.c:1646  */
-    {add_to_exp_list(&((yyvsp[-2].exp_list_str)), &((yyvsp[0].exp_str))); }
-#line 1375 "micro.parser.c" /* yacc.c:1646  */
+#line 117 "micro.y" /* yacc.c:1646  */
+    {printf("exp_list : exp_list COMMA exp\n"); add_to_exp_list(&((yyvsp[-2].exp_list_str)), &((yyvsp[0].exp_str))); }
+#line 1377 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 118 "micro.y" /* yacc.c:1646  */
-    {pri_to_exp(&((yyvsp[0].primary_str)), &((yyval.exp_str))); }
-#line 1381 "micro.parser.c" /* yacc.c:1646  */
+#line 120 "micro.y" /* yacc.c:1646  */
+    {printf("exp : primary \n"); pri_to_exp(&((yyvsp[0].primary_str)), &((yyval.exp_str))); }
+#line 1383 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 119 "micro.y" /* yacc.c:1646  */
-    {exp_add_pri(&((yyval.exp_str)), &((yyvsp[-2].exp_str)), &((yyvsp[0].primary_str)), 0); }
-#line 1387 "micro.parser.c" /* yacc.c:1646  */
+#line 121 "micro.y" /* yacc.c:1646  */
+    {printf("exp : exp PLUOP primary\n"); exp_add_pri(&((yyval.exp_str)), &((yyvsp[-2].exp_str)), &((yyvsp[0].primary_str)), 0); }
+#line 1389 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 120 "micro.y" /* yacc.c:1646  */
-    {exp_add_pri(&((yyval.exp_str)), &((yyvsp[-2].exp_str)), &((yyvsp[0].primary_str)), 1); }
-#line 1393 "micro.parser.c" /* yacc.c:1646  */
+#line 122 "micro.y" /* yacc.c:1646  */
+    {printf("exp : exp MINUSOP primary\n"); exp_add_pri(&((yyval.exp_str)), &((yyvsp[-2].exp_str)), &((yyvsp[0].primary_str)), 1); }
+#line 1395 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 121 "micro.y" /* yacc.c:1646  */
-    {neg_pri_to_exp(&((yyvsp[0].primary_str)), &((yyval.exp_str))); }
-#line 1399 "micro.parser.c" /* yacc.c:1646  */
+#line 123 "micro.y" /* yacc.c:1646  */
+    {printf("exp : MINUSOP primary\n"); neg_pri_to_exp(&((yyvsp[0].primary_str)), &((yyval.exp_str))); }
+#line 1401 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 124 "micro.y" /* yacc.c:1646  */
-    {exp_to_pri(&((yyvsp[-1].exp_str)), &((yyval.primary_str)));}
-#line 1405 "micro.parser.c" /* yacc.c:1646  */
+#line 126 "micro.y" /* yacc.c:1646  */
+    {printf("primary : LPAREN exp RPAREN\n"); exp_to_pri(&((yyvsp[-1].exp_str)), &((yyval.primary_str)));}
+#line 1407 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 125 "micro.y" /* yacc.c:1646  */
-    {id_to_pri((yyvsp[0].id), &((yyval.primary_str)));}
-#line 1411 "micro.parser.c" /* yacc.c:1646  */
+#line 127 "micro.y" /* yacc.c:1646  */
+    {printf("primary : ID\n"); id_to_pri((yyvsp[0].id), &((yyval.primary_str)));}
+#line 1413 "micro.parser.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 126 "micro.y" /* yacc.c:1646  */
-    {int_to_pri((yyvsp[0].value), &((yyval.primary_str))); }
-#line 1417 "micro.parser.c" /* yacc.c:1646  */
+#line 128 "micro.y" /* yacc.c:1646  */
+    {printf("primary : INTLITERAL\n"); int_to_pri((yyvsp[0].value), &((yyval.primary_str))); }
+#line 1419 "micro.parser.c" /* yacc.c:1646  */
     break;
 
 
-#line 1421 "micro.parser.c" /* yacc.c:1646  */
+#line 1423 "micro.parser.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1645,13 +1647,14 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 128 "micro.y" /* yacc.c:1906  */
+#line 130 "micro.y" /* yacc.c:1906  */
 
 
 
 // Assist functions
 void clean_tr(){
   int i;
+  printf("CLEANING TR ----------------\n");
   for(i = 0; i < 8; i++){
     tr_regs_status[i] = 0;
   }
@@ -1673,8 +1676,14 @@ int find_id(char* name){
 }
 
 void id_to_pri(char* id, struct primary_struct *primary_str){
+  int index = find_id(id);
+  char name[32];
+  if(index < 8){
+    sprintf(name, "$s%d", index);
+  }
+  // TODO: Memory expansion
+  strcpy(primary_str->reg_name, name);
   primary_str->is_int = 0;
-  strcpy(primary_str->reg_name, id);
 }
 
 void int_to_pri(int value, struct primary_struct *primary_str){
@@ -1685,17 +1694,9 @@ void int_to_pri(int value, struct primary_struct *primary_str){
 // Member functions
 void assign(struct exp_struct *e_str, char* dst){
   char s_name[15];
-  char target[15];
   char c1[15];
   char c2[15];
 
-  // Find the SR id according to the token name.
-  int SR_id = find_id(dst);
-  if(SR_id < 8){
-    strcpy(target, sr_name[SR_id]);
-  }
-  // Todo: Memory expansion 
-  
   if(e_str->reg_capacity == 2){
     if(e_str->sign){
       strcpy(s_name, "sub");
@@ -1714,21 +1715,36 @@ void assign(struct exp_struct *e_str, char* dst){
       strcpy(s_name, "addi");
     }
     strcpy(c1, e_str->first_reg_name);
-    atoi(e_str->first_int_value, c2, 10);
+    sprintf(c2, "%d", e_str->first_int_value );
   }
   else if(e_str->reg_capacity == 1){
     strcpy(s_name, "add");
     strcpy(c1, e_str->first_reg_name);
     strcpy(c2, "$zero");
   }
-  else if(e_str->reg_capacity == 1){
+  else if(e_str->int_capacity == 1){
     strcpy(s_name, "addi");
-    atoi(e_str->first_int_value, c1, 10);
+    sprintf(c1, "%d", e_str->first_int_value );
     strcpy(c2, "$zero");
   }
 
   // Print out the info.
-  printf("%s, %s, %s, %s\n", s_name, target, c1, c2);
+  printf("%s, %s, %s, %s\n", s_name, dst, c1, c2);
+}
+
+void assign_and_search(struct exp_struct *e_str, char* id_sr){
+
+  char target[15];
+  // Find the SR id according to the token name.
+  int SR_id = find_id(id_sr);
+  if(SR_id < 8){
+    strcpy(target, sr_name[SR_id]);
+  }
+  // Todo: Memory expansion 
+  assign(e_str, target);
+
+  // Clean the TR as statement ends
+  clean_tr();
 }
 
 void read_id_list(struct id_list_struct *id_l_struct){
@@ -1741,6 +1757,9 @@ void read_id_list(struct id_list_struct *id_l_struct){
     }
     // TODO: Memory expansion
   }
+
+  // Clean the TR as statement ends
+  clean_tr();
 }
 
 void write_exp_list(struct exp_list_struct *exp_l_struct){
@@ -1754,25 +1773,12 @@ void write_exp_list(struct exp_list_struct *exp_l_struct){
     // TODO: Memory expansion
   }
 
+  // Clean the TR as statement ends
+  clean_tr();
+
 }
 void first_add_to_id_list(struct id_list_struct *id_l_struct, char* name){
-  // Step 1: see if the name already has been declared.
-  int i, found;
-  found = 0;
-  for(i = 0; i < sr_regs_status; i++){
-    if(!strcmp(name, sr_id_name[i])){
-      found = 1;
-      break;
-    }
-  }
-  // Step 2: if not, declare a new one, archive.
-  if(found){
-    id_l_struct->id_l_struct[0] = i;
-  }
-  else{
-    id_l_struct->id_l_struct[0] = sr_regs_status;
-    sr_regs_status++;
-  }
+  id_l_struct->id_l_struct[0] = find_id(name);
   id_l_struct->capacity = 1;
 
 }
@@ -1791,23 +1797,7 @@ void first_add_to_exp_list(struct exp_list_struct *exp_l_struct, struct exp_stru
   
 }
 void add_to_id_list(struct id_list_struct *id_l_struct, char* name){
-  // Step 1: see if the name already has been declared.
-  int i, found;
-  found = 0;
-  for(i = 0; i < sr_regs_status; i++){
-    if(!strcmp(name, sr_id_name[i])){
-      found = 1;
-      break;
-    }
-  }
-  // Step 2: if not, declare a new one, archive.
-  if(found){
-    id_l_struct->id_l_struct[id_l_struct->capacity] = i;
-  }
-  else{
-    id_l_struct->id_l_struct[id_l_struct->capacity] = sr_regs_status;
-    sr_regs_status++;
-  }
+  id_l_struct->id_l_struct[id_l_struct->capacity] = find_id(name);
   id_l_struct->capacity++;
 }
 void add_to_exp_list(struct exp_list_struct *exp_l_struct, struct exp_struct *exp_str){
@@ -1816,16 +1806,18 @@ void add_to_exp_list(struct exp_list_struct *exp_l_struct, struct exp_struct *ex
 }
 
 void pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str){
-  // Step 1, bind to an unoccupied TR
-  int i;
-  for(i = 0; i < 8; i++){
-    if(tr_regs_status[i] == 0) break;
+  // Step 1: Check the type of the primary
+  if(primary_str->is_int){
+    exp_str->first_int_value = primary_str->int_value;
+    exp_str->int_capacity = 1;
+    exp_str->reg_capacity = 0;
   }
-  // Step 2, initialize the exp struct
-  strcpy(exp_str->first_reg_name, tr_name[i]);
-  exp_str->sign = 0;
-  exp_str->reg_capacity = 1;
-  exp_str->int_capacity = 0;
+  else{
+    strcpy(exp_str->first_reg_name, primary_str->reg_name);
+    exp_str->reg_capacity = 1;
+    exp_str->int_capacity = 0;
+  }
+  
 }
 
 void neg_pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str){
@@ -1862,12 +1854,13 @@ void exp_to_pri(struct exp_struct *exp_str, struct primary_struct *primary_str){
     }
   }
   // Step 2: If == 0, allocate new one; if == 2, eliminate one.
+  printf("is_first_TR = %d, is_second_TR = %d\n",is_first_TR,is_second_TR);
   if(is_first_TR && is_second_TR){
     // Eliminate one
     tr_regs_status[is_second_TR-1] = 0;
     strcpy(primary_str->reg_name, tr_name[is_first_TR-1]);
   }
-  else if(!is_first_TR && is_second_TR){
+  else if(!is_first_TR && !is_second_TR){
     // allocate new one
     for(i = 0; i < 8; i++){
       if(tr_regs_status[i] == 0){
@@ -1892,6 +1885,7 @@ void exp_to_pri(struct exp_struct *exp_str, struct primary_struct *primary_str){
 }
 
 void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct primary_struct *source2, int applied_sign){
+  printf("ACC: reg = %d, int = %d\n", source1->reg_capacity, source1->int_capacity);
   if(source1->reg_capacity == 2){
     struct primary_struct new_prime;
     exp_to_pri(source1, &(new_prime));
@@ -1910,7 +1904,7 @@ void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct p
   }
   else if(source1->reg_capacity == 1 && source1->int_capacity == 1){
     if(source2->is_int){
-      target->first_int_value += source2->int_value;
+      target->first_int_value += source2->int_value * (applied_sign ? -1 : 1);
     }
     else{
       // Adding two of the regs. 
@@ -1932,27 +1926,49 @@ void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct p
   else if(source1->reg_capacity == 1){
     strcpy(target->first_reg_name, source1->first_reg_name);
     if(source2->is_int){
-      target->first_int_value = source2->int_value * pow(-1, applied_sign);
+      target->first_int_value = source2->int_value * (applied_sign ? -1 : 1);
       target->int_capacity = 1;
       target->reg_capacity = 1;
     }
     else{
       strcpy(target->sec_reg_name, source2->reg_name);
+      target->sign = applied_sign;
       target->int_capacity = 0;
       target->reg_capacity = 2;
     }
     
   }
   else if(source1->int_capacity == 1){
+    printf("HELLO\n");
     if(source2->is_int){
-      target->first_int_value += source2->int_value * pow(-1, applied_sign);
+      target->first_int_value += source2->int_value * (applied_sign ? -1 : 1);
       target->int_capacity = 1;
       target->reg_capacity = 0;
     }
     else{
-      strcpy(target->first_reg_name, source2->reg_name);
-      target->int_capacity = 1;
-      target->reg_capacity = 1;
+      if(applied_sign){
+        // int - reg(primary) == $zero - reg(primary) + int
+        printf("HI\n");
+        struct exp_struct new_str;
+        struct primary_struct new_p;
+        strcpy(new_str.first_reg_name, "$zero");
+        strcpy(new_str.sec_reg_name, source2->reg_name);
+        new_str.sign = 1;
+        new_str.int_capacity = 0;
+        new_str.reg_capacity = 2;
+        exp_to_pri(&(new_str), &(new_p));
+        strcpy(target->first_reg_name, new_p.reg_name);
+        target->first_int_value = source1->first_int_value;
+        target->int_capacity = 1;
+        target->reg_capacity = 1;
+      }
+      else{
+        // int + reg(primary)
+        strcpy(target->first_reg_name, source2->reg_name);
+        target->int_capacity = 1;
+        target->reg_capacity = 1;
+        target->sign = 0;
+      }
     }
   }
 }

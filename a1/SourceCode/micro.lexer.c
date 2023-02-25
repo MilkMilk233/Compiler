@@ -760,12 +760,12 @@ YY_RULE_SETUP
 case 2:
 YY_RULE_SETUP
 #line 15 "micro.l"
-{printf("begin\n"); return BEGIN_; }
+{/*printf("begin\n");*/ return BEGIN_; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 16 "micro.l"
-{printf("end\n"); return END; }
+{/*printf("end\n"); */ return END; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
@@ -775,7 +775,7 @@ YY_RULE_SETUP
 case 5:
 YY_RULE_SETUP
 #line 18 "micro.l"
-{printf("write\n");return WRITE; }
+{/*printf("write\n");*/ return WRITE; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
@@ -820,7 +820,7 @@ YY_RULE_SETUP
 case 14:
 YY_RULE_SETUP
 #line 27 "micro.l"
-{printf("Get into comment mode!\n"); BEGIN(COMMENT); }
+{/*printf("Get into comment mode!\n");*/ BEGIN(COMMENT); }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
@@ -841,7 +841,7 @@ case 17:
 /* rule 17 can match eol */
 YY_RULE_SETUP
 #line 31 "micro.l"
-{printf("Quitting comment mode!\n"); BEGIN(INITIAL); }
+{/*printf("Quitting comment mode!\n");*/ BEGIN(INITIAL); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
