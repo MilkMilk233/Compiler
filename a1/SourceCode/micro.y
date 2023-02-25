@@ -26,11 +26,6 @@ char sr_id_name[100][32];
 
 %code requires {
 
-  struct id_list_struct{
-    int capacity;
-    int id_l_struct[50];    // Store index of SR
-  };
-  
   struct exp_struct{
     char first_reg_name[10];
     char sec_reg_name[10];
@@ -38,11 +33,6 @@ char sr_id_name[100][32];
     int sign;   // 0 for add, 1 for sub
     int reg_capacity;
     int int_capacity;
-  };
-
-  struct exp_list_struct{
-    int capacity;
-    struct exp_struct exp_l_struct[50];
   };
 
   struct primary_struct{
@@ -57,12 +47,8 @@ char sr_id_name[100][32];
   void int_to_pri(int value, struct primary_struct *primary_str);
   void assign(struct exp_struct *e_str, char* dst);
   void assign_and_search(struct exp_struct *e_str, char* id_sr);
-  void read_id_list(struct id_list_struct *id_l_struct);
-  void write_exp_list(struct exp_list_struct *exp_l_struct);
-  void first_add_to_id_list(struct id_list_struct *id_l_struct, char* name);
-  void first_add_to_exp_list(struct exp_list_struct *exp_l_struct, struct exp_struct *exp_str);
-  void add_to_id_list(struct id_list_struct *id_l_struct, char* name);
-  void add_to_exp_list(struct exp_list_struct *exp_l_struct, struct exp_struct *exp_str);
+  void add_to_id_list(char* name);
+  void add_to_exp_list(struct exp_struct *exp_str);
   void pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str);
   void neg_pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str);
   void exp_to_pri(struct exp_struct *exp_str, struct primary_struct *primary_str);
@@ -73,8 +59,6 @@ char sr_id_name[100][32];
 %union {
   char id[32];
   int value;
-  struct exp_list_struct exp_list_str;
-  struct id_list_struct id_list_str;
   struct exp_struct exp_str;
   struct primary_struct primary_str;
 }
@@ -89,8 +73,6 @@ char sr_id_name[100][32];
 
 %type <primary_str> primary
 %type <exp_str> exp 
-%type <exp_list_str> exp_list
-%type <id_list_str> id_list
 
 %start system_goal
 %%
@@ -104,28 +86,28 @@ statement_list : statement {;}
                | statement_list statement {;}
                ;
 
-statement : ID ASSIGNOP exp ';' {printf("statement : ID ASSIGNOP exp ';' \n"); assign_and_search(&($3), $1);}
-          | READ LPAREN id_list RPAREN ';' {printf("statement : READ LPAREN id_list RPAREN ';' \n"); read_id_list(&($3));}
-          | WRITE LPAREN exp_list RPAREN ';' {printf("statement : WRITE LPAREN exp_list RPAREN\n"); write_exp_list(&($3));}
+statement : ID ASSIGNOP exp ';' {/*printf("statement : ID ASSIGNOP exp ';' \n");*/ assign_and_search(&($3), $1);}
+          | READ LPAREN id_list RPAREN ';' {/*printf("statement : READ LPAREN id_list RPAREN ';' \n");*/ clean_tr();}
+          | WRITE LPAREN exp_list RPAREN ';' {/*printf("statement : WRITE LPAREN exp_list RPAREN\n");*/ clean_tr();}
           ;
 
-id_list : ID {printf("id_list : ID\n"); first_add_to_id_list(&($$), $1);}
-        | id_list COMMA ID {printf("id_list : id_list COMMA ID\n"); add_to_id_list(&($1), $3);}
+id_list : ID {/*printf("id_list : ID\n");*/ add_to_id_list($1); clean_tr();}
+        | id_list COMMA ID {/*printf("id_list : id_list COMMA ID\n");*/ add_to_id_list($3); clean_tr();}
         ;
 
-exp_list : exp {printf("exp_list : exp\n"); first_add_to_exp_list(&($$), &($1)); }
-         | exp_list COMMA exp {printf("exp_list : exp_list COMMA exp\n"); add_to_exp_list(&($1), &($3)); }
+exp_list : exp {/*printf("exp_list : exp\n");*/ add_to_exp_list(&($1)); clean_tr();}
+         | exp_list COMMA exp {/*printf("exp_list : exp_list COMMA exp\n");*/ add_to_exp_list(&($3)); clean_tr();}
          ;
 
-exp : primary {printf("exp : primary \n"); pri_to_exp(&($1), &($$)); }
-    | exp PLUOP primary {printf("exp : exp PLUOP primary\n"); exp_add_pri(&($$), &($1), &($3), 0); }
-    | exp MINUSOP primary {printf("exp : exp MINUSOP primary\n"); exp_add_pri(&($$), &($1), &($3), 1); }
-    | MINUSOP primary {printf("exp : MINUSOP primary\n"); neg_pri_to_exp(&($2), &($$)); }
+exp : primary {/*printf("exp : primary \n");*/ pri_to_exp(&($1), &($$)); }
+    | exp PLUOP primary {/*printf("exp : exp PLUOP primary\n");*/ exp_add_pri(&($$), &($1), &($3), 0); }
+    | exp MINUSOP primary {/*printf("exp : exp MINUSOP primary\n");*/ exp_add_pri(&($$), &($1), &($3), 1); }
+    | MINUSOP primary {/*printf("exp : MINUSOP primary\n");*/ neg_pri_to_exp(&($2), &($$)); }
     ;
 
-primary : LPAREN exp RPAREN {printf("primary : LPAREN exp RPAREN\n"); exp_to_pri(&($2), &($$));}     // If there are two elements in the exp, compress it into one(with the use of TR), put it into primary_struct
-        | ID {printf("primary : ID\n"); id_to_pri($1, &($$));}
-        | INTLITERAL {printf("primary : INTLITERAL\n"); int_to_pri($1, &($$)); }
+primary : LPAREN exp RPAREN {/*printf("primary : LPAREN exp RPAREN\n");*/ exp_to_pri(&($2), &($$));}     // If there are two elements in the exp, compress it into one(with the use of TR), put it into primary_struct
+        | ID {/*printf("primary : ID\n");*/ id_to_pri($1, &($$));}
+        | INTLITERAL {/*printf("primary : INTLITERAL\n");*/ int_to_pri($1, &($$)); }
         ;
 %%
 
@@ -133,7 +115,7 @@ primary : LPAREN exp RPAREN {printf("primary : LPAREN exp RPAREN\n"); exp_to_pri
 // Assist functions
 void clean_tr(){
   int i;
-  printf("CLEANING TR ----------------\n");
+  // printf("CLEANING TR ----------------\n");
   for(i = 0; i < 8; i++){
     tr_regs_status[i] = 0;
   }
@@ -159,6 +141,9 @@ void id_to_pri(char* id, struct primary_struct *primary_str){
   char name[32];
   if(index < 8){
     sprintf(name, "$s%d", index);
+  }
+  else{
+    sprintf(name, "#s%d", index);
   }
   // TODO: Memory expansion
   strcpy(primary_str->reg_name, name);
@@ -203,12 +188,12 @@ void assign(struct exp_struct *e_str, char* dst){
   }
   else if(e_str->int_capacity == 1){
     strcpy(s_name, "addi");
-    sprintf(c1, "%d", e_str->first_int_value );
-    strcpy(c2, "$zero");
+    sprintf(c2, "%d", e_str->first_int_value );
+    strcpy(c1, "$zero");
   }
 
   // Print out the info.
-  printf("%s, %s, %s, %s\n", s_name, dst, c1, c2);
+  printf("%s %s, %s, %s\n", s_name, dst, c1, c2);
 }
 
 void assign_and_search(struct exp_struct *e_str, char* id_sr){
@@ -226,42 +211,6 @@ void assign_and_search(struct exp_struct *e_str, char* id_sr){
   clean_tr();
 }
 
-void read_id_list(struct id_list_struct *id_l_struct){
-  int i;
-  for(i = 0; i < id_l_struct->capacity; i++){
-    if(i < 8){
-      printf("addi $v0, $zero, 5\n");
-      printf("syscall\n");
-      printf("%s, %s%d, %s, %s\n", "add", "$s",i , "$v0", "$zero");
-    }
-    // TODO: Memory expansion
-  }
-
-  // Clean the TR as statement ends
-  clean_tr();
-}
-
-void write_exp_list(struct exp_list_struct *exp_l_struct){
-  int i;
-  for(i = 0; i < exp_l_struct->capacity; i++){
-    if(i < 8){
-      printf("addi $v0, $zero, 1\n");
-      assign(&(exp_l_struct->exp_l_struct[i]), "$s0");
-      printf("syscall\n");
-    }
-    // TODO: Memory expansion
-  }
-
-  // Clean the TR as statement ends
-  clean_tr();
-
-}
-void first_add_to_id_list(struct id_list_struct *id_l_struct, char* name){
-  id_l_struct->id_l_struct[0] = find_id(name);
-  id_l_struct->capacity = 1;
-
-}
-
 void exp_copy(struct exp_struct *e1, struct exp_struct *e2){
   e1->first_int_value = e2->first_int_value;
   strcpy(e1->first_reg_name, e2->first_reg_name);
@@ -270,18 +219,24 @@ void exp_copy(struct exp_struct *e1, struct exp_struct *e2){
   e1->reg_capacity = e2->reg_capacity;
   e1->sign = e2->sign;
 }
-void first_add_to_exp_list(struct exp_list_struct *exp_l_struct, struct exp_struct *exp_str){
-  exp_l_struct->capacity = 1;
-  exp_copy(&(exp_l_struct->exp_l_struct[0]), exp_str);
-  
+
+void add_to_id_list(char* name){
+  int i = find_id(name);
+  printf("addi $v0, $zero, 5\n");
+  printf("syscall\n");
+  if(i >= 8){
+    printf("%s %s%d, %s, %s\n", "add", "$t8", "$v0", "$zero");
+    printf("sw $t8, %d($sp)\n", (i-8)*(-4));
+  }
+  else{
+    printf("%s %s%d, %s, %s\n", "add", "$s",i , "$v0", "$zero");
+  }
 }
-void add_to_id_list(struct id_list_struct *id_l_struct, char* name){
-  id_l_struct->id_l_struct[id_l_struct->capacity] = find_id(name);
-  id_l_struct->capacity++;
-}
-void add_to_exp_list(struct exp_list_struct *exp_l_struct, struct exp_struct *exp_str){
-  exp_copy(&(exp_l_struct->exp_l_struct[exp_l_struct->capacity]), exp_str);
-  exp_l_struct->capacity++;
+
+void add_to_exp_list(struct exp_struct *exp_str){
+  printf("addi $v0, $zero, 1\n");
+  assign(exp_str, "$a0");
+  printf("syscall\n");
 }
 
 void pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str){
@@ -300,6 +255,12 @@ void pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str){
 }
 
 void neg_pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str){
+  if(primary_str->is_int){
+    exp_str->int_capacity = 1;
+    exp_str->first_int_value = -1 * primary_str->int_value;
+    exp_str->reg_capacity = 0;
+    return;
+  }
   struct exp_struct new_exp_str;
   new_exp_str.reg_capacity = 2;
   new_exp_str.int_capacity = 0;

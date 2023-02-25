@@ -1,3 +1,3 @@
 make clean
 make
-./micro ../TestCases/test2.m
+./micro ../TestCases/test4.m

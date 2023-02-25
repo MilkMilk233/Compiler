@@ -43,11 +43,6 @@ extern int yydebug;
 #line 27 "micro.y" /* yacc.c:1909  */
 
 
-  struct id_list_struct{
-    int capacity;
-    int id_l_struct[50];    // Store index of SR
-  };
-  
   struct exp_struct{
     char first_reg_name[10];
     char sec_reg_name[10];
@@ -55,11 +50,6 @@ extern int yydebug;
     int sign;   // 0 for add, 1 for sub
     int reg_capacity;
     int int_capacity;
-  };
-
-  struct exp_list_struct{
-    int capacity;
-    struct exp_struct exp_l_struct[50];
   };
 
   struct primary_struct{
@@ -74,19 +64,15 @@ extern int yydebug;
   void int_to_pri(int value, struct primary_struct *primary_str);
   void assign(struct exp_struct *e_str, char* dst);
   void assign_and_search(struct exp_struct *e_str, char* id_sr);
-  void read_id_list(struct id_list_struct *id_l_struct);
-  void write_exp_list(struct exp_list_struct *exp_l_struct);
-  void first_add_to_id_list(struct id_list_struct *id_l_struct, char* name);
-  void first_add_to_exp_list(struct exp_list_struct *exp_l_struct, struct exp_struct *exp_str);
-  void add_to_id_list(struct id_list_struct *id_l_struct, char* name);
-  void add_to_exp_list(struct exp_list_struct *exp_l_struct, struct exp_struct *exp_str);
+  void add_to_id_list(char* name);
+  void add_to_exp_list(struct exp_struct *exp_str);
   void pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str);
   void neg_pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str);
   void exp_to_pri(struct exp_struct *exp_str, struct primary_struct *primary_str);
   void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct primary_struct *source2, int applied_sign);
 
 
-#line 90 "micro.parser.h" /* yacc.c:1909  */
+#line 76 "micro.parser.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -115,16 +101,14 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 73 "micro.y" /* yacc.c:1909  */
+#line 59 "micro.y" /* yacc.c:1909  */
 
   char id[32];
   int value;
-  struct exp_list_struct exp_list_str;
-  struct id_list_struct id_list_str;
   struct exp_struct exp_str;
   struct primary_struct primary_str;
 
-#line 128 "micro.parser.h" /* yacc.c:1909  */
+#line 112 "micro.parser.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
