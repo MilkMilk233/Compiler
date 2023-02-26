@@ -1,40 +1,20 @@
-Get into comment mode!
-Quitting comment mode!
-begin
-id_list : ID  
-id_list : id_list COMMA ID
-statement : READ LPAREN id_list RPAREN ';'
-statement_list : statement  
-primary : ID 
-exp : primary 
- primary : INTLITERAL
-exp : primary 
-primary : ID 
-exp : exp MINUSOP primary 
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : INTLITERAL
- exp : exp PLUOP primary
-statement : ID ASSIGNOP exp ';'
-statement_list :  statement_list statement 
-primary : ID 
-exp : primary 
- primary : INTLITERAL
- exp : exp PLUOP primary
-statement : ID ASSIGNOP exp ';'
-statement_list :  statement_list statement 
-write
-primary : ID 
-exp : primary 
-exp_list :  exp
-primary : ID 
-exp : primary 
-exp_list : exp_list COMMA exp 
-primary : ID 
-exp : primary 
-primary : ID 
- exp : exp PLUOP primary
-exp_list : exp_list COMMA exp 
-statement : WRITE LPAREN exp_list RPAREN ';' 
-statement_list :  statement_list statement 
-end
+addi $v0, $zero, 5
+syscall
+add $s0, $v0, $zero
+addi $v0, $zero, 5
+syscall
+add $s1, $v0, $zero
+sub $t0, $zero, $s1
+addi $t0, $t0, 1
+add $t0, $s0, $t0
+addi $s0, $t0, 2
+addi $s1, $s0, 1
+addi $v0, $zero, 1
+add $a0, $s0, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s1, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s0, $s1
+syscall

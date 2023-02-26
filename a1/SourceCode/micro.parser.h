@@ -40,7 +40,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 27 "micro.y" /* yacc.c:1909  */
+#line 35 "micro.y" /* yacc.c:1909  */
 
 
   struct exp_struct{
@@ -70,9 +70,10 @@ extern int yydebug;
   void neg_pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str);
   void exp_to_pri(struct exp_struct *exp_str, struct primary_struct *primary_str);
   void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct primary_struct *source2, int applied_sign);
+  void check_index(char* printed_reg_name, int* type, int* index);   // To check the index of the printed register
 
 
-#line 76 "micro.parser.h" /* yacc.c:1909  */
+#line 77 "micro.parser.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -101,14 +102,14 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 59 "micro.y" /* yacc.c:1909  */
+#line 68 "micro.y" /* yacc.c:1909  */
 
   char id[32];
   int value;
   struct exp_struct exp_str;
   struct primary_struct primary_str;
 
-#line 112 "micro.parser.h" /* yacc.c:1909  */
+#line 113 "micro.parser.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

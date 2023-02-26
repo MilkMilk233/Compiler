@@ -1,100 +1,66 @@
-Get into comment mode!
-Quitting comment mode!
-begin
- primary : INTLITERAL
-exp : primary 
-statement : ID ASSIGNOP exp ';'
-statement_list : statement  
- primary : INTLITERAL
-exp : MINUSOP primary
-statement : ID ASSIGNOP exp ';'
-statement_list :  statement_list statement 
-write
- primary : INTLITERAL
-exp : primary 
-primary : ID 
-exp : exp MINUSOP primary 
-exp_list :  exp
- primary : INTLITERAL
-exp : primary 
-primary : ID 
-exp : exp MINUSOP primary 
-exp_list : exp_list COMMA exp 
- primary : INTLITERAL
-exp : primary 
-primary : ID 
-exp : exp MINUSOP primary 
-exp_list : exp_list COMMA exp 
- primary : INTLITERAL
-exp : primary 
-primary : ID 
-exp : exp MINUSOP primary 
-exp_list : exp_list COMMA exp 
- primary : INTLITERAL
-exp : primary 
-primary : ID 
-exp : exp MINUSOP primary 
-exp_list : exp_list COMMA exp 
- primary : INTLITERAL
-exp : primary 
-primary : ID 
-exp : exp MINUSOP primary 
-exp_list : exp_list COMMA exp 
- primary : INTLITERAL
-exp : primary 
-primary : ID 
-exp : exp MINUSOP primary 
-exp_list : exp_list COMMA exp 
- primary : INTLITERAL
-exp : primary 
-primary : ID 
-exp : exp MINUSOP primary 
-exp_list : exp_list COMMA exp 
- primary : INTLITERAL
-exp : primary 
-primary : ID 
-exp : exp MINUSOP primary 
-exp_list : exp_list COMMA exp 
- primary : INTLITERAL
-exp : primary 
-primary : ID 
-exp : exp MINUSOP primary 
-exp_list : exp_list COMMA exp 
- primary : INTLITERAL
-exp : primary 
-primary : ID 
-exp : exp MINUSOP primary 
-exp_list : exp_list COMMA exp 
- primary : INTLITERAL
-exp : primary 
-primary : ID 
-exp : exp MINUSOP primary 
-exp_list : exp_list COMMA exp 
- primary : INTLITERAL
-exp : primary 
-primary : ID 
-exp : exp MINUSOP primary 
-exp_list : exp_list COMMA exp 
-primary : ID 
-exp : primary 
- primary : INTLITERAL
- exp : exp PLUOP primary
-exp_list : exp_list COMMA exp 
-primary : ID 
-exp : primary 
-primary : ID 
- exp : exp PLUOP primary
-exp_list : exp_list COMMA exp 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
- exp : exp PLUOP primary
-exp_list : exp_list COMMA exp 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : exp MINUSOP primary 
-exp_list : exp_list COMMA exp 
-statement : WRITE LPAREN exp_list RPAREN ';' 
-statement_list :  statement_list statement 
-end
+addi $s0, $zero, 1
+addi $s1, $zero, -2
+sub $t0, $zero, $s0
+addi $v0, $zero, 1
+addi $a0, $t0, 2
+syscall
+sub $t0, $zero, $s0
+addi $v0, $zero, 1
+addi $a0, $t0, 3
+syscall
+sub $t0, $zero, $s0
+addi $v0, $zero, 1
+addi $a0, $t0, 4
+syscall
+sub $t0, $zero, $s0
+addi $v0, $zero, 1
+addi $a0, $t0, 5
+syscall
+sub $t0, $zero, $s0
+addi $v0, $zero, 1
+addi $a0, $t0, 6
+syscall
+sub $t0, $zero, $s0
+addi $v0, $zero, 1
+addi $a0, $t0, 7
+syscall
+sub $t0, $zero, $s0
+addi $v0, $zero, 1
+addi $a0, $t0, 8
+syscall
+sub $t0, $zero, $s0
+addi $v0, $zero, 1
+addi $a0, $t0, 9
+syscall
+sub $t0, $zero, $s0
+addi $v0, $zero, 1
+addi $a0, $t0, 10
+syscall
+sub $t0, $zero, $s0
+addi $v0, $zero, 1
+addi $a0, $t0, 11
+syscall
+sub $t0, $zero, $s0
+addi $v0, $zero, 1
+addi $a0, $t0, 12
+syscall
+sub $t0, $zero, $s0
+addi $v0, $zero, 1
+addi $a0, $t0, 13
+syscall
+sub $t0, $zero, $s0
+addi $v0, $zero, 1
+addi $a0, $t0, 14
+syscall
+addi $v0, $zero, 1
+addi $a0, $s1, 1
+syscall
+addi $v0, $zero, 1
+add $a0, $s1, $s0
+syscall
+addi $v0, $zero, 1
+addi $a0, $zero, 300
+syscall
+addi $v0, $zero, 1
+addi $a0, $zero, -100
+syscall

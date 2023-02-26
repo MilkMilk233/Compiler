@@ -4,6 +4,10 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define TR_STORAGE 200
+#define SR_STORAGE 200
+#define MEM_STORAGE 400
+
 void yyerror(const char *);
 int yylex();
 extern FILE *yyin;
@@ -15,10 +19,14 @@ char tr_name[8][5] = {"$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7"};
 
 // 占用情况
 int sr_regs_status = 0;
-int tr_regs_status[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+int tr_regs_status[TR_STORAGE] = {0};
+
+int memory_access[MEM_STORAGE];   // 0 for unoccupied, 1 for SR_occupied, 2 for TR_occupied
+int memory_index[MEM_STORAGE]; // The actual index of each registers.
+int tr_in_memory = 0;
 
 // 和SR相匹配的Token name，用于搜索
-char sr_id_name[100][32];
+char sr_id_name[SR_STORAGE][32];   // 3.2kb * 4 = 13.2kb，应该不会爆栈
 
 // TODO: Extra space in memory
 
@@ -53,6 +61,7 @@ char sr_id_name[100][32];
   void neg_pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str);
   void exp_to_pri(struct exp_struct *exp_str, struct primary_struct *primary_str);
   void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct primary_struct *source2, int applied_sign);
+  void check_index(char* printed_reg_name, int* type, int* index);   // To check the index of the printed register
 
 }
 
@@ -113,25 +122,59 @@ primary : LPAREN exp RPAREN {/*printf("primary : LPAREN exp RPAREN\n");*/ exp_to
 
 
 // Assist functions
+
 void clean_tr(){
   int i;
   // printf("CLEANING TR ----------------\n");
-  for(i = 0; i < 8; i++){
+  for(i = 0; i < TR_STORAGE; i++){
     tr_regs_status[i] = 0;
+  }
+  // Memory expansion
+  for(i = 0; (i < TR_STORAGE) && (tr_in_memory > 0); i++){
+    if(memory_access[i] == 2){
+      memory_access[i] = 0;
+      tr_in_memory--;
+    }
   }
 }
 
+// Retrive type and the index of register from string. -> Type: 0 for SR, 1 for TR.
+void check_index(char* printed_reg_name, int* type, int* index){
+  char r_type = printed_reg_name[1];
+  int i, p;
+  p = 0;
+  char index_str[32];
+  if(printed_reg_name[1] == 't') *type = 1;
+  else *type = 0;
+  for(i = 2; printed_reg_name[i] != '\0'; i++){
+    index_str[p] = printed_reg_name[i];
+    p++;
+  }
+  index_str[p] = '\0';
+  *index = atoi(index_str);
+}
+
+// Find the index of token name (SR)
 int find_id(char* name){
-  // Check if the name has preserved in some SR. If yes, return the id of the SR.
+  // Check if the token name has preserved in some SR. If yes, return the id of the SR.
   int i;
-  for(i = 0; i < 100; i++){
+  for(i = 0; i < sr_regs_status; i++){
     if(strcmp(name, sr_id_name[i]) == 0){
       return i;
     }
   }
-
   // If not, bind it to an new SR and return the name of the SR.
   strcpy(sr_id_name[sr_regs_status], name);
+  // Memory expansion: Store info on Memory
+  if(sr_regs_status >= 8){
+    for(i = 0; i < MEM_STORAGE; i++){
+      if(memory_access[i] == 0){
+        memory_access[i] = 1;
+        memory_index[i] = sr_regs_status;
+        break;
+      }
+    }
+  }
   sr_regs_status++;
   return sr_regs_status - 1;
 }
@@ -139,13 +182,7 @@ int find_id(char* name){
 void id_to_pri(char* id, struct primary_struct *primary_str){
   int index = find_id(id);
   char name[32];
-  if(index < 8){
-    sprintf(name, "$s%d", index);
-  }
-  else{
-    sprintf(name, "#s%d", index);
-  }
-  // TODO: Memory expansion
+  sprintf(name, "$s%d", index);
   strcpy(primary_str->reg_name, name);
   primary_str->is_int = 0;
 }
@@ -155,7 +192,22 @@ void int_to_pri(int value, struct primary_struct *primary_str){
   primary_str->int_value = value;
 }
 
+// Find the shift amount, by the register type and index.
+// For example, find the shift amount of $t11
+// Caution: the target register must already exists in memory.
+// Type: 0 for SR, 1 for TR.
+int find_sa(int type, int index){
+  int sa;
+  for(sa = 0; sa < MEM_STORAGE; sa++){
+    if(memory_access[sa] == type + 1 && memory_index[sa] == index){
+      break;
+    }
+  }
+  return (-4)*sa;
+}
+
 // Member functions
+// assign: print out the assign info.
 void assign(struct exp_struct *e_str, char* dst){
   char s_name[15];
   char c1[15];
@@ -193,32 +245,55 @@ void assign(struct exp_struct *e_str, char* dst){
   }
 
   // Print out the info.
+  
+  // Memory expansion: check if c1 and c2 are in the memory.
+  int c1_index, c2_index, c1_type, c2_type, dst_type, dst_index;
+  check_index(c1, &(c1_type), &(c1_index));
+  check_index(c2, &(c2_type), &(c2_index));
+  check_index(dst, &(dst_type), &(dst_index));
+
+  int sa;
+  // printf("c1_type = %d, c1_index = %d, c2_type = %d, c2_index = %d, dst_type = %d, dst_index = %d\n", c1_type, c1_index, c2_type, c2_index, dst_type, dst_index);
+  if(c1_index >= 8){
+    strcpy(c1, "$t8");
+    printf("lw $t8 %d($sp)\n", find_sa(c1_type, c1_index));
+  }
+  if(c2_index >= 8){
+    strcpy(c2, "$t9");
+    printf("lw $t9 %d($sp)\n", find_sa(c2_type, c2_index));
+  }
+  if(dst_index >= 8){
+    strcpy(dst, "$t8");
+  }
+
   printf("%s %s, %s, %s\n", s_name, dst, c1, c2);
+
+  if(dst_index >= 8){
+    printf("sw $t8 %d($sp)\n", find_sa(dst_type, dst_index));
+  }
+
 }
 
 void assign_and_search(struct exp_struct *e_str, char* id_sr){
 
-  char target[15];
+  char target[32];
   // Find the SR id according to the token name.
   int SR_id = find_id(id_sr);
-  if(SR_id < 8){
-    strcpy(target, sr_name[SR_id]);
-  }
-  // Todo: Memory expansion 
+  sprintf(target, "$s%d", SR_id);
   assign(e_str, target);
 
   // Clean the TR as statement ends
   clean_tr();
 }
 
-void exp_copy(struct exp_struct *e1, struct exp_struct *e2){
+/* void exp_copy(struct exp_struct *e1, struct exp_struct *e2){
   e1->first_int_value = e2->first_int_value;
   strcpy(e1->first_reg_name, e2->first_reg_name);
   strcpy(e1->sec_reg_name, e2->sec_reg_name);
   e1->int_capacity = e2->int_capacity;
   e1->reg_capacity = e2->reg_capacity;
   e1->sign = e2->sign;
-}
+} */
 
 void add_to_id_list(char* name){
   int i = find_id(name);
@@ -226,7 +301,7 @@ void add_to_id_list(char* name){
   printf("syscall\n");
   if(i >= 8){
     printf("%s %s%d, %s, %s\n", "add", "$t8", "$v0", "$zero");
-    printf("sw $t8, %d($sp)\n", (i-8)*(-4));
+    printf("sw $t8, %d($sp)\n", find_sa(0, i));
   }
   else{
     printf("%s %s%d, %s, %s\n", "add", "$s",i , "$v0", "$zero");
@@ -251,7 +326,42 @@ void pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str){
     exp_str->reg_capacity = 1;
     exp_str->int_capacity = 0;
   }
-  
+}
+
+// Allocate a new TR, and return its index.
+int allocate_tr(){
+  int i, index;
+  for(index = 0; index < TR_STORAGE; index++){
+    if(tr_regs_status[index] == 0){
+      tr_regs_status[index] = 1;
+      break;
+    }
+  }
+  if(index < 8) return index;
+  tr_in_memory++;
+  for(i = 0; i < MEM_STORAGE; i++){
+    if(memory_access[i] == 0){
+      memory_access[i] = 2;
+      memory_index[i] = index;
+      break;
+    }
+  }
+  return index;
+}
+
+// Free TR with indicated index.
+void free_tr(int index){
+  tr_regs_status[index] = 0;
+  int i;
+  if(index >= 8){
+    for(i = 0; i < MEM_STORAGE; i++){
+      if(memory_access[i] == 2 && memory_index[i] == index){
+        memory_access[i] = 0;
+        break;
+      }
+    }
+    tr_in_memory--;
+  }
 }
 
 void neg_pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_str){
@@ -267,13 +377,11 @@ void neg_pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_s
   new_exp_str.sign = 1;
   strcpy(new_exp_str.first_reg_name, "$zero");
   strcpy(new_exp_str.sec_reg_name, primary_str->reg_name);
-  int i;
-  for(i = 0; i < 8; i++){
-    if(tr_regs_status[i] == 0) break;
-  }
-  tr_regs_status[i] = 1;
-  assign(&new_exp_str, tr_name[i]);
-  strcpy(exp_str->first_reg_name, tr_name[i]);
+  int index = allocate_tr();
+  char name[32];
+  sprintf(name, "$t%d", index);
+  assign(&new_exp_str, name);
+  strcpy(exp_str->first_reg_name, name);
   exp_str->int_capacity = 0;
   exp_str->reg_capacity = 1;
 }
@@ -283,44 +391,46 @@ void exp_to_pri(struct exp_struct *exp_str, struct primary_struct *primary_str){
   // assert(exp_str->reg_capacity == 2);
 
   // Step 1: Find possible TR
-  int i, is_first_TR, is_second_TR;
+  int i, is_first_TR, is_second_TR, type, index;
   is_first_TR = is_second_TR = 0;
-  for(i = 0; i < 8; i++){
-    if(strcmp(tr_name[i], exp_str->first_reg_name) == 0){
-      is_first_TR = i+1;
-    }
-    if(strcmp(tr_name[i], exp_str->first_reg_name) == 0){
-      is_second_TR = i+1;
-    }
+  if(exp_str->first_reg_name[1] == 't'){
+    is_first_TR = 1;
   }
+  if(exp_str->sec_reg_name[1] == 't'){
+    is_second_TR = 1;
+  }
+
   // Step 2: If == 0, allocate new one; if == 2, eliminate one.
   if(is_first_TR && is_second_TR){
     // Eliminate one
-    tr_regs_status[is_second_TR-1] = 0;
-    strcpy(primary_str->reg_name, tr_name[is_first_TR-1]);
+    check_index(exp_str->sec_reg_name, &type, &index);
+    strcpy(primary_str->reg_name, exp_str->first_reg_name);
   }
   else if(!is_first_TR && !is_second_TR){
     // allocate new one
-    for(i = 0; i < 8; i++){
-      if(tr_regs_status[i] == 0){
-        tr_regs_status[i] = 1;
-        break;
-      }
-    }
-    strcpy(primary_str->reg_name, tr_name[i]);
+    index = allocate_tr();
+    char name[32];
+    sprintf(name, "$t%d", index);
+    strcpy(primary_str->reg_name, name);
   }
   else{
     // Migrate name in exp to primary. 
     if(is_first_TR){
-      strcpy(primary_str->reg_name, tr_name[is_first_TR-1]);
+      strcpy(primary_str->reg_name, exp_str->first_reg_name);
     }
     else if(is_second_TR){
-      strcpy(primary_str->reg_name, tr_name[is_second_TR-1]);
+      strcpy(primary_str->reg_name, exp_str->sec_reg_name);
     }
   }
   // Step 3: Print out the MIPS code.
   assign(exp_str, primary_str->reg_name);
   primary_str->is_int = 0;
+
+  // Step 4: If two of them are both TR, eliminate one.
+  if(is_first_TR && is_second_TR){
+    free_tr(index);
+  }
+      
 }
 
 void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct primary_struct *source2, int applied_sign){

@@ -1,418 +1,105 @@
-Get into comment mode!
-Quitting comment mode!
-begin
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
-exp : primary 
- primary : INTLITERAL
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
- exp : exp PLUOP primary
- primary : LPAREN exp RPAREN 
-exp : primary 
-statement : ID ASSIGNOP exp ';'
-statement_list : statement  
-write
-primary : ID 
-exp : primary 
-exp_list :  exp
-statement : WRITE LPAREN exp_list RPAREN ';' 
-statement_list :  statement_list statement 
-end
+addi $t0, $zero, 2
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+addi $t0, $t0, 1
+add $s0, $t0, $zero
+addi $v0, $zero, 1
+add $a0, $s0, $zero
+syscall
