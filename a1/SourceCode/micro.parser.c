@@ -69,9 +69,9 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define TR_STORAGE 200
-#define SR_STORAGE 200
-#define MEM_STORAGE 400
+#define TR_STORAGE 300
+#define SR_STORAGE 300
+#define MEM_STORAGE 600
 
 void yyerror(const char *);
 int yylex();
@@ -1732,9 +1732,11 @@ int find_sa(int type, int index){
 // Member functions
 // assign: print out the assign info.
 void assign(struct exp_struct *e_str, char* dst){
-  char s_name[15];
-  char c1[15];
-  char c2[15];
+  char s_name[32];
+  char c1[32];
+  char c2[32];
+  char destination[32];
+  strcpy(destination, dst);
 
   if(e_str->reg_capacity == 2){
     if(e_str->sign){
@@ -1768,12 +1770,12 @@ void assign(struct exp_struct *e_str, char* dst){
   }
 
   // Print out the info.
-  
+  /* printf("c1 = %s, c2 = %s\n",c1,c2); */
   // Memory expansion: check if c1 and c2 are in the memory.
   int c1_index, c2_index, c1_type, c2_type, dst_type, dst_index;
   check_index(c1, &(c1_type), &(c1_index));
   check_index(c2, &(c2_type), &(c2_index));
-  check_index(dst, &(dst_type), &(dst_index));
+  check_index(destination, &(dst_type), &(dst_index));
 
   int sa;
   // printf("c1_type = %d, c1_index = %d, c2_type = %d, c2_index = %d, dst_type = %d, dst_index = %d\n", c1_type, c1_index, c2_type, c2_index, dst_type, dst_index);
@@ -1786,10 +1788,10 @@ void assign(struct exp_struct *e_str, char* dst){
     printf("lw $t9 %d($sp)\n", find_sa(c2_type, c2_index));
   }
   if(dst_index >= 8){
-    strcpy(dst, "$t8");
+    strcpy(destination, "$t8");
   }
 
-  printf("%s %s, %s, %s\n", s_name, dst, c1, c2);
+  printf("%s %s, %s, %s\n", s_name, destination, c1, c2);
 
   if(dst_index >= 8){
     printf("sw $t8 %d($sp)\n", find_sa(dst_type, dst_index));
@@ -1912,6 +1914,7 @@ void neg_pri_to_exp(struct primary_struct *primary_str, struct exp_struct *exp_s
 void exp_to_pri(struct exp_struct *exp_str, struct primary_struct *primary_str){
   // Only valid when exp_str has two register loads.
   // assert(exp_str->reg_capacity == 2);
+  /* printf("ENTER\n"); */
 
   // Step 1: Find possible TR
   int i, is_first_TR, is_second_TR, type, index;
@@ -1934,6 +1937,7 @@ void exp_to_pri(struct exp_struct *exp_str, struct primary_struct *primary_str){
     index = allocate_tr();
     char name[32];
     sprintf(name, "$t%d", index);
+    /* printf("ALLOCATING A NEW ONE, where index = %d, new name = %s\n", index, name); */
     strcpy(primary_str->reg_name, name);
   }
   else{
@@ -1953,13 +1957,16 @@ void exp_to_pri(struct exp_struct *exp_str, struct primary_struct *primary_str){
   if(is_first_TR && is_second_TR){
     free_tr(index);
   }
+  /* printf("EXIT\n"); */
       
 }
 
 void exp_add_pri(struct exp_struct *target, struct exp_struct *source1, struct primary_struct *source2, int applied_sign){
   if(source1->reg_capacity == 2){
     struct primary_struct new_prime;
+    /* printf("BEFORE: c1 = %s, c2 = %s\n",source1->first_reg_name, source1->sec_reg_name); */
     exp_to_pri(source1, &(new_prime));
+    /* printf("AFTER: c1 = %s\n", new_prime.reg_name); */
     strcpy(target->first_reg_name, new_prime.reg_name);
     target->sign = applied_sign;
     if(source2->is_int){

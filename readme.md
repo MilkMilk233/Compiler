@@ -2,8 +2,9 @@
 
 This is the repo of CSC4180, 23 Spring.
 
-# A1 Learning Notes
+# [A1 Learning Notes](./a1/A1_design_docs.md)  
 
-1. [先搞懂什么是BNF / 移进 / 规约](https://blog.csdn.net/weixin_44007632/article/details/108666375)
+1. [先搞懂什么是BNF / 移进 / 规约](https://blog.csdn.net/weixin_44007632/article/details/108666375)  
 
-2. 
+2. ...  
+

@@ -4,9 +4,9 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define TR_STORAGE 200
-#define SR_STORAGE 200
-#define MEM_STORAGE 400
+#define TR_STORAGE 300
+#define SR_STORAGE 300
+#define MEM_STORAGE 600
 
 void yyerror(const char *);
 int yylex();
@@ -27,8 +27,6 @@ int tr_in_memory = 0;
 
 // 和SR相匹配的Token name，用于搜索
 char sr_id_name[SR_STORAGE][32];   // 3.2kb * 4 = 13.2kb，应该不会爆栈
-
-// TODO: Extra space in memory
 
 %}
 
@@ -120,12 +118,9 @@ primary : LPAREN exp RPAREN {/*printf("primary : LPAREN exp RPAREN\n");*/ exp_to
         ;
 %%
 
-
-// Assist functions
-
+// Clean all the TRs.
 void clean_tr(){
   int i;
-  // printf("CLEANING TR ----------------\n");
   for(i = 0; i < TR_STORAGE; i++){
     tr_regs_status[i] = 0;
   }
@@ -207,11 +202,13 @@ int find_sa(int type, int index){
 }
 
 // Member functions
-// assign: print out the assign info.
+// assign: print out the assign info, but not modify it.
 void assign(struct exp_struct *e_str, char* dst){
-  char s_name[15];
-  char c1[15];
-  char c2[15];
+  char s_name[32];
+  char c1[32];
+  char c2[32];
+  char destination[32];
+  strcpy(destination, dst);
 
   if(e_str->reg_capacity == 2){
     if(e_str->sign){
@@ -245,15 +242,13 @@ void assign(struct exp_struct *e_str, char* dst){
   }
 
   // Print out the info.
-  
   // Memory expansion: check if c1 and c2 are in the memory.
   int c1_index, c2_index, c1_type, c2_type, dst_type, dst_index;
   check_index(c1, &(c1_type), &(c1_index));
   check_index(c2, &(c2_type), &(c2_index));
-  check_index(dst, &(dst_type), &(dst_index));
+  check_index(destination, &(dst_type), &(dst_index));
 
   int sa;
-  // printf("c1_type = %d, c1_index = %d, c2_type = %d, c2_index = %d, dst_type = %d, dst_index = %d\n", c1_type, c1_index, c2_type, c2_index, dst_type, dst_index);
   if(c1_index >= 8){
     strcpy(c1, "$t8");
     printf("lw $t8 %d($sp)\n", find_sa(c1_type, c1_index));
@@ -263,10 +258,10 @@ void assign(struct exp_struct *e_str, char* dst){
     printf("lw $t9 %d($sp)\n", find_sa(c2_type, c2_index));
   }
   if(dst_index >= 8){
-    strcpy(dst, "$t8");
+    strcpy(destination, "$t8");
   }
 
-  printf("%s %s, %s, %s\n", s_name, dst, c1, c2);
+  printf("%s %s, %s, %s\n", s_name, destination, c1, c2);
 
   if(dst_index >= 8){
     printf("sw $t8 %d($sp)\n", find_sa(dst_type, dst_index));
@@ -285,15 +280,6 @@ void assign_and_search(struct exp_struct *e_str, char* id_sr){
   // Clean the TR as statement ends
   clean_tr();
 }
-
-/* void exp_copy(struct exp_struct *e1, struct exp_struct *e2){
-  e1->first_int_value = e2->first_int_value;
-  strcpy(e1->first_reg_name, e2->first_reg_name);
-  strcpy(e1->sec_reg_name, e2->sec_reg_name);
-  e1->int_capacity = e2->int_capacity;
-  e1->reg_capacity = e2->reg_capacity;
-  e1->sign = e2->sign;
-} */
 
 void add_to_id_list(char* name){
   int i = find_id(name);
