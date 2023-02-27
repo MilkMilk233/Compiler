@@ -40,7 +40,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 35 "micro.y" /* yacc.c:1909  */
+#line 33 "micro.y" /* yacc.c:1909  */
 
 
   struct exp_struct{
@@ -102,7 +102,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 68 "micro.y" /* yacc.c:1909  */
+#line 66 "micro.y" /* yacc.c:1909  */
 
   char id[32];
   int value;

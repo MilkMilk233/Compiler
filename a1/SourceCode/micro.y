@@ -135,7 +135,6 @@ void clean_tr(){
 
 // Retrieve type and the index of register from string. -> Type: 0 for SR, 1 for TR.
 void check_index(char* printed_reg_name, int* type, int* index){
-  char r_type = printed_reg_name[1];
   int i, p;
   p = 0;
   char index_str[32];

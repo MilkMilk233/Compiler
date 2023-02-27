@@ -1,0 +1,104 @@
+addi $t0, $zero, -2
+addi $s0, $t0, 3
+sub $t0, $s0, $s0
+addi $s1, $t0, -3
+sub $t0, $zero, $s1
+addi $t1, $zero, -1
+add $t1, $s1, $t1
+sub $t0, $t0, $s0
+add $s2, $t0, $t1
+sub $t0, $zero, $s0
+sub $t1, $zero, $s1
+add $t1, $t1, $zero
+add $t0, $t0, $t1
+sub $t0, $zero, $t0
+addi $s3, $t0, 3
+sub $t0, $s0, $s1
+sub $t0, $t0, $s2
+add $s4, $t0, $zero
+sub $t0, $zero, $s3
+addi $t0, $t0, 1
+add $t1, $s0, $s1
+add $t1, $t1, $t0
+add $s5, $t1, $zero
+sub $t0, $s1, $s2
+add $s6, $s0, $t0
+addi $t0, $zero, 5
+sub $t0, $s1, $t0
+addi $s7, $t0, -5
+add $t0, $s0, $s1
+sub $t0, $t0, $s2
+add $t0, $t0, $s3
+add $t0, $t0, $s4
+add $t8, $t0, $s5
+sw $t8 0($sp)
+addi $v0, $zero, 1
+add $a0, $s0, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s1, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s2, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s3, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s4, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s5, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s6, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s7, $zero
+syscall
+addi $v0, $zero, 1
+lw $t8 0($sp)
+add $a0, $t8, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s0, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s1, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s2, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s3, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s4, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s5, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s6, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s7, $zero
+syscall
+addi $v0, $zero, 1
+lw $t8 0($sp)
+add $a0, $t8, $zero
+syscall
+addi $v0, $zero, 1
+add $a0, $s0, $s1
+syscall
+addi $v0, $zero, 1
+add $a0, $s1, $s2
+syscall
+sub $t0, $s3, $s2
+addi $v0, $zero, 1
+add $a0, $s2, $t0
+syscall
+addi $v0, $zero, 1
+lw $t9 0($sp)
+sub $a0, $s7, $t9
+syscall

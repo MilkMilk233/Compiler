@@ -1,0 +1,48 @@
+addi $v0, $zero, 5
+syscall
+add $s0, $v0, $zero
+addi $v0, $zero, 5
+syscall
+add $s1, $v0, $zero
+addi $v0, $zero, 5
+syscall
+add $s2, $v0, $zero
+addi $v0, $zero, 5
+syscall
+add $s3, $v0, $zero
+addi $v0, $zero, 5
+syscall
+add $s4, $v0, $zero
+addi $v0, $zero, 5
+syscall
+add $s5, $v0, $zero
+addi $v0, $zero, 5
+syscall
+add $s6, $v0, $zero
+addi $v0, $zero, 5
+syscall
+add $s7, $v0, $zero
+addi $v0, $zero, 5
+syscall
+add $t8, $v0, $zero
+sw $t8, 0($sp)
+addi $v0, $zero, 5
+syscall
+add $t8, $v0, $zero
+sw $t8, -4($sp)
+add $t0, $s0, $s1
+add $t0, $t0, $s2
+add $t0, $t0, $s3
+add $t0, $t0, $s4
+add $t0, $t0, $s5
+add $t0, $t0, $s6
+add $t0, $t0, $s7
+lw $t9 0($sp)
+add $t0, $t0, $t9
+lw $t9 -4($sp)
+add $t8, $t0, $t9
+sw $t8 -8($sp)
+addi $v0, $zero, 1
+lw $t8 -8($sp)
+add $a0, $t8, $zero
+syscall
