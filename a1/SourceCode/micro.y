@@ -286,7 +286,7 @@ void add_to_id_list(char* name){
   printf("addi $v0, $zero, 5\n");
   printf("syscall\n");
   if(i >= 8){
-    printf("%s %s%d, %s, %s\n", "add", "$t8", "$v0", "$zero");
+    printf("%s %s, %s, %s\n", "add", "$t8", "$v0", "$zero");
     printf("sw $t8, %d($sp)\n", find_sa(0, i));
   }
   else{
