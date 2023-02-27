@@ -1,0 +1,300 @@
+addi $s0, $zero, 1
+addi $s1, $zero, 2
+addi $s2, $zero, 3
+addi $s3, $zero, 4
+addi $s4, $zero, 5
+addi $s5, $zero, 6
+addi $s6, $zero, 7
+add $t0, $s1, $s0
+add $t1, $s0, $s1
+add $t2, $s0, $s1
+add $t3, $s0, $s2
+add $t4, $s1, $s2
+add $t5, $s3, $s4
+add $t6, $s3, $s3
+add $t7, $s3, $s3
+add $t8, $s3, $s3
+sw $t8 0($sp)
+add $t8, $s3, $s3
+sw $t8 -4($sp)
+add $t8, $s3, $s3
+sw $t8 -8($sp)
+add $t8, $s3, $s3
+sw $t8 -12($sp)
+lw $t8 -12($sp)
+add $t8, $t8, $s1
+sw $t8 -12($sp)
+lw $t8 -8($sp)
+add $t8, $t8, $s1
+sw $t8 -8($sp)
+lw $t8 -8($sp)
+lw $t9 -12($sp)
+add $t8, $t8, $t9
+sw $t8 -8($sp)
+lw $t8 -4($sp)
+add $t8, $t8, $s1
+sw $t8 -4($sp)
+lw $t8 -4($sp)
+lw $t9 -8($sp)
+add $t8, $t8, $t9
+sw $t8 -4($sp)
+lw $t8 0($sp)
+add $t8, $t8, $s1
+sw $t8 0($sp)
+lw $t8 0($sp)
+lw $t9 -4($sp)
+add $t8, $t8, $t9
+sw $t8 0($sp)
+add $t7, $t7, $s1
+lw $t9 0($sp)
+add $t7, $t7, $t9
+add $t6, $t6, $s1
+add $t6, $t6, $t7
+add $t5, $t5, $s5
+add $t5, $t5, $t6
+add $t4, $t4, $s4
+add $t4, $t4, $t5
+add $t3, $t3, $s3
+add $t3, $t3, $t4
+add $t2, $t2, $s2
+add $t2, $t2, $t3
+add $t1, $t1, $s0
+add $t1, $t1, $t2
+add $t0, $t0, $s1
+add $s7, $t0, $t1
+add $t0, $s1, $s0
+add $t1, $s0, $s1
+add $t2, $s0, $s1
+add $t3, $s0, $s2
+add $t4, $s1, $s2
+add $t5, $s3, $s4
+add $t6, $s3, $s3
+add $t7, $s3, $s3
+add $t8, $s3, $s3
+sw $t8 0($sp)
+add $t8, $s3, $s3
+sw $t8 -4($sp)
+add $t8, $s3, $s3
+sw $t8 -8($sp)
+add $t8, $s3, $s3
+sw $t8 -12($sp)
+lw $t8 -12($sp)
+add $t8, $t8, $s1
+sw $t8 -12($sp)
+lw $t8 -8($sp)
+add $t8, $t8, $s1
+sw $t8 -8($sp)
+lw $t8 -8($sp)
+lw $t9 -12($sp)
+add $t8, $t8, $t9
+sw $t8 -8($sp)
+lw $t8 -4($sp)
+add $t8, $t8, $s1
+sw $t8 -4($sp)
+lw $t8 -4($sp)
+lw $t9 -8($sp)
+add $t8, $t8, $t9
+sw $t8 -4($sp)
+lw $t8 0($sp)
+add $t8, $t8, $s1
+sw $t8 0($sp)
+lw $t8 0($sp)
+lw $t9 -4($sp)
+add $t8, $t8, $t9
+sw $t8 0($sp)
+add $t7, $t7, $s1
+lw $t9 0($sp)
+add $t7, $t7, $t9
+add $t6, $t6, $s1
+add $t6, $t6, $t7
+add $t5, $t5, $s5
+add $t5, $t5, $t6
+add $t4, $t4, $s4
+add $t4, $t4, $t5
+add $t3, $t3, $s3
+add $t3, $t3, $t4
+add $t2, $t2, $s2
+add $t2, $t2, $t3
+add $t1, $t1, $s0
+add $t1, $t1, $t2
+add $t0, $t0, $s1
+add $t8, $t0, $t1
+sw $t8 0($sp)
+add $t0, $s1, $s0
+add $t1, $s0, $s1
+add $t2, $s0, $s1
+add $t3, $s0, $s2
+add $t4, $s1, $s2
+add $t5, $s3, $s4
+add $t6, $s3, $s3
+add $t7, $s3, $s3
+add $t8, $s3, $s3
+sw $t8 -4($sp)
+add $t8, $s3, $s3
+sw $t8 -8($sp)
+add $t8, $s3, $s3
+sw $t8 -12($sp)
+add $t8, $s3, $s3
+sw $t8 -16($sp)
+lw $t8 -16($sp)
+add $t8, $t8, $s1
+sw $t8 -16($sp)
+lw $t8 -12($sp)
+add $t8, $t8, $s1
+sw $t8 -12($sp)
+lw $t8 -12($sp)
+lw $t9 -16($sp)
+add $t8, $t8, $t9
+sw $t8 -12($sp)
+lw $t8 -8($sp)
+add $t8, $t8, $s1
+sw $t8 -8($sp)
+lw $t8 -8($sp)
+lw $t9 -12($sp)
+add $t8, $t8, $t9
+sw $t8 -8($sp)
+lw $t8 -4($sp)
+add $t8, $t8, $s1
+sw $t8 -4($sp)
+lw $t8 -4($sp)
+lw $t9 -8($sp)
+add $t8, $t8, $t9
+sw $t8 -4($sp)
+add $t7, $t7, $s1
+lw $t9 -4($sp)
+add $t7, $t7, $t9
+add $t6, $t6, $s1
+add $t6, $t6, $t7
+add $t5, $t5, $s5
+add $t5, $t5, $t6
+add $t4, $t4, $s4
+add $t4, $t4, $t5
+add $t3, $t3, $s3
+add $t3, $t3, $t4
+add $t2, $t2, $s2
+add $t2, $t2, $t3
+add $t1, $t1, $s0
+add $t1, $t1, $t2
+add $t0, $t0, $s1
+add $t8, $t0, $t1
+sw $t8 -4($sp)
+add $t0, $s1, $s0
+add $t1, $s0, $s1
+add $t2, $s0, $s1
+add $t3, $s0, $s2
+add $t4, $s1, $s2
+add $t5, $s3, $s4
+add $t6, $s3, $s3
+add $t7, $s3, $s3
+add $t8, $s3, $s3
+sw $t8 -8($sp)
+add $t8, $s3, $s3
+sw $t8 -12($sp)
+add $t8, $s3, $s3
+sw $t8 -16($sp)
+add $t8, $s3, $s3
+sw $t8 -20($sp)
+lw $t8 -20($sp)
+add $t8, $t8, $s1
+sw $t8 -20($sp)
+lw $t8 -16($sp)
+add $t8, $t8, $s1
+sw $t8 -16($sp)
+lw $t8 -16($sp)
+lw $t9 -20($sp)
+add $t8, $t8, $t9
+sw $t8 -16($sp)
+lw $t8 -12($sp)
+add $t8, $t8, $s1
+sw $t8 -12($sp)
+lw $t8 -12($sp)
+lw $t9 -16($sp)
+add $t8, $t8, $t9
+sw $t8 -12($sp)
+lw $t8 -8($sp)
+add $t8, $t8, $s1
+sw $t8 -8($sp)
+lw $t8 -8($sp)
+lw $t9 -12($sp)
+add $t8, $t8, $t9
+sw $t8 -8($sp)
+add $t7, $t7, $s1
+lw $t9 -8($sp)
+add $t7, $t7, $t9
+add $t6, $t6, $s1
+add $t6, $t6, $t7
+add $t5, $t5, $s5
+add $t5, $t5, $t6
+add $t4, $t4, $s4
+add $t4, $t4, $t5
+add $t3, $t3, $s3
+add $t3, $t3, $t4
+add $t2, $t2, $s2
+add $t2, $t2, $t3
+add $t1, $t1, $s0
+add $t1, $t1, $t2
+add $t0, $t0, $s1
+add $t8, $t0, $t1
+sw $t8 -8($sp)
+add $t0, $s1, $s0
+add $t1, $s0, $s1
+add $t2, $s0, $s1
+add $t3, $s0, $s2
+add $t4, $s1, $s2
+add $t5, $s3, $s4
+add $t6, $s3, $s3
+add $t7, $s3, $s3
+add $t8, $s3, $s3
+sw $t8 -12($sp)
+add $t8, $s3, $s3
+sw $t8 -16($sp)
+add $t8, $s3, $s3
+sw $t8 -20($sp)
+add $t8, $s3, $s3
+sw $t8 -24($sp)
+lw $t8 -24($sp)
+add $t8, $t8, $s1
+sw $t8 -24($sp)
+lw $t8 -20($sp)
+add $t8, $t8, $s1
+sw $t8 -20($sp)
+lw $t8 -20($sp)
+lw $t9 -24($sp)
+add $t8, $t8, $t9
+sw $t8 -20($sp)
+lw $t8 -16($sp)
+add $t8, $t8, $s1
+sw $t8 -16($sp)
+lw $t8 -16($sp)
+lw $t9 -20($sp)
+add $t8, $t8, $t9
+sw $t8 -16($sp)
+lw $t8 -12($sp)
+add $t8, $t8, $s1
+sw $t8 -12($sp)
+lw $t8 -12($sp)
+lw $t9 -16($sp)
+add $t8, $t8, $t9
+sw $t8 -12($sp)
+add $t7, $t7, $s1
+lw $t9 -12($sp)
+add $t7, $t7, $t9
+add $t6, $t6, $s1
+add $t6, $t6, $t7
+add $t5, $t5, $s5
+add $t5, $t5, $t6
+add $t4, $t4, $s4
+add $t4, $t4, $t5
+add $t3, $t3, $s3
+add $t3, $t3, $t4
+add $t2, $t2, $s2
+add $t2, $t2, $t3
+add $t1, $t1, $s0
+add $t1, $t1, $t2
+add $t0, $t0, $s1
+add $t8, $t0, $t1
+sw $t8 -12($sp)
+addi $v0, $zero, 1
+lw $t8 -12($sp)
+add $a0, $t8, $zero
+syscall
