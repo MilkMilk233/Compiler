@@ -4,9 +4,9 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define TR_STORAGE 300
-#define SR_STORAGE 300
-#define MEM_STORAGE 600
+#define TR_STORAGE 10000
+#define SR_STORAGE 10000
+#define MEM_STORAGE 20000
 
 void yyerror(const char *);
 int yylex();
