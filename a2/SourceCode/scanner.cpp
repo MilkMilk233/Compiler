@@ -2,12 +2,15 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <fstream>
 using namespace std;
+#define file_path "../Test_cases/"
 
 class Scanner{
     private:
         vector<unordered_map<char, int>> dfa_states_vector;
         unordered_map<int, string> final_state_map;
+        ifstream c_file;
     public:
         void init_digits(unordered_map<char, int> &umap, int target){
             for(int i = 0; i < 10; i++){
@@ -27,7 +30,17 @@ class Scanner{
         }
 
         // Initialization
-        Scanner(){
+        Scanner(string file_name){
+            
+            // Open the file
+            c_file.open(file_path+file_name);
+            if(!c_file.is_open()){
+                // throw "Invalid filename!";
+                cout<<"Invalid filename!" <<endl;
+                cout<<"Please make sure the test file is under the "<<file_path<<"."<<endl;
+                throw;
+            }
+
             // Define the state transfer condition
             dfa_states_vector.resize(100);
             init_letters(dfa_states_vector[1], 30);
@@ -204,12 +217,33 @@ class Scanner{
         }
 
         void scan(){
-            cout << "hello world!" << endl;
+            try{
+                char next_char;
+                while(c_file.get(next_char)){
+                    cout<<next_char;
+                }
+            }
+            catch(const char* msg){
+                cout<<"Unable to parse the file at line"<<msg<<endl;
+            }
+            
+        }
+
+        ~Scanner(){
+            if(c_file.is_open()){
+                c_file.close();
+            }
         }
 };
 
 int main(int argc,char *argv[]){
-    Scanner goal;
+    if(argc < 2){
+        cout<<"It seems that you forget to indicate the input file."<<endl;
+        cout<<"Format (example): ./run_scanner.sh test0.c"<<endl;
+        return 0;
+    }
+
+    Scanner goal(argv[1]);
     goal.scan();
     
     return 0;
