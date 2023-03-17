@@ -4,7 +4,7 @@
 #include <vector>
 #include <fstream>
 using namespace std;
-#define file_path "../Test_cases/"
+#define file_path "./Test_cases/"
 
 class Scanner{
     private:
