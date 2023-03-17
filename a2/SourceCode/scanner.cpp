@@ -256,15 +256,21 @@ class Scanner{
             try{
                 char next_char;
                 current_state = 1;
+                // Keep fetching the file character, until it reached the end of the file
                 while(c_file.get(next_char)){
+                    // The token is not read completely
                     if(dfa_states_vector[current_state].find(next_char) != dfa_states_vector[current_state].end()){
                         current_state = dfa_states_vector[current_state][next_char];
                     }
+                    // The token is read completely
                     else{
+                        // Find the final state table
                         if(final_state_map.find(current_state) != final_state_map.end()){
+                            // Print out the final state info
                             if(current_state != 29){
                                 cout<<"Token: "<<final_state_map[current_state]<<endl;
                             }
+                            // Go for the next state
                             if(dfa_states_vector[1].find(next_char) != dfa_states_vector[1].end()){
                                 current_state = dfa_states_vector[1][next_char];
                             }
@@ -279,6 +285,7 @@ class Scanner{
                         }
                     }
                 }
+                // After reading the final character of the file, check its status.
                 if(final_state_map.find(current_state) != final_state_map.end()){
                     if(current_state != 29){
                         cout<<"Token: "<<final_state_map[current_state]<<endl;
@@ -302,12 +309,14 @@ class Scanner{
 };
 
 int main(int argc,char *argv[]){
+    // Check the user has already fill in the file name
     if(argc < 2){
         cout<<"It seems that you forget to indicate the input file."<<endl;
         cout<<"Format (example): ./run_scanner.sh test0.c"<<endl;
         return 0;
     }
 
+    // Create an object
     Scanner goal(argv[1]);
     goal.scan();
     
