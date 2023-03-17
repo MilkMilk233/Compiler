@@ -11,6 +11,7 @@ class Scanner{
         vector<unordered_map<char, int>> dfa_states_vector;
         unordered_map<int, string> final_state_map;
         ifstream c_file;
+        int current_state;
     public:
         void init_digits(unordered_map<char, int> &umap, int target){
             for(int i = 0; i < 10; i++){
@@ -74,6 +75,7 @@ class Scanner{
             init_digits(dfa_states_vector[1], 28);
             init_digits(dfa_states_vector[28], 28);
             dfa_states_vector[1]['\n'] = 29;
+            dfa_states_vector[1][' '] = 29;
             dfa_states_vector[1]['\0'] = 29;
             dfa_states_vector[1]['\t'] = 29;
             dfa_states_vector[1]['\r'] = 29;
@@ -201,32 +203,95 @@ class Scanner{
             final_state_map[26] = "GTEQ";
             final_state_map[27] = "COMMA";
             final_state_map[28] = "INT_NUM";
-            final_state_map[29] = "BLANK";
+            final_state_map[29] = "BLANK";   // Blank
             final_state_map[30] = "ID";
+            final_state_map[31] = "ID";
+            final_state_map[32] = "ID";
             final_state_map[33] = "INT";
             final_state_map[34] = "IF";
+            final_state_map[35] = "ID";
+            final_state_map[36] = "ID";
+            final_state_map[37] = "ID";
             final_state_map[38] = "MAIN";
+            final_state_map[39] = "ID";
+            final_state_map[40] = "ID";
+            final_state_map[41] = "ID";
             final_state_map[42] = "VOID";
+            final_state_map[43] = "ID";
+            final_state_map[44] = "ID";
+            final_state_map[45] = "ID";
             final_state_map[46] = "ELSE";
+            final_state_map[47] = "ID";
             final_state_map[48] = "DO";
+            final_state_map[49] = "ID";
+            final_state_map[50] = "ID";
+            final_state_map[51] = "ID";
+            final_state_map[52] = "ID";
             final_state_map[53] = "BREAK";
+            final_state_map[54] = "ID";
+            final_state_map[55] = "ID";
+            final_state_map[56] = "ID";
+            final_state_map[57] = "ID";
             final_state_map[58] = "WHILE";
-            final_state_map[63] = "SCANF";
-            final_state_map[69] = "PRINTF";
+            final_state_map[59] = "ID";
+            final_state_map[60] = "ID";
+            final_state_map[61] = "ID";
+            final_state_map[62] = "ID";
+            final_state_map[63] = "READ";
+            final_state_map[64] = "ID";
+            final_state_map[65] = "ID";
+            final_state_map[66] = "ID";
+            final_state_map[67] = "ID";
+            final_state_map[68] = "ID";
+            final_state_map[69] = "WRITE";
+            final_state_map[70] = "ID";
+            final_state_map[71] = "ID";
+            final_state_map[72] = "ID";
+            final_state_map[73] = "ID";
+            final_state_map[74] = "ID";
             final_state_map[75] = "RETURN";
         }
 
         void scan(){
             try{
                 char next_char;
+                current_state = 1;
                 while(c_file.get(next_char)){
-                    cout<<next_char;
+                    if(dfa_states_vector[current_state].find(next_char) != dfa_states_vector[current_state].end()){
+                        current_state = dfa_states_vector[current_state][next_char];
+                    }
+                    else{
+                        if(final_state_map.find(current_state) != final_state_map.end()){
+                            if(current_state != 29){
+                                cout<<"Token: "<<final_state_map[current_state]<<endl;
+                            }
+                            if(dfa_states_vector[1].find(next_char) != dfa_states_vector[1].end()){
+                                current_state = dfa_states_vector[1][next_char];
+                            }
+                            else{
+                                cout<<"current_state = "<<current_state<<endl;
+                                throw next_char;
+                            }
+                        }
+                        else{
+                            cout<<"current_state = "<<current_state<<endl;
+                            throw next_char;
+                        }
+                    }
+                }
+                if(final_state_map.find(current_state) != final_state_map.end()){
+                    if(current_state != 29){
+                        cout<<"Token: "<<final_state_map[current_state]<<endl;
+                    }
+                }
+                else{
+                    cout<<"current_state = "<<current_state<<endl;
+                    throw EOF;
                 }
             }
-            catch(const char* msg){
-                cout<<"Unable to parse the file at line"<<msg<<endl;
+            catch(const char msg){
+                cout<<"Unable to parse the file, last character = "<<msg<<endl;
             }
-            
         }
 
         ~Scanner(){
