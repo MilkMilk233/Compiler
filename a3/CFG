@@ -1,0 +1,19 @@
+program -> var_declarations statements | statements
+var_declarations -> var_declarations var_declaration | var_declaration
+var_declaration -> INT declaration_list SEMI
+declaration_list -> declaration_list COMMA declaration | declaration
+declaration -> IDENTIFIER ASSIGN NUMBER | IDENTIFIER LSQUARE NUMBER RSQUARE | IDENTIFIER
+code_block -> statement | LBRACE statements RBRACE
+statements -> statements statement | statement
+statement -> assign_statement SEMI | control_statement | read_write_statement SEMI | SEMI
+control_statement -> if_statement | while_statement | do_while_statement SEMI | return_statement SEMI
+read_write_statement -> read_statement | write_statement
+assign_statement -> IDENTIFIER LSQUARE exp RSQUARE ASSIGN exp | IDENTIFIER ASSIGN exp
+if_statement -> if_stmt | if_statement ELSE code_block
+if_stmt -> IF LPAR exp RPAR code_block
+while_statement -> WHILE LPAR exp RPAR code_block
+do_while_statement -> DO code_block WHILE LPAR exp RPAR
+return_statement -> RETURN
+read_statement -> READ LPAR IDENTIFIER RPAR
+write_statement -> WRITE LPAR exp RPAR
+exp -> INT_NUM | IDENTIFIER | IDENTIFIER LSQUARE exp RSQUARE | NOT_OP exp | exp AND_OP exp | exp OR_OP exp | exp PLUS exp | exp MINUS exp | exp MUL_OP exp | exp DIV_OP exp | exp LT exp | exp GT exp | exp EQ exp | exp NOTEQ exp | exp LTEQ exp | exp GTEQ exp | exp SHL_OP exp | exp SHR_OP exp | exp ANDAND exp | exp OROR exp | LPAR exp RPAR | MINUS exp

@@ -1,1 +1,1 @@
-./scanner test$1.c > ./Test_cases/$1.txt
+./scanner $1
