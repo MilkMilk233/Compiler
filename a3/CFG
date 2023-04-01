@@ -9,7 +9,7 @@ statement -> assign_statement SEMI | control_statement | read_write_statement SE
 control_statement -> if_statement | while_statement | do_while_statement SEMI | return_statement SEMI
 read_write_statement -> read_statement | write_statement
 assign_statement -> IDENTIFIER LSQUARE exp RSQUARE ASSIGN exp | IDENTIFIER ASSIGN exp
-if_statement -> if_stmt | if_statement ELSE code_block
+if_statement -> if_stmt | if_stmt ELSE code_block
 if_stmt -> IF LPAR exp RPAR code_block
 while_statement -> WHILE LPAR exp RPAR code_block
 do_while_statement -> DO code_block WHILE LPAR exp RPAR
