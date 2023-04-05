@@ -1,7 +1,7 @@
 all : scanner
 
-scanner : scanner.cpp
-	g++ scanner.cpp -std=c++11 -o scanner
+scanner : scanner.cpp parser.cpp
+	g++ scanner.cpp parser.cpp -std=c++11 -o scanner
 
 clean : 
 	rm scanner
