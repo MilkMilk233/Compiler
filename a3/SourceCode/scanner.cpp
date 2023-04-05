@@ -13,6 +13,7 @@ class Scanner{
         ifstream c_file;
         int current_state;
         vector<string> tokens;
+        int print_index;
     public:
         void init_digits(unordered_map<char, int> &umap, int target){
             for(int i = 0; i < 10; i++){
@@ -32,7 +33,7 @@ class Scanner{
         }
 
         // Initialization
-        Scanner(string file_name){
+        Scanner(string file_name) : print_index(0) {
             
             // Open the file
             c_file.open(file_path+file_name);
@@ -255,10 +256,11 @@ class Scanner{
             scan();
         }
 
-        void print_token(){
-            for(string s : tokens){
-                cout<<"Token = " << s << endl;
+        string get_token(){
+            if(print_index < tokens.size()){
+                return tokens[print_index++];
             }
+            else return "EOF";
         }
 
         void scan(){
@@ -304,7 +306,6 @@ class Scanner{
                     cout<<"current_state = "<<current_state<<endl;
                     throw EOF;
                 }
-                tokens.push_back("EOF");
             }
             catch(const char msg){
                 cout<<"Unable to parse the file, last character = "<<msg<<endl;
@@ -328,7 +329,11 @@ int main(int argc,char *argv[]){
 
     // Create an object
     Scanner goal(argv[1]);
-    goal.print_token();
+    string www;
+    while((www = goal.get_token()) != "EOF"){
+        cout << www << " ";
+    }
+    cout << goal.get_token() << " ";
     
     return 0;
 }
