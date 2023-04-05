@@ -9,14 +9,15 @@ int main(int argc,char *argv[]){
         return 0;
     }
 
-    // Create an object
+    // Use scanner to scan the input file
     Scanner goal(argv[1]);
-    string www;
-    while((www = goal.get_token()) != "EOF"){
-        cout << www << " ";
-    }
-    cout << goal.get_token() << " ";
-    cout << goal.get_token() << " ";
-    cout << goal.get_token() << " ";
+    vector<unordered_map<string, int>> shift_map;
+    vector<unordered_map<string, pair<int, string>> reduce_map;
+    // Initialize the shift map
+    // init_shift_map(shift_map);
+
+    
+
+
     return 0;
 }

@@ -2,7 +2,7 @@ program -> var_declarations statements | statements.
 var_declarations -> var_declarations var_declaration | var_declaration.
 var_declaration -> INT declaration_list SEMI.
 declaration_list -> declaration_list COMMA declaration | declaration.
-declaration -> IDENTIFIER ASSIGN NUMBER | IDENTIFIER LSQUARE NUMBER RSQUARE | IDENTIFIER.
+declaration -> IDENTIFIER ASSIGN exp.
 code_block -> statement | LBRACE statements RBRACE.
 statements -> statements statement | statement.
 statement -> assign_statement SEMI | control_statement | read_write_statement SEMI | SEMI.
@@ -17,39 +17,39 @@ return_statement -> RETURN.
 read_statement -> READ LPAR IDENTIFIER RPAR.
 write_statement -> WRITE LPAR exp RPAR.
 
-exp -> exp oror exp1.
+exp -> exp OROR exp1.
 exp -> exp1.
-exp1 -> exp1 andand exp2.
+exp1 -> exp1 ANDAND exp2.
 exp1 -> exp2.
-exp2 -> exp2 or_op exp3.
+exp2 -> exp2 OR_OP exp3.
 exp2 -> exp3.
-exp3 -> exp3 and_op exp4.
+exp3 -> exp3 AND_OP exp4.
 exp3 -> exp4.
-exp4 -> exp4 eq exp5.
-exp4 -> exp4 noteq exp5.
+exp4 -> exp4 EQ exp5.
+exp4 -> exp4 NOTEQ exp5.
 exp4 -> exp5.
-exp5 -> exp5 lt exp6.
-exp5 -> exp5 gt exp6.
-exp5 -> exp5 lteq exp6.
-exp5 -> exp5 gteq exp6.
+exp5 -> exp5 LT exp6.
+exp5 -> exp5 GT exp6.
+exp5 -> exp5 LTEQ exp6.
+exp5 -> exp5 GTEQ exp6.
 exp5 -> exp6.
-exp6 -> exp6 shl_op exp7.
-exp6 -> exp6 shr_op exp7.
+exp6 -> exp6 SHL_OP exp7.
+exp6 -> exp6 SHR_OP exp7.
 exp6 -> exp7.
-exp7 -> exp7 plus exp8.
-exp7 -> exp7 minus exp8.
+exp7 -> exp7 PLUS exp8.
+exp7 -> exp7 MINUS exp8.
 exp7 -> exp8.
-exp8 -> exp8 mul_op exp9.
-exp8 -> exp8 div_op exp9.
+exp8 -> exp8 MUL_OP exp9.
+exp8 -> exp8 DIV_OP exp9.
 exp8 -> exp9.
-exp9 -> minus exp9.
-exp9 -> plus exp9.
-exp9 -> not_op exp9.
+exp9 -> MINUS exp9.
+exp9 -> PLUS exp9.
+exp9 -> NOT_OP exp9.
 exp9 -> exp10.
-exp10 -> int_num.
-exp10 -> identifier.
-exp10 -> identifier lsquare exp rsquare.
-exp10 -> lpar exp rpar.
+exp10 -> INT_NUM.
+exp10 -> IDENTIFIER.
+exp10 -> IDENTIFIER LSQUARE exp RSQUARE.
+exp10 -> LPAR exp RPAR.
 
 
 // 缺少if statement
