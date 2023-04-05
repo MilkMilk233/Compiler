@@ -1,0 +1,99 @@
+
+
+E1 ::= E1 oror E2
+E1 ::= E2
+E2 ::= E2 andand E3
+E2 ::= E3
+E3 ::= E3 or_op E4
+E3 ::= E4
+E4 ::= E4 and_op E5
+E4 ::= E5
+E5 ::= E5 eq E6
+E5 ::= E5 noteq E6
+E5 ::= E6
+E6 ::= E6 lt E7
+E6 ::= E6 gt E7
+E6 ::= E6 lteq E7
+E6 ::= E6 gteq E7
+E6 ::= E7
+E7 ::= E7 shl_op E8
+E7 ::= E7 shr_op E8
+E7 ::= E8
+E8 ::= E8 plus E9
+E8 ::= E8 minus E9
+E8 ::= E9
+E9 ::= E9 mul_op E10
+E9 ::= E9 div_op E10
+E9 ::= E10
+E10 ::= minus E10
+E10 ::= not_op E10
+E10 ::= E11
+E11 ::= int_num
+E11 ::= identifier
+E11 ::= identifier lsquare E1 rsquare
+E11 ::= lpar E1 rpar
+
+
+// LL1 version
+  E1 ::= E2 E1'
+ E1' ::= oror E2 E1'
+ E1' ::= ''
+  E2 ::= E3 E2'
+ E2' ::= andand E3 E2'
+ E2' ::= ''
+  E3 ::= E4 E3'
+ E3' ::= or_op E4 E3'
+ E3' ::= ''
+  E4 ::= E5 E4'
+ E4' ::= and_op E5 E4'
+ E4' ::= ''
+  E5 ::= E6 E5alt
+ E5' ::= noteq E6
+ E5' ::= eq E6
+E5alt ::= E5' E5alt
+E5alt ::= ''
+  E6 ::= E7 E6alt
+ E6' ::= lt E7
+ E6' ::= gt E7
+ E6' ::= lteq E7
+ E6' ::= gteq E7
+E6alt ::= E6' E6alt
+E6alt ::= ''
+  E7 ::= E8 E7alt
+ E7' ::= shl_op E8
+ E7' ::= shr_op E8
+E7alt ::= E7' E7alt
+E7alt ::= ''
+  E8 ::= E9 E8alt
+ E8' ::= plus E9
+ E8' ::= minus E9
+E8alt ::= E8' E8alt
+E8alt ::= ''
+  E9 ::= E10 E9alt
+ E9' ::= mul_op E10
+ E9' ::= div_op E10
+E9alt ::= E9' E9alt
+E9alt ::= ''
+ E10 ::= minus E10
+ E10 ::= not_op E10
+ E10 ::= E11
+ E11 ::= identifier E11'
+ E11 ::= int_num
+ E11 ::= lpar E1 rpar
+E11' ::= ''
+E11' ::= lsquare E1 rsquare
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

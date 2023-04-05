@@ -1,0 +1,147 @@
+// Modification 1
+Code_block -> Open_Code_block.
+Code_block -> Closed_Code_block.
+Closed_Code_block -> others.
+Closed_Code_block -> if lpar exp rpar Closed_Code_block else Closed_Code_block.
+Open_Code_block -> if lpar exp rpar Closed_Code_block else Open_Code_block.
+Open_Code_block -> if lpar exp rpar Code_block.
+
+// Code
+
+Program -> Var_Declarations Statements.
+Program -> Statements.
+Var_Declarations -> Var_Declaration Var_Declarations'.
+Var_Declarations' -> Var_Declaration Var_Declarations'.
+Var_Declarations' -> .
+Var_Declaration -> int Declaration_list semi.
+Declaration_list -> Declaration Declaration_list'.
+Declaration_list' -> comma Declaration Declaration_list'.
+Declaration_list' -> .
+Declaration -> identifier Declaration'.
+Declaration' -> assign number.
+Declaration' -> lsquare number rsquare.
+Declaration' -> .
+
+Statement -> Open_Statement.
+Statement -> Closed_Statement.
+Closed_Statement -> lbrace Statements rbrace.
+Closed_Statement -> if lpar exp rpar Closed_Statement else Closed_Statement .
+Closed_Statement -> while lpar exp rpar Closed_Statement.
+Open_Statement -> if lpar exp rpar Closed_Statement else Open_Statement.
+Open_Statement -> if lpar exp rpar Open_Statement.
+Open_Statement -> while lpar exp rpar Open_Statement.
+Statements -> Statement Statements'.
+Statements' -> Statement Statements'.
+Statements' -> .
+
+Closed_Statement -> Assign_Statement semi.
+Closed_Statement -> Control_Statement.
+Closed_Statement -> Read_Write_Statement semi.
+Closed_Statement -> semi.
+Control_Statement -> Do_While_Statement semi.
+Control_Statement -> Return_Statement semi.
+Read_Write_Statement -> Read_Statement.
+Read_Write_Statement -> Write_Statement.
+Assign_Statement -> identifier Assign_Statement'.
+Assign_Statement' -> lsquare exp rsquare assign exp.
+Assign_Statement' -> assign exp.
+Do_While_Statement -> do Closed_Statement while lpar exp rpar.
+Return_Statement -> return.
+Read_Statement -> read lpar identifier rpar.
+Write_Statement -> write lpar exp rpar.
+
+E1 -> E1 oror E2.
+E1 -> E2.
+E2 -> E2 andand E3.
+E2 -> E3.
+E3 -> E3 or_op E4.
+E3 -> E4.
+E4 -> E4 and_op E5.
+E4 -> E5.
+E5 -> E5 eq E6.
+E5 -> E5 noteq E6.
+E5 -> E6.
+E6 -> E6 lt E7.
+E6 -> E6 gt E7.
+E6 -> E6 lteq E7.
+E6 -> E6 gteq E7.
+E6 -> E7.
+E7 -> E7 shl_op E8.
+E7 -> E7 shr_op E8.
+E7 -> E8.
+E8 -> E8 plus E9.
+E8 -> E8 minus E9.
+E8 -> E9.
+E9 -> E9 mul_op E10.
+E9 -> E9 div_op E10.
+E9 -> E10.
+E10 -> minus E10.
+E10 -> not_op E10.
+E10 -> E11.
+E11 -> int_num.
+E11 -> identifier.
+E11 -> identifier lsquare E1 rsquare.
+E11 -> lpar E1 rpar.
+
+
+// Modification 2
+
+// TBC
+Program -> Var_Declarations Statements.
+Program -> Statements.
+Var_Declarations -> Var_Declaration Var_Declarations'.
+Var_Declarations' -> Var_Declaration Var_Declarations'.
+Var_Declarations' -> .
+Var_Declaration -> int Declaration_list semi.
+Declaration_list -> Declaration Declaration_list'.
+Declaration_list' -> comma Declaration Declaration_list'.
+Declaration_list' -> .
+Declaration -> identifier Declaration'.
+
+Statement -> Open_Statement.
+Statement -> Closed_Statement.
+Closed_Statement -> lbrace Statements rbrace.
+Closed_Statement -> if lpar exp rpar Closed_Statement else Closed_Statement.
+Closed_Statement -> while lpar exp rpar Closed_Statement.
+Open_Statement -> if lpar exp rpar Closed_Statement else Open_Statement.
+Open_Statement -> if lpar exp rpar Open_Statement.
+Open_Statement -> while lpar exp rpar Open_Statement.
+Statements -> Statement Statements'.
+Statements' -> Statement Statements'.
+Statements' -> .
+
+Closed_Statement -> Assign_Statement semi.
+Closed_Statement -> Control_Statement.
+Closed_Statement -> Read_Write_Statement semi.
+Closed_Statement -> semi.
+Control_Statement -> Do_While_Statement semi.
+Control_Statement -> Return_Statement semi.
+Read_Write_Statement -> Read_Statement.
+Read_Write_Statement -> Write_Statement.
+Assign_Statement -> identifier Assign_Statement'.
+Do_While_Statement -> do Closed_Statement while lpar exp rpar.
+Return_Statement -> return.
+Read_Statement -> read lpar identifier rpar.
+Write_Statement -> write lpar exp rpar.
+Declaration' -> assign number.
+Declaration' -> lsquare number rsquare.
+Declaration' -> .
+Assign_Statement' -> lsquare exp rsquare assign exp.
+Assign_Statement' -> assign exp.
+
+
+
+// Verfied
+
+Statement -> Open_Statement
+Statement -> Closed_Statement
+Closed_Statement -> other_Statement
+Closed_Statement -> lbrace Statements rbrace
+Closed_Statement -> if exp Closed_Statement else Closed_Statement 
+Open_Statement -> if exp Closed_Statement else Open_Statement
+Open_Statement -> if exp Open_Statement
+Statements -> Statement Statements'
+Statements' -> Statement Statements'
+Statements' -> ''
+
+

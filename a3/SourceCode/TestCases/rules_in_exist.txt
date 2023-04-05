@@ -1,0 +1,10 @@
+declaration->ID 
+declaration_list->declaration 
+var_declaration->INT declaration_list SEMI 
+var_declarations->var_declaration 
+var_declarations->var_declarations var_declaration 
+exp->ID 
+exp->INT_NUM 
+exp->exp PLUS exp 
+assign_statement->ID ASSIGN exp 
+statement->assign_statement SEMI 
