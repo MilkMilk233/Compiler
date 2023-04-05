@@ -23,8 +23,10 @@ with open(input_file,'r',newline='') as file_read:
                         c = b[1].split(')')
                         d = c[0].split('>')
                         e = d[1].split(' ')
-                        print("reduce_map["+str(row_count)+"][\""+header[i]+"\"].first = "+str(len(e))+";")
-                        print("reduce_map["+str(row_count)+"][\""+header[i]+"\"].second = "+d[0]+";")
+                        print("reduce_map["+str(row_count)+"][\""+header[i]+"\"] = {\""+str(len(e))+"\", \""+d[0]+"\", \""+c[0]+"\"};")
+                        # print("strcpy(reduce_map["+str(row_count)+"][\""+header[i]+"\"][0], \""+str(len(e))+"\");")
+                        # print("strcpy(reduce_map["+str(row_count)+"][\""+header[i]+"\"][1], \""+d[0]+"\");")
+                        # print("strcpy(reduce_map["+str(row_count)+"][\""+header[i]+"\"][2], \""+c[0]+"\");")
             row_count += 1
 
 

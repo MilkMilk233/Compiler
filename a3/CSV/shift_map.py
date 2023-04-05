@@ -51,7 +51,7 @@ with open(input_file,'r',newline='') as file_read:
         for row in file_reader:
             
             for i in range(len(row)):
-                if i == 0: continue
+                if(i == 0): continue
                 if row[i] is not '':
                     # shift
                     if "shift" in row[i]:
@@ -61,7 +61,7 @@ with open(input_file,'r',newline='') as file_read:
                     elif "reduce" in row[i]:
                         pass
                     else:
-                        print("shift_map["+str(row_count)+"][\""+header[i]+"\"] = "+c[0]+";")
+                        print("shift_map["+str(row_count)+"][\""+header[i]+"\"] = "+row[i]+";")
             row_count += 1
 
 

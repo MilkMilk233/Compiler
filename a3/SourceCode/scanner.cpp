@@ -248,6 +248,12 @@ string Scanner::get_token(){
     else return "EOF";
 }
 
+void Scanner::display_tokens(){
+    for(string s : tokens){
+        cout<<s<<" ";
+    }
+}
+
 void Scanner::scan(){
     try{
         char next_char;

@@ -6,7 +6,6 @@
 #include <unordered_map>
 #include <vector>
 #include <fstream>
-#include <assert.h>
 #define file_path "./TestCases/"
 
 class Scanner{
@@ -24,9 +23,11 @@ class Scanner{
         Scanner(string file_name);
         string get_token();
         void scan();
+        void display_tokens();
         ~Scanner();
 };
 
 void init_shift_map(vector<unordered_map<string, int>> &shift_map);
+void init_reduce_map(vector<unordered_map<string, vector<string>>> &reduce_map);
 
 #endif
