@@ -8,20 +8,25 @@
 #include <fstream>
 #define file_path "./TestCases/"
 
+struct token{
+    string type_name;
+    string token_value;
+};
+
 class Scanner{
     private:
         vector<unordered_map<char, int>> dfa_states_vector;
         unordered_map<int, string> final_state_map;
         ifstream c_file;
         int current_state;
-        vector<string> tokens;
+        vector<token> tokens;
         int print_index;
     public:
         void init_digits(unordered_map<char, int> &umap, int target);
         void init_letters(unordered_map<char, int> &umap, int target);
         void init_l_and_d(unordered_map<char, int> &umap, int target);
         Scanner(string file_name);
-        string get_token();
+        token get_token();
         void scan();
         void display_tokens();
         ~Scanner();

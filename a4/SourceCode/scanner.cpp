@@ -241,16 +241,16 @@ Scanner::Scanner(string file_name) : print_index(0) {
     scan();
 }
 
-string Scanner::get_token(){
+token Scanner::get_token(){
     if(print_index < tokens.size()){
         return tokens[print_index++];
     }
-    else return "EOF";
+    else return {"EOF","EOF"};
 }
 
 void Scanner::display_tokens(){
-    for(string s : tokens){
-        cout<<s<<" ";
+    for(token s : tokens){
+        cout<<s.type_name<<" ";
     }
 }
 
@@ -258,6 +258,7 @@ void Scanner::scan(){
     try{
         char next_char;
         current_state = 1;
+        string current_str = "";
         // Keep fetching the file character, until it reached the end of the file
         while(c_file.get(next_char)){
             // The token is not read completely
@@ -270,7 +271,7 @@ void Scanner::scan(){
                 if(final_state_map.find(current_state) != final_state_map.end()){
                     // Print out the final state info
                     if(current_state != 29){
-                        tokens.push_back(final_state_map[current_state]);
+                        tokens.push_back({final_state_map[current_state], current_str});
                     }
                     // Go for the next state
                     if(dfa_states_vector[1].find(next_char) != dfa_states_vector[1].end()){
@@ -285,12 +286,14 @@ void Scanner::scan(){
                     cout<<"current_state = "<<current_state<<endl;
                     throw next_char;
                 }
+                current_str = "";
             }
+            current_str += next_char;
         }
             // After reading the final character of the file, check its status.
         if(final_state_map.find(current_state) != final_state_map.end()){
             if(current_state != 29){
-                tokens.push_back(final_state_map[current_state]);
+                tokens.push_back({final_state_map[current_state], current_str});
             }
         }
         else{

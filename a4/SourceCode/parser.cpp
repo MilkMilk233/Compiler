@@ -21,7 +21,7 @@ int main(int argc,char *argv[]){
 
     int current_state = 0;
     vector<int> path_num;
-    vector<string> path_name;
+    vector<token> path_name;
 
     // Display all the tokens
     cout<<"Scanned Tokens:"<<endl;
@@ -29,57 +29,57 @@ int main(int argc,char *argv[]){
     cout<<"EOF"<<endl<<endl;
     cout <<"Parsing Process:" << endl;
 
-    string next_type = goal.get_token();
+    token next_type = goal.get_token();
     path_num.push_back(0);
 
     while(true){
         // Accepted
-        if(shift_map[current_state].count(next_type) && shift_map[current_state][next_type] == -1){
+        if(shift_map[current_state].count(next_type.type_name) && shift_map[current_state][next_type.type_name] == -1){
             cout << "Accepted!"<<endl;
             break;
         }
         // There exists a shift operation in the phasing table
-        else if(shift_map[current_state].count(next_type)){
+        else if(shift_map[current_state].count(next_type.type_name)){
             cout<<"state: "<<current_state;
-            cout<<"	next type: "<<next_type;
-            cout <<"		shift to state "<<shift_map[current_state][next_type]<<endl;
+            cout<<"	next type: "<<next_type.type_name;
+            cout <<"		shift to state "<<shift_map[current_state][next_type.type_name]<<endl;
             path_name.push_back(next_type);
-            path_num.push_back(shift_map[current_state][next_type]);
-            current_state = shift_map[current_state][next_type];
+            path_num.push_back(shift_map[current_state][next_type.type_name]);
+            current_state = shift_map[current_state][next_type.type_name];
             cout << "current situation:";
             for(int i = 0; i < path_name.size(); i++){
-                cout<<" "<<path_name[i];
+                cout<<" "<<path_name[i].type_name;
             }
             cout <<" |" << endl << endl;
             next_type = goal.get_token();
         }
-        // There exists a reduce operation in the phasing table
-        else if(reduce_map[current_state].count(next_type)){
+        // There exists a reduce operation in the phasing table (Muted)
+        else if(reduce_map[current_state].count(next_type.type_name)){
             //  Announcement #1
             cout<<"state: "<<current_state;
-            cout<<"	next type: "<<next_type;
-            cout <<"		reduce by grammar: "<<reduce_map[current_state][next_type][2]<<endl;
-            for(int i = 0; i < atoi(reduce_map[current_state][next_type][0].c_str()); i++){
+            cout<<"	next type: "<<next_type.type_name;
+            cout <<"		reduce by grammar: "<<reduce_map[current_state][next_type.type_name][2]<<endl;
+            for(int i = 0; i < atoi(reduce_map[current_state][next_type.type_name][0].c_str()); i++){
                 path_name.pop_back();
                 path_num.pop_back();
             }
             cout << "current situation:";
             for(int i = 0; i < path_name.size(); i++){
-                cout<<" "<<path_name[i];
+                cout<<" "<<path_name[i].type_name;
             }
-            cout << " | " << reduce_map[current_state][next_type][1] << endl<< endl;
+            cout << " | " << reduce_map[current_state][next_type.type_name][1] << endl<< endl;
 
             //  Announcement #2
             int old_current_state = path_num.back();
-            string old_next_type = reduce_map[current_state][next_type][1];
-            cout << "state: "<< old_current_state << "	next type: "<< old_next_type;
-            cout << "		shift to state "<<shift_map[old_current_state][old_next_type] << endl;
+            token old_next_type = {reduce_map[current_state][next_type.type_name][1], ""};
+            cout << "state: "<< old_current_state << "	next type: "<< old_next_type.type_name;
+            cout << "		shift to state "<<shift_map[old_current_state][old_next_type.type_name] << endl;
             path_name.push_back(old_next_type);
-            path_num.push_back(shift_map[old_current_state][old_next_type]);
-            current_state = shift_map[old_current_state][old_next_type];
+            path_num.push_back(shift_map[old_current_state][old_next_type.type_name]);
+            current_state = shift_map[old_current_state][old_next_type.type_name];
             cout << "current situation:";
             for(int i = 0; i < path_name.size(); i++){
-                cout<<" "<<path_name[i];
+                cout<<" "<<path_name[i].type_name;
             }
             cout <<" |" << endl << endl;
         }
