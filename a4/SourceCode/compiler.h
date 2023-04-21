@@ -8,9 +8,10 @@
 #include <fstream>
 #define file_path "./TestCases/"
 
-struct token{
-    string type_name;
-    string token_value;
+class token{
+    public:
+        string type_name;
+        string token_value;
 };
 
 class Scanner{

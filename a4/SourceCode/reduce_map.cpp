@@ -1004,8 +1004,8 @@ void init_reduce_map(vector<unordered_map<string, vector<string>>> &reduce_map){
     reduce_map[257]["MINUS"] = {"2", "exp9", "exp9>NOT_OP exp9"};
     reduce_map[257]["MUL_OP"] = {"2", "exp9", "exp9>NOT_OP exp9"};
     reduce_map[257]["DIV_OP"] = {"2", "exp9", "exp9>NOT_OP exp9"};
-    reduce_map[260]["SEMI"] = {"4", "declaration", "declaration>ID LSQUARE exp RSQUARE"};
-    reduce_map[260]["COMMA"] = {"4", "declaration", "declaration>ID LSQUARE exp RSQUARE"};
+    reduce_map[260]["SEMI"] = {"4", "declaration", "declaration>ID LSQUARE INT_NUM RSQUARE"};
+    reduce_map[260]["COMMA"] = {"4", "declaration", "declaration>ID LSQUARE INT_NUM RSQUARE"};
     reduce_map[262]["RSQUARE"] = {"3", "exp", "exp>exp OROR exp1"};
     reduce_map[262]["OROR"] = {"3", "exp", "exp>exp OROR exp1"};
     reduce_map[263]["RSQUARE"] = {"3", "exp1", "exp1>exp1 ANDAND exp2"};
