@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 #include <fstream>
 #define file_path "./TestCases/"
@@ -12,6 +13,7 @@ class token{
     public:
         string type_name;
         string token_value;
+        int tr_value;
 };
 
 class Scanner{

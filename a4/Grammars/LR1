@@ -1,4 +1,4 @@
-program -> var_declarations statements | statements.
+program -> var_declarations statements | var_declarations | statements.
 var_declarations -> var_declarations var_declaration | var_declaration.
 var_declaration -> INT declaration_list SEMI.
 declaration_list -> declaration_list COMMA declaration | declaration.

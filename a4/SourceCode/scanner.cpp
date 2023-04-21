@@ -245,7 +245,7 @@ token Scanner::get_token(){
     if(print_index < tokens.size()){
         return tokens[print_index++];
     }
-    else return {"EOF","EOF"};
+    else return {"EOF","EOF",-1};
 }
 
 void Scanner::display_tokens(){
@@ -271,7 +271,7 @@ void Scanner::scan(){
                 if(final_state_map.find(current_state) != final_state_map.end()){
                     // Print out the final state info
                     if(current_state != 29){
-                        tokens.push_back({final_state_map[current_state], current_str});
+                        tokens.push_back({final_state_map[current_state], current_str, -1});
                     }
                     // Go for the next state
                     if(dfa_states_vector[1].find(next_char) != dfa_states_vector[1].end()){
@@ -293,7 +293,7 @@ void Scanner::scan(){
             // After reading the final character of the file, check its status.
         if(final_state_map.find(current_state) != final_state_map.end()){
             if(current_state != 29){
-                tokens.push_back({final_state_map[current_state], current_str});
+                tokens.push_back({final_state_map[current_state], current_str, -1});
             }
         }
         else{
