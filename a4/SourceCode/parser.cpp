@@ -679,6 +679,42 @@ int main(int argc,char *argv[]){
                     cout << "move $s"<<sr_id<<", "<<tr_name<<endl;
                 }
             }
+            else if(ptr->at(2) == "assign_statement>ID ASSIGN exp"){
+                string id_name = path_name[name_tail-2].token_value;
+                int sr_id = sr_map[id_name];
+                int tr_id = path_name[name_tail].tr_value;
+                string tr_name = "$t" + to_string(tr_id);
+                if(tr_id > 7){
+                    tr_name = "$t9";
+                    tr_load(tr_id);
+                }
+                discard_tr(tr_id);
+                if(sr_id > 7){
+                    cout << "move $t8, "<<tr_name<<endl;
+                    sr_load(sr_id);
+                }
+                else{
+                    cout << "move $s"<<sr_id<<", "<<tr_name<<endl;
+                }
+            }
+            else if(ptr->at(2) == "assign_statement>ID LSQUARE INT_NUM RSQUARE ASSIGN exp"){
+                string id_name = path_name[name_tail-5].token_value + "[" + path_name[name_tail-3].token_value + "]";
+                int sr_id = sr_map[id_name];
+                int tr_id = path_name[name_tail].tr_value;
+                string tr_name = "$t" + to_string(tr_id);
+                if(tr_id > 7){
+                    tr_name = "$t9";
+                    tr_load(tr_id);
+                }
+                discard_tr(tr_id);
+                if(sr_id > 7){
+                    cout << "move $t8, "<<tr_name<<endl;
+                    sr_load(sr_id);
+                }
+                else{
+                    cout << "move $s"<<sr_id<<", "<<tr_name<<endl;
+                }
+            }
             // Discussion ends, pop out the old tokens
 
             for(int i = 0; i < atoi(reduce_map[current_state][next_type.type_name][0].c_str()); i++){
