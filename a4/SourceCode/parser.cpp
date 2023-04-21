@@ -32,6 +32,7 @@ int main(int argc,char *argv[]){
     int current_state = 0;
     vector<int> path_num;
     vector<token> path_name;
+    int label_count = 0;
 
     token next_type = goal.get_token();
     path_num.push_back(0);
@@ -176,6 +177,35 @@ int main(int argc,char *argv[]){
                 }
                 output_tr = tr_id;
             }
+            else if(ptr->at(2) == "exp10>ID LSQUARE INT_NUM RSQUARE"){
+                int array_location = stoi(path_name[name_tail-1].token_value);
+                string t_name = path_name[name_tail-3].token_value + "[" + to_string(array_location) + "]";
+                int sr_id = sr_map[t_name];
+                string sr_name = "$s"+to_string(sr_id);
+                int mem_addr;
+                if(sr_id > 7){
+                    sr_load(sr_id);
+                    sr_name = "$t9";
+                }
+                int tr_id = allocate_tr();
+                if(tr_id > 7){
+                    cout << "move $t8, "<<sr_name<<endl;
+                    tr_save(tr_id);
+                }
+                else{
+                    cout << "move $t" << tr_id <<", "<<sr_name<<endl;
+                }
+                output_tr = tr_id;
+            }
+            else if(ptr->at(2) == "declaration>ID LSQUARE INT_NUM RSQUARE"){
+                int array_len = stoi(path_name[name_tail-1].token_value);
+                string sr_name;
+                for(int i = 0; i < array_len; i++){
+                    sr_name = path_name[name_tail-3].token_value + "[" + to_string(i) + "]";
+                    sr_map[sr_name] = sr_count;
+                    allocate_sr();
+                }
+            }
             else if(ptr->at(2) == "exp10>INT_NUM"){
                 int tr_id = allocate_tr();
                 if(tr_id > 7){
@@ -186,7 +216,17 @@ int main(int argc,char *argv[]){
                     cout << "li $t" << tr_id <<", "<<path_name[name_tail].token_value<<endl;
                 }
                 output_tr = tr_id;
-
+            }
+            else if(ptr->at(2) == "declaration>ID"){
+                string id_name = path_name[name_tail].token_value;
+                int sr_id;
+                if(sr_map.count(id_name)){
+                    sr_id = sr_map[id_name];
+                }
+                else{
+                    sr_map[id_name] = sr_count;
+                    sr_id = allocate_sr();
+                }
             }
             else if(ptr->at(2) == "exp9>exp10"){
                 output_tr = path_name[name_tail].tr_value;
@@ -217,6 +257,402 @@ int main(int argc,char *argv[]){
             }
             else if(ptr->at(2) == "exp>exp1"){
                 output_tr = path_name[name_tail].tr_value;
+            }
+            else if(ptr->at(2) == "exp10>LPAR exp RPAR"){
+                output_tr = path_name[name_tail-1].tr_value;
+            }
+            else if(ptr->at(2) == "exp1>exp1 OROR exp2"){
+                int tr_id1 = path_name[name_tail-2].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    tr_name1 = "$t9";
+                }
+                cout << "bne "<<tr_name1<<", $0, $L"<< label_count << endl;
+                int tr_id2 = path_name[name_tail].tr_value;
+                string tr_name2 = "$t"+to_string(tr_id2);
+                if(tr_id2 > 7){
+                    tr_load(tr_id2);
+                    tr_name2 = "$t9";
+                }
+                cout << "bne "<<tr_name2<<"$0, $L"<< label_count << endl;
+                cout << "move "<<tr_name1<<", $0"<<endl;
+                cout << "b $L"<<label_count+1<<endl;
+                cout << "$L"<<label_count++<<":"<<endl;
+                cout << "li "<<tr_name1<<", 1"<<endl;
+                cout << "$L"<<label_count++<<":"<<endl;
+                if(tr_id1 > 7){
+                    tr_save(tr_id1);
+                }
+                discard_tr(tr_id2);
+                output_tr = tr_id1;
+            }
+            else if(ptr->at(2) == "exp1>exp1 ANDAND exp2"){
+                int tr_id1 = path_name[name_tail-2].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    tr_name1 = "$t9";
+                }
+                cout << "beq "<<tr_name1<<", $0, $L"<< label_count << endl;
+                int tr_id2 = path_name[name_tail].tr_value;
+                string tr_name2 = "$t"+to_string(tr_id2);
+                if(tr_id2 > 7){
+                    tr_load(tr_id2);
+                    tr_name2 = "$t9";
+                }
+                cout << "beq "<<tr_name2<<", $0, $L"<< label_count << endl;
+                cout << "li "<<tr_name1<<", 1"<<endl;
+                cout << "b $L"<<label_count+1<<endl;
+                cout << "$L"<<label_count++<<":"<<endl;
+                cout << "move "<<tr_name1<<", $0"<<endl;
+                cout << "$L"<<label_count++<<":"<<endl;
+                if(tr_id1 > 7){
+                    tr_save(tr_id1);
+                }
+                discard_tr(tr_id2);
+                output_tr = tr_id1;
+            }
+            else if(ptr->at(2) == "exp2>exp2 OR_OP exp3"){
+                int tr_id1 = path_name[name_tail-2].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    cout << "move $t8, $t9"<<endl;
+                    tr_name1 = "$t8";
+                }
+                int tr_id2 = path_name[name_tail].tr_value;
+                string tr_name2 = "$t"+to_string(tr_id2);
+                if(tr_id2 > 7){
+                    tr_load(tr_id2);
+                    tr_name2 = "$t9";
+                }
+                cout << "or "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                if(tr_id1 > 7){
+                    tr_save(tr_id1);
+                }
+                discard_tr(tr_id2);
+                output_tr = tr_id1;
+            }
+            else if(ptr->at(2) == "exp3>exp3 AND_OP exp4"){
+                int tr_id1 = path_name[name_tail-2].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    cout << "move $t8, $t9"<<endl;
+                    tr_name1 = "$t8";
+                }
+                int tr_id2 = path_name[name_tail].tr_value;
+                string tr_name2 = "$t"+to_string(tr_id2);
+                if(tr_id2 > 7){
+                    tr_load(tr_id2);
+                    tr_name2 = "$t9";
+                }
+                cout << "and "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                if(tr_id1 > 7){
+                    tr_save(tr_id1);
+                }
+                discard_tr(tr_id2);
+                output_tr = tr_id1;
+            }
+            else if(ptr->at(2) == "exp4>exp4 NOTEQ exp5"){
+                int tr_id1 = path_name[name_tail-2].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    cout << "move $t8, $t9"<<endl;
+                    tr_name1 = "$t8";
+                }
+                int tr_id2 = path_name[name_tail].tr_value;
+                string tr_name2 = "$t"+to_string(tr_id2);
+                if(tr_id2 > 7){
+                    tr_load(tr_id2);
+                    tr_name2 = "$t9";
+                }
+                cout << "xor "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                cout << "sltu "<<tr_name1<<", $0, "<<tr_name1<<endl;
+                cout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
+                if(tr_id1 > 7){
+                    tr_save(tr_id1);
+                }
+                discard_tr(tr_id2);
+                output_tr = tr_id1;
+            }
+            else if(ptr->at(2) == "exp4>exp4 EQ exp5"){
+                int tr_id1 = path_name[name_tail-2].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    cout << "move $t8, $t9"<<endl;
+                    tr_name1 = "$t8";
+                }
+                int tr_id2 = path_name[name_tail].tr_value;
+                string tr_name2 = "$t"+to_string(tr_id2);
+                if(tr_id2 > 7){
+                    tr_load(tr_id2);
+                    tr_name2 = "$t9";
+                }
+                cout << "xor "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                cout << "sltu "<<tr_name1<<", "<<tr_name1<<", 1"<<endl;
+                cout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
+                if(tr_id1 > 7){
+                    tr_save(tr_id1);
+                }
+                discard_tr(tr_id2);
+                output_tr = tr_id1;
+            }
+            else if(ptr->at(2) == "exp5>exp5 LT exp6"){
+                int tr_id1 = path_name[name_tail-2].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    cout << "move $t8, $t9"<<endl;
+                    tr_name1 = "$t8";
+                }
+                int tr_id2 = path_name[name_tail].tr_value;
+                string tr_name2 = "$t"+to_string(tr_id2);
+                if(tr_id2 > 7){
+                    tr_load(tr_id2);
+                    tr_name2 = "$t9";
+                }
+                cout << "slt "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                cout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
+                if(tr_id1 > 7){
+                    tr_save(tr_id1);
+                }
+                discard_tr(tr_id2);
+                output_tr = tr_id1;
+            }
+            else if(ptr->at(2) == "exp5>exp5 GT exp6"){
+                int tr_id1 = path_name[name_tail-2].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    cout << "move $t8, $t9"<<endl;
+                    tr_name1 = "$t8";
+                }
+                int tr_id2 = path_name[name_tail].tr_value;
+                string tr_name2 = "$t"+to_string(tr_id2);
+                if(tr_id2 > 7){
+                    tr_load(tr_id2);
+                    tr_name2 = "$t9";
+                }
+                cout << "slt "<<tr_name1<<", "<<tr_name2<<", "<<tr_name1<<endl;
+                cout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
+                if(tr_id1 > 7){
+                    tr_save(tr_id1);
+                }
+                discard_tr(tr_id2);
+                output_tr = tr_id1;
+            }
+            else if(ptr->at(2) == "exp5>exp5 LTEQ exp6"){
+                int tr_id1 = path_name[name_tail-2].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    cout << "move $t8, $t9"<<endl;
+                    tr_name1 = "$t8";
+                }
+                int tr_id2 = path_name[name_tail].tr_value;
+                string tr_name2 = "$t"+to_string(tr_id2);
+                if(tr_id2 > 7){
+                    tr_load(tr_id2);
+                    tr_name2 = "$t9";
+                }
+                cout << "slt "<<tr_name1<<", "<<tr_name2<<", "<<tr_name1<<endl;
+                cout << "xori "<<tr_name1<<", "<<tr_name1<<", 0x1"<<endl;
+                cout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
+                if(tr_id1 > 7){
+                    tr_save(tr_id1);
+                }
+                discard_tr(tr_id2);
+                output_tr = tr_id1;
+            }
+            else if(ptr->at(2) == "exp5>exp5 GTEQ exp6"){
+                int tr_id1 = path_name[name_tail-2].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    cout << "move $t8, $t9"<<endl;
+                    tr_name1 = "$t8";
+                }
+                int tr_id2 = path_name[name_tail].tr_value;
+                string tr_name2 = "$t"+to_string(tr_id2);
+                if(tr_id2 > 7){
+                    tr_load(tr_id2);
+                    tr_name2 = "$t9";
+                }
+                cout << "slt "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                cout << "xori "<<tr_name1<<", "<<tr_name1<<", 0x1"<<endl;
+                cout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
+                if(tr_id1 > 7){
+                    tr_save(tr_id1);
+                }
+                discard_tr(tr_id2);
+                output_tr = tr_id1;
+            }
+            else if(ptr->at(2) == "exp6>exp6 SHL_OP exp7"){
+                int tr_id1 = path_name[name_tail-2].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    cout << "move $t8, $t9"<<endl;
+                    tr_name1 = "$t8";
+                }
+                int tr_id2 = path_name[name_tail].tr_value;
+                string tr_name2 = "$t"+to_string(tr_id2);
+                if(tr_id2 > 7){
+                    tr_load(tr_id2);
+                    tr_name2 = "$t9";
+                }
+                cout << "sll "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                if(tr_id1 > 7){
+                    tr_save(tr_id1);
+                }
+                discard_tr(tr_id2);
+                output_tr = tr_id1;
+            }
+            else if(ptr->at(2) == "exp6>exp6 SHR_OP exp7"){
+                int tr_id1 = path_name[name_tail-2].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    cout << "move $t8, $t9"<<endl;
+                    tr_name1 = "$t8";
+                }
+                int tr_id2 = path_name[name_tail].tr_value;
+                string tr_name2 = "$t"+to_string(tr_id2);
+                if(tr_id2 > 7){
+                    tr_load(tr_id2);
+                    tr_name2 = "$t9";
+                }
+                cout << "sra "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                if(tr_id1 > 7){
+                    tr_save(tr_id1);
+                }
+                discard_tr(tr_id2);
+                output_tr = tr_id1;
+            }
+            else if(ptr->at(2) == "exp7>exp7 MINUS exp8"){
+                int tr_id1 = path_name[name_tail-2].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    cout << "move $t8, $t9"<<endl;
+                    tr_name1 = "$t8";
+                }
+                int tr_id2 = path_name[name_tail].tr_value;
+                string tr_name2 = "$t"+to_string(tr_id2);
+                if(tr_id2 > 7){
+                    tr_load(tr_id2);
+                    tr_name2 = "$t9";
+                }
+                cout << "subu "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                if(tr_id1 > 7){
+                    tr_save(tr_id1);
+                }
+                discard_tr(tr_id2);
+                output_tr = tr_id1;
+            }
+            else if(ptr->at(2) == "exp7>exp7 PLUS exp8"){
+                int tr_id1 = path_name[name_tail-2].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    cout << "move $t8, $t9"<<endl;
+                    tr_name1 = "$t8";
+                }
+                int tr_id2 = path_name[name_tail].tr_value;
+                string tr_name2 = "$t"+to_string(tr_id2);
+                if(tr_id2 > 7){
+                    tr_load(tr_id2);
+                    tr_name2 = "$t9";
+                }
+                cout << "addu "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                if(tr_id1 > 7){
+                    tr_save(tr_id1);
+                }
+                discard_tr(tr_id2);
+                output_tr = tr_id1;
+            }
+            else if(ptr->at(2) == "exp8>exp8 MUL_OP exp9"){
+                int tr_id1 = path_name[name_tail-2].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    cout << "move $t8, $t9"<<endl;
+                    tr_name1 = "$t8";
+                }
+                int tr_id2 = path_name[name_tail].tr_value;
+                string tr_name2 = "$t"+to_string(tr_id2);
+                if(tr_id2 > 7){
+                    tr_load(tr_id2);
+                    tr_name2 = "$t9";
+                }
+                cout << "mult "<<tr_name1<<", "<<tr_name2<<endl;
+                cout << "mflo "<<tr_name1<<endl;
+                if(tr_id1 > 7){
+                    tr_save(tr_id1);
+                }
+                discard_tr(tr_id2);
+                output_tr = tr_id1;
+            }
+            else if(ptr->at(2) == "exp8>exp8 DIV_OP exp9"){
+                int tr_id1 = path_name[name_tail-2].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    cout << "move $t8, $t9"<<endl;
+                    tr_name1 = "$t8";
+                }
+                int tr_id2 = path_name[name_tail].tr_value;
+                string tr_name2 = "$t"+to_string(tr_id2);
+                if(tr_id2 > 7){
+                    tr_load(tr_id2);
+                    tr_name2 = "$t9";
+                }
+                cout << "bne "<<tr_name2<<", "<<"$0"<<", 1f"<<endl;
+                cout << "div $0, "<<tr_name1<<", "<<tr_name2<<endl;
+                cout << "break 7"<<endl;
+                cout << "mfhi "<<tr_name1<<endl;
+                cout << "mflo "<<tr_name1<<endl;
+                if(tr_id1 > 7){
+                    tr_save(tr_id1);
+                }
+                discard_tr(tr_id2);
+                output_tr = tr_id1;
+            }
+            else if(ptr->at(2) == "exp9>NOT_OP exp9"){
+                int tr_id = path_name[name_tail].tr_value;
+                string tr_name = "$t"+to_string(tr_id);
+                if(tr_id > 7){
+                    tr_load(tr_id);
+                    tr_name = "$t9";
+                }
+                cout << "sltu "<<tr_name<<", "<<tr_name<<", 1"<<endl;
+                cout << "andi "<<tr_name<<", "<<tr_name<<", 0x00ff"<<endl;
+                if(tr_id > 7){
+                    cout << "move $t8, $t9"<<endl;
+                    tr_save(tr_id);
+                }
+                output_tr = tr_id;
+            }
+            else if(ptr->at(2) == "exp9>PLUS exp9"){
+                output_tr = path_name[name_tail].tr_value;
+            }
+            else if(ptr->at(2) == "exp9>MINUS exp9"){
+                int tr_id = path_name[name_tail].tr_value;
+                string tr_name = "$t"+to_string(tr_id);
+                if(tr_id > 7){
+                    tr_load(tr_id);
+                    tr_name = "$t9";
+                }
+                cout << "subu "<<tr_name<<", $0, "<<tr_name<<endl;
+                if(tr_id > 7){
+                    cout << "move $t8, $t9"<<endl;
+                    tr_save(tr_id);
+                }
+                output_tr = tr_id;
             }
             else if(ptr->at(2) == "declaration>ID ASSIGN exp"){
                 string id_name = path_name[name_tail-2].token_value;
