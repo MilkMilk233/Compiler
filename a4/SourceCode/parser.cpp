@@ -37,6 +37,8 @@ int main(int argc,char *argv[]){
     token next_type = goal.get_token();
     path_num.push_back(0);
 
+    stringstream sout;
+
     // Allocate a temp register + allocate memory (optional)
     auto allocate_tr = [&tr_map, &mem_map, &mem_map_rev]() -> int {
         int index = 0;
@@ -97,36 +99,37 @@ int main(int argc,char *argv[]){
         }
     };
 
-    auto tr_save = [&mem_map](int id){
+    auto tr_save = [&mem_map, &sout](int id){
         string name = "$t"+to_string(id);
         int mem_addr = mem_map[name]*4;
-        cout << "sw $t8, "<<mem_addr<<"($sp)"<<endl;
+        sout << "sw $t8, "<<mem_addr<<"($sp)"<<endl;
     };
 
-    auto sr_save = [&mem_map](int id){
+    auto sr_save = [&mem_map, &sout](int id){
         string name = "$s"+to_string(id);
         int mem_addr = mem_map[name]*4;
-        cout << "sw $t8, "<<mem_addr<<"($sp)"<<endl;
+        sout << "sw $t8, "<<mem_addr<<"($sp)"<<endl;
     };
 
-    auto tr_load = [&mem_map](int id){
+    auto tr_load = [&mem_map, &sout](int id){
         string name = "$t"+to_string(id);
         int mem_addr = mem_map[name]*4;
-        cout << "lw $t9, "<<mem_addr<<"($sp)"<<endl;
+        sout << "lw $t9, "<<mem_addr<<"($sp)"<<endl;
     };
 
-    auto sr_load = [&mem_map](int id){
+    auto sr_load = [&mem_map, &sout](int id){
         string name = "$s"+to_string(id);
         int mem_addr = mem_map[name]*4;
-        cout << "lw $t9, "<<mem_addr<<"($sp)"<<endl;
+        sout << "lw $t9, "<<mem_addr<<"($sp)"<<endl;
     };
 
     // Parsing & translation process
     while(true){
+        sout.str("");
         if(DEBUG_MODE) cout << "Next type = "<<next_type.type_name<<endl;
         // Accepted
         if(shift_map[current_state].count(next_type.type_name) && shift_map[current_state][next_type.type_name] == -1){
-            cout << "Accepted!"<<endl;
+            if(DEBUG_MODE) cout << "Accepted!"<<endl;
             break;
         }
         // There exists a shift operation in the phasing table
@@ -158,22 +161,114 @@ int main(int argc,char *argv[]){
             int num_tail = path_num.size()-1;
             vector<string> *ptr = &reduce_map[current_state][next_type.type_name];
 
+            if(DEBUG_MODE){
+                cout << "Reduce by grammar "<<ptr->at(2)<<endl;
+            }
+
             // Discuss the reduction case by case
-            if(ptr->at(2) == "exp10>ID"){
+            if(ptr->at(1) == "program"){
+                for(int i = 0; i < path_name.size(); i++){
+                    path_name[i].print_ss();
+                }
+                cout << ".END:"<<endl;
+                cout << "nop"<<endl;
+            }
+            else if(ptr->at(2) == "var_declarations>var_declarations var_declaration"){
+                sout << path_name[name_tail-1].ss.str();
+                sout << path_name[name_tail].ss.str();
+            }
+            else if(ptr->at(2) == "var_declarations>var_declaration"){
+                sout << path_name[name_tail].ss.str();
+            }
+            else if(ptr->at(2) == "var_declaration>INT declaration_list SEMI"){
+                sout << path_name[name_tail-1].ss.str();
+            }
+            else if(ptr->at(2) == "declaration_list>declaration_list COMMA declaration"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << path_name[name_tail].ss.str();
+            }
+            else if(ptr->at(2) == "declaration_list>declaration"){
+                sout << path_name[name_tail].ss.str();
+            }
+            else if(ptr->at(2) == "code_block>statement"){
+                sout << path_name[name_tail].ss.str();
+            }
+            else if(ptr->at(2) == "code_block>LBRACE statements RBRACE"){
+                sout << path_name[name_tail-1].ss.str();
+            }
+            else if(ptr->at(2) == "statements>statements statement"){
+                sout << path_name[name_tail-1].ss.str();
+                sout << path_name[name_tail].ss.str();
+            }
+            else if(ptr->at(2) == "statements>statement"){
+                // cout << "~~~~~~" <<endl << path_name[name_tail].ss.str() << "~~~~~~~" << endl;
+                sout << path_name[name_tail].ss.str();
+            }
+            else if(ptr->at(2) == "statement>assign_statement SEMI"){
+                sout << path_name[name_tail-1].ss.str();
+            }
+            else if(ptr->at(2) == "statement>control_statement"){
+                sout << path_name[name_tail].ss.str();
+            }
+            else if(ptr->at(2) == "statement>read_write_statement SEMI"){
+                sout << path_name[name_tail-1].ss.str();
+            }
+            else if(ptr->at(2) == "control_statement>if_statement"){
+                sout << path_name[name_tail].ss.str();
+            }
+            else if(ptr->at(2) == "control_statement>while_statement"){
+                sout << path_name[name_tail].ss.str();
+            }
+            else if(ptr->at(2) == "control_statement>do_while_statement SEMI"){
+                sout << path_name[name_tail-1].ss.str();
+            }
+            else if(ptr->at(2) == "control_statement>return_statement SEMI."){
+                sout << path_name[name_tail-1].ss.str();
+            }
+            else if(ptr->at(2) == "read_write_statement>read_statement"){
+                sout << path_name[name_tail].ss.str();
+            }
+            else if(ptr->at(2) == "read_write_statement>write_statement"){
+                sout << path_name[name_tail].ss.str();
+            }
+            else if(ptr->at(2) == "return_statement>RETURN"){
+                sout << "b .END"<<endl;
+            }
+            else if(ptr->at(2) == "statement>control_statement"){
+                sout << path_name[name_tail-1].ss.str();
+                sout << path_name[name_tail].ss.str();
+            }
+            else if(ptr->at(2) == "statement>control_statement"){
+                sout << path_name[name_tail-1].ss.str();
+                sout << path_name[name_tail].ss.str();
+            }
+            else if(ptr->at(2) == "statement>control_statement"){
+                sout << path_name[name_tail-1].ss.str();
+                sout << path_name[name_tail].ss.str();
+            }
+            else if(ptr->at(2) == "statement>control_statement"){
+                sout << path_name[name_tail-1].ss.str();
+                sout << path_name[name_tail].ss.str();
+            }
+            else if(ptr->at(2) == "statement>control_statement"){
+                sout << path_name[name_tail-1].ss.str();
+                sout << path_name[name_tail].ss.str();
+            }
+            
+            else if(ptr->at(2) == "exp10>ID"){
                 int sr_id = sr_map[path_name[name_tail].token_value];
                 string sr_name = "$s"+to_string(sr_id);
-                int mem_addr;
                 if(sr_id > 7){
                     sr_load(sr_id);
                     sr_name = "$t9";
                 }
                 int tr_id = allocate_tr();
                 if(tr_id > 7){
-                    cout << "move $t8, "<<sr_name<<endl;
+                    sout << "move $t8, "<<sr_name<<endl;
                     tr_save(tr_id);
                 }
                 else{
-                    cout << "move $t" << tr_id <<", "<<sr_name<<endl;
+                    sout << "move $t" << tr_id <<", "<<sr_name<<endl;
                 }
                 output_tr = tr_id;
             }
@@ -182,18 +277,17 @@ int main(int argc,char *argv[]){
                 string t_name = path_name[name_tail-3].token_value + "[" + to_string(array_location) + "]";
                 int sr_id = sr_map[t_name];
                 string sr_name = "$s"+to_string(sr_id);
-                int mem_addr;
                 if(sr_id > 7){
                     sr_load(sr_id);
                     sr_name = "$t9";
                 }
                 int tr_id = allocate_tr();
                 if(tr_id > 7){
-                    cout << "move $t8, "<<sr_name<<endl;
+                    sout << "move $t8, "<<sr_name<<endl;
                     tr_save(tr_id);
                 }
                 else{
-                    cout << "move $t" << tr_id <<", "<<sr_name<<endl;
+                    sout << "move $t" << tr_id <<", "<<sr_name<<endl;
                 }
                 output_tr = tr_id;
             }
@@ -209,11 +303,11 @@ int main(int argc,char *argv[]){
             else if(ptr->at(2) == "exp10>INT_NUM"){
                 int tr_id = allocate_tr();
                 if(tr_id > 7){
-                    cout << "li $t8, "<<path_name[name_tail].token_value<<endl;
+                    sout << "li $t8, "<<path_name[name_tail].token_value<<endl;
                     tr_save(tr_id);
                 }
                 else{
-                    cout << "li $t" << tr_id <<", "<<path_name[name_tail].token_value<<endl;
+                    sout << "li $t" << tr_id <<", "<<path_name[name_tail].token_value<<endl;
                 }
                 output_tr = tr_id;
             }
@@ -229,58 +323,70 @@ int main(int argc,char *argv[]){
                 }
             }
             else if(ptr->at(2) == "exp9>exp10"){
+                sout << path_name[name_tail].ss.str();
                 output_tr = path_name[name_tail].tr_value;
             }
             else if(ptr->at(2) == "exp8>exp9"){
+                sout << path_name[name_tail].ss.str();
                 output_tr = path_name[name_tail].tr_value;
             }
             else if(ptr->at(2) == "exp7>exp8"){
+                sout << path_name[name_tail].ss.str();
                 output_tr = path_name[name_tail].tr_value;
             }
             else if(ptr->at(2) == "exp6>exp7"){
+                sout << path_name[name_tail].ss.str();
                 output_tr = path_name[name_tail].tr_value;
             }
             else if(ptr->at(2) == "exp5>exp6"){
+                sout << path_name[name_tail].ss.str();
                 output_tr = path_name[name_tail].tr_value;
             }
             else if(ptr->at(2) == "exp4>exp5"){
+                sout << path_name[name_tail].ss.str();
                 output_tr = path_name[name_tail].tr_value;
             }
             else if(ptr->at(2) == "exp3>exp4"){
+                sout << path_name[name_tail].ss.str();
                 output_tr = path_name[name_tail].tr_value;
             }
             else if(ptr->at(2) == "exp2>exp3"){
+                sout << path_name[name_tail].ss.str();
                 output_tr = path_name[name_tail].tr_value;
             }
             else if(ptr->at(2) == "exp1>exp2"){
+                sout << path_name[name_tail].ss.str();
                 output_tr = path_name[name_tail].tr_value;
             }
             else if(ptr->at(2) == "exp>exp1"){
+                sout << path_name[name_tail].ss.str();
                 output_tr = path_name[name_tail].tr_value;
             }
             else if(ptr->at(2) == "exp10>LPAR exp RPAR"){
                 output_tr = path_name[name_tail-1].tr_value;
             }
             else if(ptr->at(2) == "exp1>exp1 OROR exp2"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << path_name[name_tail].ss.str();
                 int tr_id1 = path_name[name_tail-2].tr_value;
                 string tr_name1 = "$t"+to_string(tr_id1);
                 if(tr_id1 > 7){
                     tr_load(tr_id1);
                     tr_name1 = "$t9";
                 }
-                cout << "bne "<<tr_name1<<", $0, $L"<< label_count << endl;
+                sout << "bne "<<tr_name1<<", $0, $L"<< label_count << endl;
                 int tr_id2 = path_name[name_tail].tr_value;
                 string tr_name2 = "$t"+to_string(tr_id2);
                 if(tr_id2 > 7){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                cout << "bne "<<tr_name2<<"$0, $L"<< label_count << endl;
-                cout << "move "<<tr_name1<<", $0"<<endl;
-                cout << "b $L"<<label_count+1<<endl;
-                cout << "$L"<<label_count++<<":"<<endl;
-                cout << "li "<<tr_name1<<", 1"<<endl;
-                cout << "$L"<<label_count++<<":"<<endl;
+                sout << "bne "<<tr_name2<<"$0, $L"<< label_count << endl;
+                sout << "move "<<tr_name1<<", $0"<<endl;
+                sout << "b $L"<<label_count+1<<endl;
+                sout << "$L"<<label_count++<<":"<<endl;
+                sout << "li "<<tr_name1<<", 1"<<endl;
+                sout << "$L"<<label_count++<<":"<<endl;
                 if(tr_id1 > 7){
                     tr_save(tr_id1);
                 }
@@ -288,25 +394,27 @@ int main(int argc,char *argv[]){
                 output_tr = tr_id1;
             }
             else if(ptr->at(2) == "exp1>exp1 ANDAND exp2"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << path_name[name_tail].ss.str();
                 int tr_id1 = path_name[name_tail-2].tr_value;
                 string tr_name1 = "$t"+to_string(tr_id1);
                 if(tr_id1 > 7){
                     tr_load(tr_id1);
                     tr_name1 = "$t9";
                 }
-                cout << "beq "<<tr_name1<<", $0, $L"<< label_count << endl;
+                sout << "beq "<<tr_name1<<", $0, $L"<< label_count << endl;
                 int tr_id2 = path_name[name_tail].tr_value;
                 string tr_name2 = "$t"+to_string(tr_id2);
                 if(tr_id2 > 7){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                cout << "beq "<<tr_name2<<", $0, $L"<< label_count << endl;
-                cout << "li "<<tr_name1<<", 1"<<endl;
-                cout << "b $L"<<label_count+1<<endl;
-                cout << "$L"<<label_count++<<":"<<endl;
-                cout << "move "<<tr_name1<<", $0"<<endl;
-                cout << "$L"<<label_count++<<":"<<endl;
+                sout << "beq "<<tr_name2<<", $0, $L"<< label_count << endl;
+                sout << "li "<<tr_name1<<", 1"<<endl;
+                sout << "b $L"<<label_count+1<<endl;
+                sout << "$L"<<label_count++<<":"<<endl;
+                sout << "move "<<tr_name1<<", $0"<<endl;
+                sout << "$L"<<label_count++<<":"<<endl;
                 if(tr_id1 > 7){
                     tr_save(tr_id1);
                 }
@@ -314,11 +422,13 @@ int main(int argc,char *argv[]){
                 output_tr = tr_id1;
             }
             else if(ptr->at(2) == "exp2>exp2 OR_OP exp3"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << path_name[name_tail].ss.str();
                 int tr_id1 = path_name[name_tail-2].tr_value;
                 string tr_name1 = "$t"+to_string(tr_id1);
                 if(tr_id1 > 7){
                     tr_load(tr_id1);
-                    cout << "move $t8, $t9"<<endl;
+                    sout << "move $t8, $t9"<<endl;
                     tr_name1 = "$t8";
                 }
                 int tr_id2 = path_name[name_tail].tr_value;
@@ -327,7 +437,7 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                cout << "or "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                sout << "or "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
                 if(tr_id1 > 7){
                     tr_save(tr_id1);
                 }
@@ -335,11 +445,13 @@ int main(int argc,char *argv[]){
                 output_tr = tr_id1;
             }
             else if(ptr->at(2) == "exp3>exp3 AND_OP exp4"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << path_name[name_tail].ss.str();
                 int tr_id1 = path_name[name_tail-2].tr_value;
                 string tr_name1 = "$t"+to_string(tr_id1);
                 if(tr_id1 > 7){
                     tr_load(tr_id1);
-                    cout << "move $t8, $t9"<<endl;
+                    sout << "move $t8, $t9"<<endl;
                     tr_name1 = "$t8";
                 }
                 int tr_id2 = path_name[name_tail].tr_value;
@@ -348,7 +460,7 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                cout << "and "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                sout << "and "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
                 if(tr_id1 > 7){
                     tr_save(tr_id1);
                 }
@@ -356,11 +468,13 @@ int main(int argc,char *argv[]){
                 output_tr = tr_id1;
             }
             else if(ptr->at(2) == "exp4>exp4 NOTEQ exp5"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << path_name[name_tail].ss.str();
                 int tr_id1 = path_name[name_tail-2].tr_value;
                 string tr_name1 = "$t"+to_string(tr_id1);
                 if(tr_id1 > 7){
                     tr_load(tr_id1);
-                    cout << "move $t8, $t9"<<endl;
+                    sout << "move $t8, $t9"<<endl;
                     tr_name1 = "$t8";
                 }
                 int tr_id2 = path_name[name_tail].tr_value;
@@ -369,9 +483,9 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                cout << "xor "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
-                cout << "sltu "<<tr_name1<<", $0, "<<tr_name1<<endl;
-                cout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
+                sout << "xor "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                sout << "sltu "<<tr_name1<<", $0, "<<tr_name1<<endl;
+                sout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
                 if(tr_id1 > 7){
                     tr_save(tr_id1);
                 }
@@ -379,11 +493,13 @@ int main(int argc,char *argv[]){
                 output_tr = tr_id1;
             }
             else if(ptr->at(2) == "exp4>exp4 EQ exp5"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << path_name[name_tail].ss.str();
                 int tr_id1 = path_name[name_tail-2].tr_value;
                 string tr_name1 = "$t"+to_string(tr_id1);
                 if(tr_id1 > 7){
                     tr_load(tr_id1);
-                    cout << "move $t8, $t9"<<endl;
+                    sout << "move $t8, $t9"<<endl;
                     tr_name1 = "$t8";
                 }
                 int tr_id2 = path_name[name_tail].tr_value;
@@ -392,9 +508,9 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                cout << "xor "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
-                cout << "sltu "<<tr_name1<<", "<<tr_name1<<", 1"<<endl;
-                cout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
+                sout << "xor "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                sout << "sltu "<<tr_name1<<", "<<tr_name1<<", 1"<<endl;
+                sout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
                 if(tr_id1 > 7){
                     tr_save(tr_id1);
                 }
@@ -402,11 +518,13 @@ int main(int argc,char *argv[]){
                 output_tr = tr_id1;
             }
             else if(ptr->at(2) == "exp5>exp5 LT exp6"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << path_name[name_tail].ss.str();
                 int tr_id1 = path_name[name_tail-2].tr_value;
                 string tr_name1 = "$t"+to_string(tr_id1);
                 if(tr_id1 > 7){
                     tr_load(tr_id1);
-                    cout << "move $t8, $t9"<<endl;
+                    sout << "move $t8, $t9"<<endl;
                     tr_name1 = "$t8";
                 }
                 int tr_id2 = path_name[name_tail].tr_value;
@@ -415,8 +533,8 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                cout << "slt "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
-                cout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
+                sout << "slt "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                sout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
                 if(tr_id1 > 7){
                     tr_save(tr_id1);
                 }
@@ -424,11 +542,13 @@ int main(int argc,char *argv[]){
                 output_tr = tr_id1;
             }
             else if(ptr->at(2) == "exp5>exp5 GT exp6"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << path_name[name_tail].ss.str();
                 int tr_id1 = path_name[name_tail-2].tr_value;
                 string tr_name1 = "$t"+to_string(tr_id1);
                 if(tr_id1 > 7){
                     tr_load(tr_id1);
-                    cout << "move $t8, $t9"<<endl;
+                    sout << "move $t8, $t9"<<endl;
                     tr_name1 = "$t8";
                 }
                 int tr_id2 = path_name[name_tail].tr_value;
@@ -437,8 +557,8 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                cout << "slt "<<tr_name1<<", "<<tr_name2<<", "<<tr_name1<<endl;
-                cout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
+                sout << "slt "<<tr_name1<<", "<<tr_name2<<", "<<tr_name1<<endl;
+                sout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
                 if(tr_id1 > 7){
                     tr_save(tr_id1);
                 }
@@ -446,11 +566,13 @@ int main(int argc,char *argv[]){
                 output_tr = tr_id1;
             }
             else if(ptr->at(2) == "exp5>exp5 LTEQ exp6"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << path_name[name_tail].ss.str();
                 int tr_id1 = path_name[name_tail-2].tr_value;
                 string tr_name1 = "$t"+to_string(tr_id1);
                 if(tr_id1 > 7){
                     tr_load(tr_id1);
-                    cout << "move $t8, $t9"<<endl;
+                    sout << "move $t8, $t9"<<endl;
                     tr_name1 = "$t8";
                 }
                 int tr_id2 = path_name[name_tail].tr_value;
@@ -459,9 +581,9 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                cout << "slt "<<tr_name1<<", "<<tr_name2<<", "<<tr_name1<<endl;
-                cout << "xori "<<tr_name1<<", "<<tr_name1<<", 0x1"<<endl;
-                cout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
+                sout << "slt "<<tr_name1<<", "<<tr_name2<<", "<<tr_name1<<endl;
+                sout << "xori "<<tr_name1<<", "<<tr_name1<<", 0x1"<<endl;
+                sout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
                 if(tr_id1 > 7){
                     tr_save(tr_id1);
                 }
@@ -469,11 +591,13 @@ int main(int argc,char *argv[]){
                 output_tr = tr_id1;
             }
             else if(ptr->at(2) == "exp5>exp5 GTEQ exp6"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << path_name[name_tail].ss.str();
                 int tr_id1 = path_name[name_tail-2].tr_value;
                 string tr_name1 = "$t"+to_string(tr_id1);
                 if(tr_id1 > 7){
                     tr_load(tr_id1);
-                    cout << "move $t8, $t9"<<endl;
+                    sout << "move $t8, $t9"<<endl;
                     tr_name1 = "$t8";
                 }
                 int tr_id2 = path_name[name_tail].tr_value;
@@ -482,9 +606,9 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                cout << "slt "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
-                cout << "xori "<<tr_name1<<", "<<tr_name1<<", 0x1"<<endl;
-                cout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
+                sout << "slt "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                sout << "xori "<<tr_name1<<", "<<tr_name1<<", 0x1"<<endl;
+                sout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
                 if(tr_id1 > 7){
                     tr_save(tr_id1);
                 }
@@ -492,11 +616,13 @@ int main(int argc,char *argv[]){
                 output_tr = tr_id1;
             }
             else if(ptr->at(2) == "exp6>exp6 SHL_OP exp7"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << path_name[name_tail].ss.str();
                 int tr_id1 = path_name[name_tail-2].tr_value;
                 string tr_name1 = "$t"+to_string(tr_id1);
                 if(tr_id1 > 7){
                     tr_load(tr_id1);
-                    cout << "move $t8, $t9"<<endl;
+                    sout << "move $t8, $t9"<<endl;
                     tr_name1 = "$t8";
                 }
                 int tr_id2 = path_name[name_tail].tr_value;
@@ -505,7 +631,7 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                cout << "sll "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                sout << "sllv "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
                 if(tr_id1 > 7){
                     tr_save(tr_id1);
                 }
@@ -513,11 +639,13 @@ int main(int argc,char *argv[]){
                 output_tr = tr_id1;
             }
             else if(ptr->at(2) == "exp6>exp6 SHR_OP exp7"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << path_name[name_tail].ss.str();
                 int tr_id1 = path_name[name_tail-2].tr_value;
                 string tr_name1 = "$t"+to_string(tr_id1);
                 if(tr_id1 > 7){
                     tr_load(tr_id1);
-                    cout << "move $t8, $t9"<<endl;
+                    sout << "move $t8, $t9"<<endl;
                     tr_name1 = "$t8";
                 }
                 int tr_id2 = path_name[name_tail].tr_value;
@@ -526,7 +654,7 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                cout << "sra "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                sout << "srav "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
                 if(tr_id1 > 7){
                     tr_save(tr_id1);
                 }
@@ -534,11 +662,13 @@ int main(int argc,char *argv[]){
                 output_tr = tr_id1;
             }
             else if(ptr->at(2) == "exp7>exp7 MINUS exp8"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << path_name[name_tail].ss.str();
                 int tr_id1 = path_name[name_tail-2].tr_value;
                 string tr_name1 = "$t"+to_string(tr_id1);
                 if(tr_id1 > 7){
                     tr_load(tr_id1);
-                    cout << "move $t8, $t9"<<endl;
+                    sout << "move $t8, $t9"<<endl;
                     tr_name1 = "$t8";
                 }
                 int tr_id2 = path_name[name_tail].tr_value;
@@ -547,7 +677,7 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                cout << "subu "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                sout << "subu "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
                 if(tr_id1 > 7){
                     tr_save(tr_id1);
                 }
@@ -555,11 +685,13 @@ int main(int argc,char *argv[]){
                 output_tr = tr_id1;
             }
             else if(ptr->at(2) == "exp7>exp7 PLUS exp8"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << path_name[name_tail].ss.str();
                 int tr_id1 = path_name[name_tail-2].tr_value;
                 string tr_name1 = "$t"+to_string(tr_id1);
                 if(tr_id1 > 7){
                     tr_load(tr_id1);
-                    cout << "move $t8, $t9"<<endl;
+                    sout << "move $t8, $t9"<<endl;
                     tr_name1 = "$t8";
                 }
                 int tr_id2 = path_name[name_tail].tr_value;
@@ -568,7 +700,7 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                cout << "addu "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
+                sout << "addu "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
                 if(tr_id1 > 7){
                     tr_save(tr_id1);
                 }
@@ -576,11 +708,13 @@ int main(int argc,char *argv[]){
                 output_tr = tr_id1;
             }
             else if(ptr->at(2) == "exp8>exp8 MUL_OP exp9"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << path_name[name_tail].ss.str();
                 int tr_id1 = path_name[name_tail-2].tr_value;
                 string tr_name1 = "$t"+to_string(tr_id1);
                 if(tr_id1 > 7){
                     tr_load(tr_id1);
-                    cout << "move $t8, $t9"<<endl;
+                    sout << "move $t8, $t9"<<endl;
                     tr_name1 = "$t8";
                 }
                 int tr_id2 = path_name[name_tail].tr_value;
@@ -589,8 +723,8 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                cout << "mult "<<tr_name1<<", "<<tr_name2<<endl;
-                cout << "mflo "<<tr_name1<<endl;
+                sout << "mult "<<tr_name1<<", "<<tr_name2<<endl;
+                sout << "mflo "<<tr_name1<<endl;
                 if(tr_id1 > 7){
                     tr_save(tr_id1);
                 }
@@ -598,11 +732,13 @@ int main(int argc,char *argv[]){
                 output_tr = tr_id1;
             }
             else if(ptr->at(2) == "exp8>exp8 DIV_OP exp9"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << path_name[name_tail].ss.str();
                 int tr_id1 = path_name[name_tail-2].tr_value;
                 string tr_name1 = "$t"+to_string(tr_id1);
                 if(tr_id1 > 7){
                     tr_load(tr_id1);
-                    cout << "move $t8, $t9"<<endl;
+                    sout << "move $t8, $t9"<<endl;
                     tr_name1 = "$t8";
                 }
                 int tr_id2 = path_name[name_tail].tr_value;
@@ -611,11 +747,11 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                cout << "bne "<<tr_name2<<", "<<"$0"<<", 1f"<<endl;
-                cout << "div $0, "<<tr_name1<<", "<<tr_name2<<endl;
-                cout << "break 7"<<endl;
-                cout << "mfhi "<<tr_name1<<endl;
-                cout << "mflo "<<tr_name1<<endl;
+                sout << "bne "<<tr_name2<<", "<<"$0"<<", 1f"<<endl;
+                sout << "div $0, "<<tr_name1<<", "<<tr_name2<<endl;
+                sout << "break 7"<<endl;
+                sout << "mfhi "<<tr_name1<<endl;
+                sout << "mflo "<<tr_name1<<endl;
                 if(tr_id1 > 7){
                     tr_save(tr_id1);
                 }
@@ -623,16 +759,17 @@ int main(int argc,char *argv[]){
                 output_tr = tr_id1;
             }
             else if(ptr->at(2) == "exp9>NOT_OP exp9"){
+                sout << path_name[name_tail].ss.str();
                 int tr_id = path_name[name_tail].tr_value;
                 string tr_name = "$t"+to_string(tr_id);
                 if(tr_id > 7){
                     tr_load(tr_id);
                     tr_name = "$t9";
                 }
-                cout << "sltu "<<tr_name<<", "<<tr_name<<", 1"<<endl;
-                cout << "andi "<<tr_name<<", "<<tr_name<<", 0x00ff"<<endl;
+                sout << "sltu "<<tr_name<<", "<<tr_name<<", 1"<<endl;
+                sout << "andi "<<tr_name<<", "<<tr_name<<", 0x00ff"<<endl;
                 if(tr_id > 7){
-                    cout << "move $t8, $t9"<<endl;
+                    sout << "move $t8, $t9"<<endl;
                     tr_save(tr_id);
                 }
                 output_tr = tr_id;
@@ -647,14 +784,15 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id);
                     tr_name = "$t9";
                 }
-                cout << "subu "<<tr_name<<", $0, "<<tr_name<<endl;
+                sout << "subu "<<tr_name<<", $0, "<<tr_name<<endl;
                 if(tr_id > 7){
-                    cout << "move $t8, $t9"<<endl;
+                    sout << "move $t8, $t9"<<endl;
                     tr_save(tr_id);
                 }
                 output_tr = tr_id;
             }
             else if(ptr->at(2) == "declaration>ID ASSIGN exp"){
+                sout << path_name[name_tail].ss.str();
                 string id_name = path_name[name_tail-2].token_value;
                 int sr_id;
                 if(sr_map.count(id_name)){
@@ -672,14 +810,15 @@ int main(int argc,char *argv[]){
                 }
                 discard_tr(tr_id);
                 if(sr_id > 7){
-                    cout << "move $t8, "<<tr_name<<endl;
-                    sr_load(sr_id);
+                    sout << "move $t8, "<<tr_name<<endl;
+                    sr_save(sr_id);
                 }
                 else{
-                    cout << "move $s"<<sr_id<<", "<<tr_name<<endl;
+                    sout << "move $s"<<sr_id<<", "<<tr_name<<endl;
                 }
             }
             else if(ptr->at(2) == "assign_statement>ID ASSIGN exp"){
+                sout << path_name[name_tail].ss.str();
                 string id_name = path_name[name_tail-2].token_value;
                 int sr_id = sr_map[id_name];
                 int tr_id = path_name[name_tail].tr_value;
@@ -690,14 +829,15 @@ int main(int argc,char *argv[]){
                 }
                 discard_tr(tr_id);
                 if(sr_id > 7){
-                    cout << "move $t8, "<<tr_name<<endl;
-                    sr_load(sr_id);
+                    sout << "move $t8, "<<tr_name<<endl;
+                    sr_save(sr_id);
                 }
                 else{
-                    cout << "move $s"<<sr_id<<", "<<tr_name<<endl;
+                    sout << "move $s"<<sr_id<<", "<<tr_name<<endl;
                 }
             }
             else if(ptr->at(2) == "assign_statement>ID LSQUARE INT_NUM RSQUARE ASSIGN exp"){
+                sout << path_name[name_tail].ss.str();
                 string id_name = path_name[name_tail-5].token_value + "[" + path_name[name_tail-3].token_value + "]";
                 int sr_id = sr_map[id_name];
                 int tr_id = path_name[name_tail].tr_value;
@@ -708,12 +848,39 @@ int main(int argc,char *argv[]){
                 }
                 discard_tr(tr_id);
                 if(sr_id > 7){
-                    cout << "move $t8, "<<tr_name<<endl;
-                    sr_load(sr_id);
+                    sout << "move $t8, "<<tr_name<<endl;
+                    sr_save(sr_id);
                 }
                 else{
-                    cout << "move $s"<<sr_id<<", "<<tr_name<<endl;
+                    sout << "move $s"<<sr_id<<", "<<tr_name<<endl;
                 }
+            }
+            else if(ptr->at(2) == "read_statement>READ LPAR ID RPAR"){
+                sout << "addi $v0, $0, 5"<<endl;
+                sout << "syscall"<<endl;
+                int sr_id = sr_map[path_name[name_tail-1].token_value];
+                string sr_name = "$s"+to_string(sr_id);
+                if(sr_id > 7){
+                    sr_name = "$t8";
+                    sout << "add "<<sr_name<<",$v0, $0"<<endl;
+                    sr_save(sr_id);
+                }
+                else{
+                    sout << "add "<<sr_name<<",$v0, $0"<<endl;
+                }
+            }
+            else if(ptr->at(2) == "write_statement>WRITE LPAR exp RPAR"){
+                sout << path_name[name_tail-1].ss.str();
+                int tr_id = path_name[name_tail-1].tr_value;
+                string tr_name = "$t"+to_string(tr_id);
+                if(tr_id > 7){
+                    tr_load(tr_id);
+                    tr_name = "$t9";
+                }
+                sout << "addi $v0, $0, 1"<<endl;
+                sout << "add $a0, "<<tr_name<<", $0"<<endl;
+                sout << "syscall"<<endl;
+                discard_tr(tr_id);
             }
             // Discussion ends, pop out the old tokens
 
@@ -731,7 +898,7 @@ int main(int argc,char *argv[]){
 
             //  Announcement #2
             int old_current_state = path_num.back();
-            token old_next_type = {reduce_map[current_state][next_type.type_name][1], "", output_tr};
+            token old_next_type = token(reduce_map[current_state][next_type.type_name][1], "", output_tr, sout);
             path_name.push_back(old_next_type);
             path_num.push_back(shift_map[old_current_state][old_next_type.type_name]);
             current_state = shift_map[old_current_state][old_next_type.type_name];
@@ -746,7 +913,7 @@ int main(int argc,char *argv[]){
         }
         // There exists neither shift ops or reduce ops in the phasing table
         else{
-            cout << "declined!"<<endl;
+            if(DEBUG_MODE) cout << "declined!"<<endl;
             break;
         }
 

@@ -1,379 +1,1400 @@
-Scanned Tokens:
-INT ID ASSIGN INT_NUM SEMI INT ID ASSIGN INT_NUM SEMI INT ID LSQUARE INT_NUM RSQUARE SEMI INT ID ASSIGN INT_NUM SEMI INT ID ASSIGN INT_NUM SEMI INT ID ASSIGN INT_NUM SEMI INT ID ASSIGN INT_NUM SEMI INT ID ASSIGN INT_NUM SEMI INT ID ASSIGN INT_NUM SEMI INT ID ASSIGN INT_NUM SEMI INT ID ASSIGN INT_NUM SEMI INT ID ASSIGN INT_NUM SEMI INT ID ASSIGN INT_NUM SEMI INT ID ASSIGN INT_NUM SEMI INT ID SEMI READ LPAR ID RPAR SEMI ID LSQUARE INT_NUM RSQUARE ASSIGN INT_NUM SEMI ID ASSIGN ID LSQUARE INT_NUM RSQUARE SEMI ID LSQUARE INT_NUM RSQUARE ASSIGN ID SHL_OP INT_NUM SEMI WRITE LPAR ID PLUS ID PLUS ID LSQUARE INT_NUM RSQUARE PLUS ID PLUS ID PLUS ID PLUS ID PLUS ID PLUS ID PLUS ID PLUS ID PLUS ID PLUS ID PLUS ID PLUS ID RPAR SEMI RETURN SEMI EOF
+Next type = READ
+Reduce by grammar var_declarations>var_declarations var_declaration
+Next type = INT
+Reduce by grammar var_declarations>var_declarations var_declaration
+Next type = INT
+Reduce by grammar var_declarations>var_declarations var_declaration
+Next type = INT
+Reduce by grammar var_declarations>var_declarations var_declaration
+Next type = INT
+Reduce by grammar var_declarations>var_declarations var_declaration
+Next type = INT
+Reduce by grammar var_declarations>var_declarations var_declaration
+Next type = INT
+Reduce by grammar var_declarations>var_declarations var_declaration
+Next type = INT
+Reduce by grammar var_declarations>var_declarations var_declaration
+Next type = INT
+Reduce by grammar var_declarations>var_declarations var_declaration
+Next type = INT
+Reduce by grammar var_declarations>var_declarations var_declaration
+Next type = INT
+Reduce by grammar var_declarations>var_declarations var_declaration
+Next type = INT
+Reduce by grammar var_declarations>var_declarations var_declaration
+Next type = INT
+Reduce by grammar var_declarations>var_declarations var_declaration
+Next type = INT
+Reduce by grammar var_declarations>var_declarations var_declaration
+Next type = INT
+Reduce by grammar var_declarations>var_declaration
+Next type = INT
+Reduce by grammar var_declaration>INT declaration_list SEMI
+Next type = SEMI
+Reduce by grammar declaration_list>declaration
+Next type = SEMI
+Reduce by grammar declaration>ID ASSIGN exp
+Next type = SEMI
+Reduce by grammar exp>exp1
+Next type = SEMI
+Reduce by grammar exp1>exp2
+Next type = SEMI
+Reduce by grammar exp2>exp3
+Next type = SEMI
+Reduce by grammar exp3>exp4
+Next type = SEMI
+Reduce by grammar exp4>exp5
+Next type = SEMI
+Reduce by grammar exp5>exp6
+Next type = SEMI
+Reduce by grammar exp6>exp7
+Next type = SEMI
+Reduce by grammar exp7>exp8
+Next type = SEMI
+Reduce by grammar exp8>exp9
+Next type = SEMI
+Reduce by grammar exp9>exp10
+Next type = SEMI
+Reduce by grammar exp10>INT_NUM
+li $t0, 1
+current situation: INT ID ASSIGN | exp10
 
-Parsing Process:
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: declaration>ID ASSIGN exp
-		reduce by grammar: declaration_list>declaration
-		reduce by grammar: var_declaration>INT declaration_list SEMI
-		reduce by grammar: var_declarations>var_declaration
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: declaration>ID ASSIGN exp
-		reduce by grammar: declaration_list>declaration
-		reduce by grammar: var_declaration>INT declaration_list SEMI
-		reduce by grammar: var_declarations>var_declarations var_declaration
-		reduce by grammar: declaration>ID LSQUARE INT_NUM RSQUARE
-		reduce by grammar: declaration_list>declaration
-		reduce by grammar: var_declaration>INT declaration_list SEMI
-		reduce by grammar: var_declarations>var_declarations var_declaration
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: declaration>ID ASSIGN exp
-		reduce by grammar: declaration_list>declaration
-		reduce by grammar: var_declaration>INT declaration_list SEMI
-		reduce by grammar: var_declarations>var_declarations var_declaration
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: declaration>ID ASSIGN exp
-		reduce by grammar: declaration_list>declaration
-		reduce by grammar: var_declaration>INT declaration_list SEMI
-		reduce by grammar: var_declarations>var_declarations var_declaration
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: declaration>ID ASSIGN exp
-		reduce by grammar: declaration_list>declaration
-		reduce by grammar: var_declaration>INT declaration_list SEMI
-		reduce by grammar: var_declarations>var_declarations var_declaration
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: declaration>ID ASSIGN exp
-		reduce by grammar: declaration_list>declaration
-		reduce by grammar: var_declaration>INT declaration_list SEMI
-		reduce by grammar: var_declarations>var_declarations var_declaration
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: declaration>ID ASSIGN exp
-		reduce by grammar: declaration_list>declaration
-		reduce by grammar: var_declaration>INT declaration_list SEMI
-		reduce by grammar: var_declarations>var_declarations var_declaration
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: declaration>ID ASSIGN exp
-		reduce by grammar: declaration_list>declaration
-		reduce by grammar: var_declaration>INT declaration_list SEMI
-		reduce by grammar: var_declarations>var_declarations var_declaration
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: declaration>ID ASSIGN exp
-		reduce by grammar: declaration_list>declaration
-		reduce by grammar: var_declaration>INT declaration_list SEMI
-		reduce by grammar: var_declarations>var_declarations var_declaration
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: declaration>ID ASSIGN exp
-		reduce by grammar: declaration_list>declaration
-		reduce by grammar: var_declaration>INT declaration_list SEMI
-		reduce by grammar: var_declarations>var_declarations var_declaration
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: declaration>ID ASSIGN exp
-		reduce by grammar: declaration_list>declaration
-		reduce by grammar: var_declaration>INT declaration_list SEMI
-		reduce by grammar: var_declarations>var_declarations var_declaration
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: declaration>ID ASSIGN exp
-		reduce by grammar: declaration_list>declaration
-		reduce by grammar: var_declaration>INT declaration_list SEMI
-		reduce by grammar: var_declarations>var_declarations var_declaration
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: declaration>ID ASSIGN exp
-		reduce by grammar: declaration_list>declaration
-		reduce by grammar: var_declaration>INT declaration_list SEMI
-		reduce by grammar: var_declarations>var_declarations var_declaration
-		reduce by grammar: declaration>ID
-		reduce by grammar: declaration_list>declaration
-		reduce by grammar: var_declaration>INT declaration_list SEMI
-		reduce by grammar: var_declarations>var_declarations var_declaration
-		reduce by grammar: read_statement>READ LPAR ID RPAR
-		reduce by grammar: read_write_statement>read_statement
-		reduce by grammar: statement>read_write_statement SEMI
-		reduce by grammar: statements>statement
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: assign_statement>ID LSQUARE exp RSQUARE ASSIGN exp
-		reduce by grammar: statement>assign_statement SEMI
-		reduce by grammar: statements>statements statement
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: exp10>ID LSQUARE exp RSQUARE
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: assign_statement>ID ASSIGN exp
-		reduce by grammar: statement>assign_statement SEMI
-		reduce by grammar: statements>statements statement
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp6 SHL_OP exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: assign_statement>ID LSQUARE exp RSQUARE ASSIGN exp
-		reduce by grammar: statement>assign_statement SEMI
-		reduce by grammar: statements>statements statement
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp7 PLUS exp8
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: exp10>ID LSQUARE exp RSQUARE
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp7 PLUS exp8
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp7 PLUS exp8
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp7 PLUS exp8
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp7 PLUS exp8
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp7 PLUS exp8
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp7 PLUS exp8
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp7 PLUS exp8
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp7 PLUS exp8
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp7 PLUS exp8
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp7 PLUS exp8
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp7 PLUS exp8
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp7 PLUS exp8
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp7 PLUS exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: write_statement>WRITE LPAR exp RPAR
-		reduce by grammar: read_write_statement>write_statement
-		reduce by grammar: statement>read_write_statement SEMI
-		reduce by grammar: statements>statements statement
-		reduce by grammar: return_statement>RETURN
-		reduce by grammar: control_statement>return_statement SEMI
-		reduce by grammar: statement>control_statement
-		reduce by grammar: statements>statements statement
-		reduce by grammar: program>var_declarations statements
+current situation: INT ID ASSIGN | exp9
+
+current situation: INT ID ASSIGN | exp8
+
+current situation: INT ID ASSIGN | exp7
+
+current situation: INT ID ASSIGN | exp6
+
+current situation: INT ID ASSIGN | exp5
+
+current situation: INT ID ASSIGN | exp4
+
+current situation: INT ID ASSIGN | exp3
+
+current situation: INT ID ASSIGN | exp2
+
+current situation: INT ID ASSIGN | exp1
+
+current situation: INT ID ASSIGN | exp
+
+move $s0, $t0
+current situation: INT | declaration
+
+current situation: INT | declaration_list
+
+current situation: | var_declaration
+
+current situation: | var_declarations
+
+Next type = INT
+Reduce by grammar var_declaration>INT declaration_list SEMI
+Next type = SEMI
+Reduce by grammar declaration_list>declaration
+Next type = SEMI
+Reduce by grammar declaration>ID ASSIGN exp
+Next type = SEMI
+Reduce by grammar exp>exp1
+Next type = SEMI
+Reduce by grammar exp1>exp2
+Next type = SEMI
+Reduce by grammar exp2>exp3
+Next type = SEMI
+Reduce by grammar exp3>exp4
+Next type = SEMI
+Reduce by grammar exp4>exp5
+Next type = SEMI
+Reduce by grammar exp5>exp6
+Next type = SEMI
+Reduce by grammar exp6>exp7
+Next type = SEMI
+Reduce by grammar exp7>exp8
+Next type = SEMI
+Reduce by grammar exp8>exp9
+Next type = SEMI
+Reduce by grammar exp9>exp10
+Next type = SEMI
+Reduce by grammar exp10>INT_NUM
+li $t0, 1
+current situation: var_declarations INT ID ASSIGN | exp10
+
+current situation: var_declarations INT ID ASSIGN | exp9
+
+current situation: var_declarations INT ID ASSIGN | exp8
+
+current situation: var_declarations INT ID ASSIGN | exp7
+
+current situation: var_declarations INT ID ASSIGN | exp6
+
+current situation: var_declarations INT ID ASSIGN | exp5
+
+current situation: var_declarations INT ID ASSIGN | exp4
+
+current situation: var_declarations INT ID ASSIGN | exp3
+
+current situation: var_declarations INT ID ASSIGN | exp2
+
+current situation: var_declarations INT ID ASSIGN | exp1
+
+current situation: var_declarations INT ID ASSIGN | exp
+
+move $s1, $t0
+current situation: var_declarations INT | declaration
+
+current situation: var_declarations INT | declaration_list
+
+current situation: var_declarations | var_declaration
+
+current situation: | var_declarations
+
+Next type = INT
+Reduce by grammar var_declaration>INT declaration_list SEMI
+Next type = SEMI
+Reduce by grammar declaration_list>declaration
+Next type = SEMI
+Reduce by grammar declaration>ID LSQUARE INT_NUM RSQUARE
+current situation: var_declarations INT | declaration
+
+current situation: var_declarations INT | declaration_list
+
+current situation: var_declarations | var_declaration
+
+current situation: | var_declarations
+
+Next type = INT
+Reduce by grammar var_declaration>INT declaration_list SEMI
+Next type = SEMI
+Reduce by grammar declaration_list>declaration
+Next type = SEMI
+Reduce by grammar declaration>ID ASSIGN exp
+Next type = SEMI
+Reduce by grammar exp>exp1
+Next type = SEMI
+Reduce by grammar exp1>exp2
+Next type = SEMI
+Reduce by grammar exp2>exp3
+Next type = SEMI
+Reduce by grammar exp3>exp4
+Next type = SEMI
+Reduce by grammar exp4>exp5
+Next type = SEMI
+Reduce by grammar exp5>exp6
+Next type = SEMI
+Reduce by grammar exp6>exp7
+Next type = SEMI
+Reduce by grammar exp7>exp8
+Next type = SEMI
+Reduce by grammar exp8>exp9
+Next type = SEMI
+Reduce by grammar exp9>exp10
+Next type = SEMI
+Reduce by grammar exp10>INT_NUM
+li $t0, 1
+current situation: var_declarations INT ID ASSIGN | exp10
+
+current situation: var_declarations INT ID ASSIGN | exp9
+
+current situation: var_declarations INT ID ASSIGN | exp8
+
+current situation: var_declarations INT ID ASSIGN | exp7
+
+current situation: var_declarations INT ID ASSIGN | exp6
+
+current situation: var_declarations INT ID ASSIGN | exp5
+
+current situation: var_declarations INT ID ASSIGN | exp4
+
+current situation: var_declarations INT ID ASSIGN | exp3
+
+current situation: var_declarations INT ID ASSIGN | exp2
+
+current situation: var_declarations INT ID ASSIGN | exp1
+
+current situation: var_declarations INT ID ASSIGN | exp
+
+move $s4, $t0
+current situation: var_declarations INT | declaration
+
+current situation: var_declarations INT | declaration_list
+
+current situation: var_declarations | var_declaration
+
+current situation: | var_declarations
+
+Next type = INT
+Reduce by grammar var_declaration>INT declaration_list SEMI
+Next type = SEMI
+Reduce by grammar declaration_list>declaration
+Next type = SEMI
+Reduce by grammar declaration>ID ASSIGN exp
+Next type = SEMI
+Reduce by grammar exp>exp1
+Next type = SEMI
+Reduce by grammar exp1>exp2
+Next type = SEMI
+Reduce by grammar exp2>exp3
+Next type = SEMI
+Reduce by grammar exp3>exp4
+Next type = SEMI
+Reduce by grammar exp4>exp5
+Next type = SEMI
+Reduce by grammar exp5>exp6
+Next type = SEMI
+Reduce by grammar exp6>exp7
+Next type = SEMI
+Reduce by grammar exp7>exp8
+Next type = SEMI
+Reduce by grammar exp8>exp9
+Next type = SEMI
+Reduce by grammar exp9>exp10
+Next type = SEMI
+Reduce by grammar exp10>INT_NUM
+li $t0, 1
+current situation: var_declarations INT ID ASSIGN | exp10
+
+current situation: var_declarations INT ID ASSIGN | exp9
+
+current situation: var_declarations INT ID ASSIGN | exp8
+
+current situation: var_declarations INT ID ASSIGN | exp7
+
+current situation: var_declarations INT ID ASSIGN | exp6
+
+current situation: var_declarations INT ID ASSIGN | exp5
+
+current situation: var_declarations INT ID ASSIGN | exp4
+
+current situation: var_declarations INT ID ASSIGN | exp3
+
+current situation: var_declarations INT ID ASSIGN | exp2
+
+current situation: var_declarations INT ID ASSIGN | exp1
+
+current situation: var_declarations INT ID ASSIGN | exp
+
+move $s5, $t0
+current situation: var_declarations INT | declaration
+
+current situation: var_declarations INT | declaration_list
+
+current situation: var_declarations | var_declaration
+
+current situation: | var_declarations
+
+Next type = INT
+Reduce by grammar var_declaration>INT declaration_list SEMI
+Next type = SEMI
+Reduce by grammar declaration_list>declaration
+Next type = SEMI
+Reduce by grammar declaration>ID ASSIGN exp
+Next type = SEMI
+Reduce by grammar exp>exp1
+Next type = SEMI
+Reduce by grammar exp1>exp2
+Next type = SEMI
+Reduce by grammar exp2>exp3
+Next type = SEMI
+Reduce by grammar exp3>exp4
+Next type = SEMI
+Reduce by grammar exp4>exp5
+Next type = SEMI
+Reduce by grammar exp5>exp6
+Next type = SEMI
+Reduce by grammar exp6>exp7
+Next type = SEMI
+Reduce by grammar exp7>exp8
+Next type = SEMI
+Reduce by grammar exp8>exp9
+Next type = SEMI
+Reduce by grammar exp9>exp10
+Next type = SEMI
+Reduce by grammar exp10>INT_NUM
+li $t0, 1
+current situation: var_declarations INT ID ASSIGN | exp10
+
+current situation: var_declarations INT ID ASSIGN | exp9
+
+current situation: var_declarations INT ID ASSIGN | exp8
+
+current situation: var_declarations INT ID ASSIGN | exp7
+
+current situation: var_declarations INT ID ASSIGN | exp6
+
+current situation: var_declarations INT ID ASSIGN | exp5
+
+current situation: var_declarations INT ID ASSIGN | exp4
+
+current situation: var_declarations INT ID ASSIGN | exp3
+
+current situation: var_declarations INT ID ASSIGN | exp2
+
+current situation: var_declarations INT ID ASSIGN | exp1
+
+current situation: var_declarations INT ID ASSIGN | exp
+
+move $s6, $t0
+current situation: var_declarations INT | declaration
+
+current situation: var_declarations INT | declaration_list
+
+current situation: var_declarations | var_declaration
+
+current situation: | var_declarations
+
+Next type = INT
+Reduce by grammar var_declaration>INT declaration_list SEMI
+Next type = SEMI
+Reduce by grammar declaration_list>declaration
+Next type = SEMI
+Reduce by grammar declaration>ID ASSIGN exp
+Next type = SEMI
+Reduce by grammar exp>exp1
+Next type = SEMI
+Reduce by grammar exp1>exp2
+Next type = SEMI
+Reduce by grammar exp2>exp3
+Next type = SEMI
+Reduce by grammar exp3>exp4
+Next type = SEMI
+Reduce by grammar exp4>exp5
+Next type = SEMI
+Reduce by grammar exp5>exp6
+Next type = SEMI
+Reduce by grammar exp6>exp7
+Next type = SEMI
+Reduce by grammar exp7>exp8
+Next type = SEMI
+Reduce by grammar exp8>exp9
+Next type = SEMI
+Reduce by grammar exp9>exp10
+Next type = SEMI
+Reduce by grammar exp10>INT_NUM
+li $t0, 1
+current situation: var_declarations INT ID ASSIGN | exp10
+
+current situation: var_declarations INT ID ASSIGN | exp9
+
+current situation: var_declarations INT ID ASSIGN | exp8
+
+current situation: var_declarations INT ID ASSIGN | exp7
+
+current situation: var_declarations INT ID ASSIGN | exp6
+
+current situation: var_declarations INT ID ASSIGN | exp5
+
+current situation: var_declarations INT ID ASSIGN | exp4
+
+current situation: var_declarations INT ID ASSIGN | exp3
+
+current situation: var_declarations INT ID ASSIGN | exp2
+
+current situation: var_declarations INT ID ASSIGN | exp1
+
+current situation: var_declarations INT ID ASSIGN | exp
+
+move $s7, $t0
+current situation: var_declarations INT | declaration
+
+current situation: var_declarations INT | declaration_list
+
+current situation: var_declarations | var_declaration
+
+current situation: | var_declarations
+
+Next type = INT
+Reduce by grammar var_declaration>INT declaration_list SEMI
+Next type = SEMI
+Reduce by grammar declaration_list>declaration
+Next type = SEMI
+Reduce by grammar declaration>ID ASSIGN exp
+Next type = SEMI
+Reduce by grammar exp>exp1
+Next type = SEMI
+Reduce by grammar exp1>exp2
+Next type = SEMI
+Reduce by grammar exp2>exp3
+Next type = SEMI
+Reduce by grammar exp3>exp4
+Next type = SEMI
+Reduce by grammar exp4>exp5
+Next type = SEMI
+Reduce by grammar exp5>exp6
+Next type = SEMI
+Reduce by grammar exp6>exp7
+Next type = SEMI
+Reduce by grammar exp7>exp8
+Next type = SEMI
+Reduce by grammar exp8>exp9
+Next type = SEMI
+Reduce by grammar exp9>exp10
+Next type = SEMI
+Reduce by grammar exp10>INT_NUM
+li $t0, 1
+current situation: var_declarations INT ID ASSIGN | exp10
+
+current situation: var_declarations INT ID ASSIGN | exp9
+
+current situation: var_declarations INT ID ASSIGN | exp8
+
+current situation: var_declarations INT ID ASSIGN | exp7
+
+current situation: var_declarations INT ID ASSIGN | exp6
+
+current situation: var_declarations INT ID ASSIGN | exp5
+
+current situation: var_declarations INT ID ASSIGN | exp4
+
+current situation: var_declarations INT ID ASSIGN | exp3
+
+current situation: var_declarations INT ID ASSIGN | exp2
+
+current situation: var_declarations INT ID ASSIGN | exp1
+
+current situation: var_declarations INT ID ASSIGN | exp
+
+move $t8, $t0
+sw $t8, 0($sp)
+current situation: var_declarations INT | declaration
+
+current situation: var_declarations INT | declaration_list
+
+current situation: var_declarations | var_declaration
+
+current situation: | var_declarations
+
+Next type = INT
+Reduce by grammar var_declaration>INT declaration_list SEMI
+Next type = SEMI
+Reduce by grammar declaration_list>declaration
+Next type = SEMI
+Reduce by grammar declaration>ID ASSIGN exp
+Next type = SEMI
+Reduce by grammar exp>exp1
+Next type = SEMI
+Reduce by grammar exp1>exp2
+Next type = SEMI
+Reduce by grammar exp2>exp3
+Next type = SEMI
+Reduce by grammar exp3>exp4
+Next type = SEMI
+Reduce by grammar exp4>exp5
+Next type = SEMI
+Reduce by grammar exp5>exp6
+Next type = SEMI
+Reduce by grammar exp6>exp7
+Next type = SEMI
+Reduce by grammar exp7>exp8
+Next type = SEMI
+Reduce by grammar exp8>exp9
+Next type = SEMI
+Reduce by grammar exp9>exp10
+Next type = SEMI
+Reduce by grammar exp10>INT_NUM
+li $t0, 1
+current situation: var_declarations INT ID ASSIGN | exp10
+
+current situation: var_declarations INT ID ASSIGN | exp9
+
+current situation: var_declarations INT ID ASSIGN | exp8
+
+current situation: var_declarations INT ID ASSIGN | exp7
+
+current situation: var_declarations INT ID ASSIGN | exp6
+
+current situation: var_declarations INT ID ASSIGN | exp5
+
+current situation: var_declarations INT ID ASSIGN | exp4
+
+current situation: var_declarations INT ID ASSIGN | exp3
+
+current situation: var_declarations INT ID ASSIGN | exp2
+
+current situation: var_declarations INT ID ASSIGN | exp1
+
+current situation: var_declarations INT ID ASSIGN | exp
+
+move $t8, $t0
+sw $t8, 4($sp)
+current situation: var_declarations INT | declaration
+
+current situation: var_declarations INT | declaration_list
+
+current situation: var_declarations | var_declaration
+
+current situation: | var_declarations
+
+Next type = INT
+Reduce by grammar var_declaration>INT declaration_list SEMI
+Next type = SEMI
+Reduce by grammar declaration_list>declaration
+Next type = SEMI
+Reduce by grammar declaration>ID ASSIGN exp
+Next type = SEMI
+Reduce by grammar exp>exp1
+Next type = SEMI
+Reduce by grammar exp1>exp2
+Next type = SEMI
+Reduce by grammar exp2>exp3
+Next type = SEMI
+Reduce by grammar exp3>exp4
+Next type = SEMI
+Reduce by grammar exp4>exp5
+Next type = SEMI
+Reduce by grammar exp5>exp6
+Next type = SEMI
+Reduce by grammar exp6>exp7
+Next type = SEMI
+Reduce by grammar exp7>exp8
+Next type = SEMI
+Reduce by grammar exp8>exp9
+Next type = SEMI
+Reduce by grammar exp9>exp10
+Next type = SEMI
+Reduce by grammar exp10>INT_NUM
+li $t0, 1
+current situation: var_declarations INT ID ASSIGN | exp10
+
+current situation: var_declarations INT ID ASSIGN | exp9
+
+current situation: var_declarations INT ID ASSIGN | exp8
+
+current situation: var_declarations INT ID ASSIGN | exp7
+
+current situation: var_declarations INT ID ASSIGN | exp6
+
+current situation: var_declarations INT ID ASSIGN | exp5
+
+current situation: var_declarations INT ID ASSIGN | exp4
+
+current situation: var_declarations INT ID ASSIGN | exp3
+
+current situation: var_declarations INT ID ASSIGN | exp2
+
+current situation: var_declarations INT ID ASSIGN | exp1
+
+current situation: var_declarations INT ID ASSIGN | exp
+
+move $t8, $t0
+sw $t8, 8($sp)
+current situation: var_declarations INT | declaration
+
+current situation: var_declarations INT | declaration_list
+
+current situation: var_declarations | var_declaration
+
+current situation: | var_declarations
+
+Next type = INT
+Reduce by grammar var_declaration>INT declaration_list SEMI
+Next type = SEMI
+Reduce by grammar declaration_list>declaration
+Next type = SEMI
+Reduce by grammar declaration>ID ASSIGN exp
+Next type = SEMI
+Reduce by grammar exp>exp1
+Next type = SEMI
+Reduce by grammar exp1>exp2
+Next type = SEMI
+Reduce by grammar exp2>exp3
+Next type = SEMI
+Reduce by grammar exp3>exp4
+Next type = SEMI
+Reduce by grammar exp4>exp5
+Next type = SEMI
+Reduce by grammar exp5>exp6
+Next type = SEMI
+Reduce by grammar exp6>exp7
+Next type = SEMI
+Reduce by grammar exp7>exp8
+Next type = SEMI
+Reduce by grammar exp8>exp9
+Next type = SEMI
+Reduce by grammar exp9>exp10
+Next type = SEMI
+Reduce by grammar exp10>INT_NUM
+li $t0, 1
+current situation: var_declarations INT ID ASSIGN | exp10
+
+current situation: var_declarations INT ID ASSIGN | exp9
+
+current situation: var_declarations INT ID ASSIGN | exp8
+
+current situation: var_declarations INT ID ASSIGN | exp7
+
+current situation: var_declarations INT ID ASSIGN | exp6
+
+current situation: var_declarations INT ID ASSIGN | exp5
+
+current situation: var_declarations INT ID ASSIGN | exp4
+
+current situation: var_declarations INT ID ASSIGN | exp3
+
+current situation: var_declarations INT ID ASSIGN | exp2
+
+current situation: var_declarations INT ID ASSIGN | exp1
+
+current situation: var_declarations INT ID ASSIGN | exp
+
+move $t8, $t0
+sw $t8, 12($sp)
+current situation: var_declarations INT | declaration
+
+current situation: var_declarations INT | declaration_list
+
+current situation: var_declarations | var_declaration
+
+current situation: | var_declarations
+
+Next type = INT
+Reduce by grammar var_declaration>INT declaration_list SEMI
+Next type = SEMI
+Reduce by grammar declaration_list>declaration
+Next type = SEMI
+Reduce by grammar declaration>ID ASSIGN exp
+Next type = SEMI
+Reduce by grammar exp>exp1
+Next type = SEMI
+Reduce by grammar exp1>exp2
+Next type = SEMI
+Reduce by grammar exp2>exp3
+Next type = SEMI
+Reduce by grammar exp3>exp4
+Next type = SEMI
+Reduce by grammar exp4>exp5
+Next type = SEMI
+Reduce by grammar exp5>exp6
+Next type = SEMI
+Reduce by grammar exp6>exp7
+Next type = SEMI
+Reduce by grammar exp7>exp8
+Next type = SEMI
+Reduce by grammar exp8>exp9
+Next type = SEMI
+Reduce by grammar exp9>exp10
+Next type = SEMI
+Reduce by grammar exp10>INT_NUM
+li $t0, 1
+current situation: var_declarations INT ID ASSIGN | exp10
+
+current situation: var_declarations INT ID ASSIGN | exp9
+
+current situation: var_declarations INT ID ASSIGN | exp8
+
+current situation: var_declarations INT ID ASSIGN | exp7
+
+current situation: var_declarations INT ID ASSIGN | exp6
+
+current situation: var_declarations INT ID ASSIGN | exp5
+
+current situation: var_declarations INT ID ASSIGN | exp4
+
+current situation: var_declarations INT ID ASSIGN | exp3
+
+current situation: var_declarations INT ID ASSIGN | exp2
+
+current situation: var_declarations INT ID ASSIGN | exp1
+
+current situation: var_declarations INT ID ASSIGN | exp
+
+move $t8, $t0
+sw $t8, 16($sp)
+current situation: var_declarations INT | declaration
+
+current situation: var_declarations INT | declaration_list
+
+current situation: var_declarations | var_declaration
+
+current situation: | var_declarations
+
+Next type = INT
+Reduce by grammar var_declaration>INT declaration_list SEMI
+Next type = SEMI
+Reduce by grammar declaration_list>declaration
+Next type = SEMI
+Reduce by grammar declaration>ID ASSIGN exp
+Next type = SEMI
+Reduce by grammar exp>exp1
+Next type = SEMI
+Reduce by grammar exp1>exp2
+Next type = SEMI
+Reduce by grammar exp2>exp3
+Next type = SEMI
+Reduce by grammar exp3>exp4
+Next type = SEMI
+Reduce by grammar exp4>exp5
+Next type = SEMI
+Reduce by grammar exp5>exp6
+Next type = SEMI
+Reduce by grammar exp6>exp7
+Next type = SEMI
+Reduce by grammar exp7>exp8
+Next type = SEMI
+Reduce by grammar exp8>exp9
+Next type = SEMI
+Reduce by grammar exp9>exp10
+Next type = SEMI
+Reduce by grammar exp10>INT_NUM
+li $t0, 1
+current situation: var_declarations INT ID ASSIGN | exp10
+
+current situation: var_declarations INT ID ASSIGN | exp9
+
+current situation: var_declarations INT ID ASSIGN | exp8
+
+current situation: var_declarations INT ID ASSIGN | exp7
+
+current situation: var_declarations INT ID ASSIGN | exp6
+
+current situation: var_declarations INT ID ASSIGN | exp5
+
+current situation: var_declarations INT ID ASSIGN | exp4
+
+current situation: var_declarations INT ID ASSIGN | exp3
+
+current situation: var_declarations INT ID ASSIGN | exp2
+
+current situation: var_declarations INT ID ASSIGN | exp1
+
+current situation: var_declarations INT ID ASSIGN | exp
+
+move $t8, $t0
+sw $t8, 20($sp)
+current situation: var_declarations INT | declaration
+
+current situation: var_declarations INT | declaration_list
+
+current situation: var_declarations | var_declaration
+
+current situation: | var_declarations
+
+Next type = INT
+Reduce by grammar var_declaration>INT declaration_list SEMI
+Next type = SEMI
+Reduce by grammar declaration_list>declaration
+Next type = SEMI
+Reduce by grammar declaration>ID ASSIGN exp
+Next type = SEMI
+Reduce by grammar exp>exp1
+Next type = SEMI
+Reduce by grammar exp1>exp2
+Next type = SEMI
+Reduce by grammar exp2>exp3
+Next type = SEMI
+Reduce by grammar exp3>exp4
+Next type = SEMI
+Reduce by grammar exp4>exp5
+Next type = SEMI
+Reduce by grammar exp5>exp6
+Next type = SEMI
+Reduce by grammar exp6>exp7
+Next type = SEMI
+Reduce by grammar exp7>exp8
+Next type = SEMI
+Reduce by grammar exp8>exp9
+Next type = SEMI
+Reduce by grammar exp9>exp10
+Next type = SEMI
+Reduce by grammar exp10>INT_NUM
+li $t0, 1
+current situation: var_declarations INT ID ASSIGN | exp10
+
+current situation: var_declarations INT ID ASSIGN | exp9
+
+current situation: var_declarations INT ID ASSIGN | exp8
+
+current situation: var_declarations INT ID ASSIGN | exp7
+
+current situation: var_declarations INT ID ASSIGN | exp6
+
+current situation: var_declarations INT ID ASSIGN | exp5
+
+current situation: var_declarations INT ID ASSIGN | exp4
+
+current situation: var_declarations INT ID ASSIGN | exp3
+
+current situation: var_declarations INT ID ASSIGN | exp2
+
+current situation: var_declarations INT ID ASSIGN | exp1
+
+current situation: var_declarations INT ID ASSIGN | exp
+
+move $t8, $t0
+sw $t8, 24($sp)
+current situation: var_declarations INT | declaration
+
+current situation: var_declarations INT | declaration_list
+
+current situation: var_declarations | var_declaration
+
+current situation: | var_declarations
+
+Next type = READ
+Reduce by grammar var_declaration>INT declaration_list SEMI
+Next type = SEMI
+Reduce by grammar declaration_list>declaration
+Next type = SEMI
+Reduce by grammar declaration>ID
+current situation: var_declarations INT | declaration
+
+current situation: var_declarations INT | declaration_list
+
+current situation: var_declarations | var_declaration
+
+current situation: | var_declarations
+
+Next type = EOF
+Reduce by grammar statements>statements statement
+Next type = RETURN
+Reduce by grammar statements>statements statement
+Next type = WRITE
+Reduce by grammar statements>statements statement
+Next type = ID
+Reduce by grammar statements>statements statement
+Next type = ID
+Reduce by grammar statements>statements statement
+Next type = ID
+Reduce by grammar statements>statement
+Next type = ID
+Reduce by grammar statement>read_write_statement SEMI
+Next type = SEMI
+Reduce by grammar read_write_statement>read_statement
+Next type = SEMI
+Reduce by grammar read_statement>READ LPAR ID RPAR
+addi $v0, $0, 5
+syscall
+add $t8,$v0, $0
+sw $t8, 28($sp)
+current situation: var_declarations | read_statement
+
+current situation: var_declarations | read_write_statement
+
+current situation: var_declarations | statement
+
+current situation: var_declarations | statements
+
+Next type = ID
+Reduce by grammar statement>assign_statement SEMI
+Next type = SEMI
+Reduce by grammar assign_statement>ID LSQUARE INT_NUM RSQUARE ASSIGN exp
+Next type = SEMI
+Reduce by grammar exp>exp1
+Next type = SEMI
+Reduce by grammar exp1>exp2
+Next type = SEMI
+Reduce by grammar exp2>exp3
+Next type = SEMI
+Reduce by grammar exp3>exp4
+Next type = SEMI
+Reduce by grammar exp4>exp5
+Next type = SEMI
+Reduce by grammar exp5>exp6
+Next type = SEMI
+Reduce by grammar exp6>exp7
+Next type = SEMI
+Reduce by grammar exp7>exp8
+Next type = SEMI
+Reduce by grammar exp8>exp9
+Next type = SEMI
+Reduce by grammar exp9>exp10
+Next type = SEMI
+Reduce by grammar exp10>INT_NUM
+li $t0, 1
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp10
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp9
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp8
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp7
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp6
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp5
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp4
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp3
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp2
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp1
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp
+
+move $s2, $t0
+current situation: var_declarations statements | assign_statement
+
+current situation: var_declarations statements | statement
+
+current situation: var_declarations | statements
+
+Next type = ID
+Reduce by grammar statement>assign_statement SEMI
+Next type = SEMI
+Reduce by grammar assign_statement>ID ASSIGN exp
+Next type = SEMI
+Reduce by grammar exp>exp1
+Next type = SEMI
+Reduce by grammar exp1>exp2
+Next type = SEMI
+Reduce by grammar exp2>exp3
+Next type = SEMI
+Reduce by grammar exp3>exp4
+Next type = SEMI
+Reduce by grammar exp4>exp5
+Next type = SEMI
+Reduce by grammar exp5>exp6
+Next type = SEMI
+Reduce by grammar exp6>exp7
+Next type = SEMI
+Reduce by grammar exp7>exp8
+Next type = SEMI
+Reduce by grammar exp8>exp9
+Next type = SEMI
+Reduce by grammar exp9>exp10
+Next type = SEMI
+Reduce by grammar exp10>ID LSQUARE INT_NUM RSQUARE
+move $t0, $s2
+current situation: var_declarations statements ID ASSIGN | exp10
+
+current situation: var_declarations statements ID ASSIGN | exp9
+
+current situation: var_declarations statements ID ASSIGN | exp8
+
+current situation: var_declarations statements ID ASSIGN | exp7
+
+current situation: var_declarations statements ID ASSIGN | exp6
+
+current situation: var_declarations statements ID ASSIGN | exp5
+
+current situation: var_declarations statements ID ASSIGN | exp4
+
+current situation: var_declarations statements ID ASSIGN | exp3
+
+current situation: var_declarations statements ID ASSIGN | exp2
+
+current situation: var_declarations statements ID ASSIGN | exp1
+
+current situation: var_declarations statements ID ASSIGN | exp
+
+move $s0, $t0
+current situation: var_declarations statements | assign_statement
+
+current situation: var_declarations statements | statement
+
+current situation: var_declarations | statements
+
+Next type = WRITE
+Reduce by grammar statement>assign_statement SEMI
+Next type = SEMI
+Reduce by grammar assign_statement>ID LSQUARE INT_NUM RSQUARE ASSIGN exp
+Next type = SEMI
+Reduce by grammar exp>exp1
+Next type = SEMI
+Reduce by grammar exp1>exp2
+Next type = SEMI
+Reduce by grammar exp2>exp3
+Next type = SEMI
+Reduce by grammar exp3>exp4
+Next type = SEMI
+Reduce by grammar exp4>exp5
+Next type = SEMI
+Reduce by grammar exp5>exp6
+Next type = SEMI
+Reduce by grammar exp6>exp6 SHL_OP exp7
+Next type = SHL_OP
+Reduce by grammar exp6>exp7
+Next type = SHL_OP
+Reduce by grammar exp7>exp8
+Next type = SHL_OP
+Reduce by grammar exp8>exp9
+Next type = SHL_OP
+Reduce by grammar exp9>exp10
+Next type = SHL_OP
+Reduce by grammar exp10>ID
+move $t0, $s0
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp10
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp9
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp8
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp7
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp6
+
+Next type = SEMI
+Reduce by grammar exp7>exp8
+Next type = SEMI
+Reduce by grammar exp8>exp9
+Next type = SEMI
+Reduce by grammar exp9>exp10
+Next type = SEMI
+Reduce by grammar exp10>INT_NUM
+li $t1, 2
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN exp6 SHL_OP | exp10
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN exp6 SHL_OP | exp9
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN exp6 SHL_OP | exp8
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN exp6 SHL_OP | exp7
+
+sllv $t0, $t0, $t1
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp6
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp5
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp4
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp3
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp2
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp1
+
+current situation: var_declarations statements ID LSQUARE INT_NUM RSQUARE ASSIGN | exp
+
+move $s3, $t0
+current situation: var_declarations statements | assign_statement
+
+current situation: var_declarations statements | statement
+
+current situation: var_declarations | statements
+
+Next type = RETURN
+Reduce by grammar statement>read_write_statement SEMI
+Next type = SEMI
+Reduce by grammar read_write_statement>write_statement
+Next type = SEMI
+Reduce by grammar write_statement>WRITE LPAR exp RPAR
+Next type = RPAR
+Reduce by grammar exp>exp1
+Next type = RPAR
+Reduce by grammar exp1>exp2
+Next type = RPAR
+Reduce by grammar exp2>exp3
+Next type = RPAR
+Reduce by grammar exp3>exp4
+Next type = RPAR
+Reduce by grammar exp4>exp5
+Next type = RPAR
+Reduce by grammar exp5>exp6
+Next type = RPAR
+Reduce by grammar exp6>exp7
+Next type = RPAR
+Reduce by grammar exp7>exp7 PLUS exp8
+Next type = PLUS
+Reduce by grammar exp7>exp7 PLUS exp8
+Next type = PLUS
+Reduce by grammar exp7>exp7 PLUS exp8
+Next type = PLUS
+Reduce by grammar exp7>exp7 PLUS exp8
+Next type = PLUS
+Reduce by grammar exp7>exp7 PLUS exp8
+Next type = PLUS
+Reduce by grammar exp7>exp7 PLUS exp8
+Next type = PLUS
+Reduce by grammar exp7>exp7 PLUS exp8
+Next type = PLUS
+Reduce by grammar exp7>exp7 PLUS exp8
+Next type = PLUS
+Reduce by grammar exp7>exp7 PLUS exp8
+Next type = PLUS
+Reduce by grammar exp7>exp7 PLUS exp8
+Next type = PLUS
+Reduce by grammar exp7>exp7 PLUS exp8
+Next type = PLUS
+Reduce by grammar exp7>exp7 PLUS exp8
+Next type = PLUS
+Reduce by grammar exp7>exp7 PLUS exp8
+Next type = PLUS
+Reduce by grammar exp7>exp7 PLUS exp8
+Next type = PLUS
+Reduce by grammar exp7>exp8
+Next type = PLUS
+Reduce by grammar exp8>exp9
+Next type = PLUS
+Reduce by grammar exp9>exp10
+Next type = PLUS
+Reduce by grammar exp10>ID
+move $t0, $s0
+current situation: var_declarations statements WRITE LPAR | exp10
+
+current situation: var_declarations statements WRITE LPAR | exp9
+
+current situation: var_declarations statements WRITE LPAR | exp8
+
+current situation: var_declarations statements WRITE LPAR | exp7
+
+Next type = PLUS
+Reduce by grammar exp8>exp9
+Next type = PLUS
+Reduce by grammar exp9>exp10
+Next type = PLUS
+Reduce by grammar exp10>ID
+move $t1, $s1
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp10
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp9
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp8
+
+addu $t0, $t0, $t1
+current situation: var_declarations statements WRITE LPAR | exp7
+
+Next type = PLUS
+Reduce by grammar exp8>exp9
+Next type = PLUS
+Reduce by grammar exp9>exp10
+Next type = PLUS
+Reduce by grammar exp10>ID LSQUARE INT_NUM RSQUARE
+move $t1, $s2
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp10
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp9
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp8
+
+addu $t0, $t0, $t1
+current situation: var_declarations statements WRITE LPAR | exp7
+
+Next type = PLUS
+Reduce by grammar exp8>exp9
+Next type = PLUS
+Reduce by grammar exp9>exp10
+Next type = PLUS
+Reduce by grammar exp10>ID
+move $t1, $s4
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp10
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp9
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp8
+
+addu $t0, $t0, $t1
+current situation: var_declarations statements WRITE LPAR | exp7
+
+Next type = PLUS
+Reduce by grammar exp8>exp9
+Next type = PLUS
+Reduce by grammar exp9>exp10
+Next type = PLUS
+Reduce by grammar exp10>ID
+move $t1, $s5
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp10
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp9
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp8
+
+addu $t0, $t0, $t1
+current situation: var_declarations statements WRITE LPAR | exp7
+
+Next type = PLUS
+Reduce by grammar exp8>exp9
+Next type = PLUS
+Reduce by grammar exp9>exp10
+Next type = PLUS
+Reduce by grammar exp10>ID
+move $t1, $s6
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp10
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp9
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp8
+
+addu $t0, $t0, $t1
+current situation: var_declarations statements WRITE LPAR | exp7
+
+Next type = PLUS
+Reduce by grammar exp8>exp9
+Next type = PLUS
+Reduce by grammar exp9>exp10
+Next type = PLUS
+Reduce by grammar exp10>ID
+move $t1, $s7
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp10
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp9
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp8
+
+addu $t0, $t0, $t1
+current situation: var_declarations statements WRITE LPAR | exp7
+
+Next type = PLUS
+Reduce by grammar exp8>exp9
+Next type = PLUS
+Reduce by grammar exp9>exp10
+Next type = PLUS
+Reduce by grammar exp10>ID
+lw $t9, 0($sp)
+move $t1, $t9
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp10
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp9
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp8
+
+addu $t0, $t0, $t1
+current situation: var_declarations statements WRITE LPAR | exp7
+
+Next type = PLUS
+Reduce by grammar exp8>exp9
+Next type = PLUS
+Reduce by grammar exp9>exp10
+Next type = PLUS
+Reduce by grammar exp10>ID
+lw $t9, 4($sp)
+move $t1, $t9
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp10
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp9
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp8
+
+addu $t0, $t0, $t1
+current situation: var_declarations statements WRITE LPAR | exp7
+
+Next type = PLUS
+Reduce by grammar exp8>exp9
+Next type = PLUS
+Reduce by grammar exp9>exp10
+Next type = PLUS
+Reduce by grammar exp10>ID
+lw $t9, 8($sp)
+move $t1, $t9
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp10
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp9
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp8
+
+addu $t0, $t0, $t1
+current situation: var_declarations statements WRITE LPAR | exp7
+
+Next type = PLUS
+Reduce by grammar exp8>exp9
+Next type = PLUS
+Reduce by grammar exp9>exp10
+Next type = PLUS
+Reduce by grammar exp10>ID
+lw $t9, 12($sp)
+move $t1, $t9
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp10
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp9
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp8
+
+addu $t0, $t0, $t1
+current situation: var_declarations statements WRITE LPAR | exp7
+
+Next type = PLUS
+Reduce by grammar exp8>exp9
+Next type = PLUS
+Reduce by grammar exp9>exp10
+Next type = PLUS
+Reduce by grammar exp10>ID
+lw $t9, 16($sp)
+move $t1, $t9
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp10
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp9
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp8
+
+addu $t0, $t0, $t1
+current situation: var_declarations statements WRITE LPAR | exp7
+
+Next type = PLUS
+Reduce by grammar exp8>exp9
+Next type = PLUS
+Reduce by grammar exp9>exp10
+Next type = PLUS
+Reduce by grammar exp10>ID
+lw $t9, 20($sp)
+move $t1, $t9
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp10
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp9
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp8
+
+addu $t0, $t0, $t1
+current situation: var_declarations statements WRITE LPAR | exp7
+
+Next type = PLUS
+Reduce by grammar exp8>exp9
+Next type = PLUS
+Reduce by grammar exp9>exp10
+Next type = PLUS
+Reduce by grammar exp10>ID
+lw $t9, 24($sp)
+move $t1, $t9
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp10
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp9
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp8
+
+addu $t0, $t0, $t1
+current situation: var_declarations statements WRITE LPAR | exp7
+
+Next type = RPAR
+Reduce by grammar exp8>exp9
+Next type = RPAR
+Reduce by grammar exp9>exp10
+Next type = RPAR
+Reduce by grammar exp10>ID
+lw $t9, 28($sp)
+move $t1, $t9
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp10
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp9
+
+current situation: var_declarations statements WRITE LPAR exp7 PLUS | exp8
+
+addu $t0, $t0, $t1
+current situation: var_declarations statements WRITE LPAR | exp7
+
+current situation: var_declarations statements WRITE LPAR | exp6
+
+current situation: var_declarations statements WRITE LPAR | exp5
+
+current situation: var_declarations statements WRITE LPAR | exp4
+
+current situation: var_declarations statements WRITE LPAR | exp3
+
+current situation: var_declarations statements WRITE LPAR | exp2
+
+current situation: var_declarations statements WRITE LPAR | exp1
+
+current situation: var_declarations statements WRITE LPAR | exp
+
+addi $v0, $0, 1
+add $a0, $t0, $0
+syscall
+current situation: var_declarations statements | write_statement
+
+current situation: var_declarations statements | read_write_statement
+
+current situation: var_declarations statements | statement
+
+current situation: var_declarations | statements
+
+Next type = EOF
+Reduce by grammar statement>control_statement
+Next type = EOF
+Reduce by grammar control_statement>return_statement SEMI
+current situation: var_declarations statements | control_statement
+
+current situation: var_declarations statements | statement
+
+current situation: var_declarations | statements
+
+.END:
+nop
 Accepted!

@@ -7,6 +7,7 @@
 #include <unordered_set>
 #include <vector>
 #include <fstream>
+#include <sstream> 
 #define file_path "./TestCases/"
 
 class token{
@@ -14,6 +15,32 @@ class token{
         string type_name;
         string token_value;
         int tr_value;
+        stringstream ss;
+        token(string t_name, string t_value, int tr_val) : type_name(t_name), token_value(t_value), tr_value(tr_val) {
+            ss.str("");
+        }
+        token(string t_name, string t_value, int tr_val, const stringstream& _ss) : type_name(t_name), token_value(t_value), tr_value(tr_val) {
+            ss.str("");
+            ss << _ss.str();
+        }
+        token(const token& other) noexcept {
+            type_name = other.type_name;
+            token_value = other.token_value;
+            tr_value = other.tr_value;
+            ss << other.ss.str();
+        }
+        token& operator=(const token& other) {
+            if (this == &other) {
+                return *this;
+            }
+            type_name = other.type_name;
+            token_value = other.token_value;
+            tr_value = other.tr_value;
+            ss << other.ss.str();
+        }
+        void print_ss(){
+            cout << ss.str();
+        }
 };
 
 class Scanner{

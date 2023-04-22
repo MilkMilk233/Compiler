@@ -48,5 +48,5 @@ exp9 -> NOT_OP exp9.
 exp9 -> exp10.
 exp10 -> INT_NUM.
 exp10 -> ID.
-exp10 -> ID LSQUARE exp RSQUARE.
+exp10 -> ID LSQUARE INT_NUM RSQUARE.
 exp10 -> LPAR exp RPAR.
