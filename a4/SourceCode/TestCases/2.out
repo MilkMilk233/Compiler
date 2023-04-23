@@ -1,141 +1,37 @@
-Scanned Tokens:
-INT ID ASSIGN INT_NUM SEMI IF LPAR ID GT INT_NUM RPAR LBRACE IF LPAR ID GT INT_NUM RPAR LBRACE ID ASSIGN ID PLUS INT_NUM SEMI RBRACE ID ASSIGN ID PLUS INT_NUM SEMI RBRACE ELSE LBRACE ID ASSIGN ID MINUS INT_NUM SEMI RBRACE WRITE LPAR ID RPAR SEMI RETURN SEMI EOF
-
-Parsing Process:
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: declaration>ID ASSIGN exp
-		reduce by grammar: declaration_list>declaration
-		reduce by grammar: var_declaration>INT declaration_list SEMI
-		reduce by grammar: var_declarations>var_declaration
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp5 GT exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp5 GT exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp7 PLUS exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: assign_statement>ID ASSIGN exp
-		reduce by grammar: statement>assign_statement SEMI
-		reduce by grammar: statements>statement
-		reduce by grammar: code_block>LBRACE statements RBRACE
-		reduce by grammar: if_stmt>IF LPAR exp RPAR code_block
-		reduce by grammar: if_statement>if_stmt
-		reduce by grammar: control_statement>if_statement
-		reduce by grammar: statement>control_statement
-		reduce by grammar: statements>statement
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp7 PLUS exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: assign_statement>ID ASSIGN exp
-		reduce by grammar: statement>assign_statement SEMI
-		reduce by grammar: statements>statements statement
-		reduce by grammar: code_block>LBRACE statements RBRACE
-		reduce by grammar: if_stmt>IF LPAR exp RPAR code_block
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp10>INT_NUM
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp7 MINUS exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: assign_statement>ID ASSIGN exp
-		reduce by grammar: statement>assign_statement SEMI
-		reduce by grammar: statements>statement
-		reduce by grammar: code_block>LBRACE statements RBRACE
-		reduce by grammar: if_statement>if_stmt ELSE code_block
-		reduce by grammar: control_statement>if_statement
-		reduce by grammar: statement>control_statement
-		reduce by grammar: statements>statement
-		reduce by grammar: exp10>ID
-		reduce by grammar: exp9>exp10
-		reduce by grammar: exp8>exp9
-		reduce by grammar: exp7>exp8
-		reduce by grammar: exp6>exp7
-		reduce by grammar: exp5>exp6
-		reduce by grammar: exp4>exp5
-		reduce by grammar: exp3>exp4
-		reduce by grammar: exp2>exp3
-		reduce by grammar: exp1>exp2
-		reduce by grammar: exp>exp1
-		reduce by grammar: write_statement>WRITE LPAR exp RPAR
-		reduce by grammar: read_write_statement>write_statement
-		reduce by grammar: statement>read_write_statement SEMI
-		reduce by grammar: statements>statements statement
-		reduce by grammar: return_statement>RETURN
-		reduce by grammar: control_statement>return_statement SEMI
-		reduce by grammar: statement>control_statement
-		reduce by grammar: statements>statements statement
-		reduce by grammar: program>var_declarations statements
-Accepted!
+li $t0, 3
+move $s0, $t0
+move $t0, $s0
+li $t1, 3
+slt $t0, $t1, $t0
+andi $t0, $t0, 0x00ff
+beq $t0, $0, $L2
+move $t1, $s0
+li $t2, 2
+slt $t1, $t2, $t1
+andi $t1, $t1, 0x00ff
+beq $t1, $0, $L0
+move $t2, $s0
+li $t3, 1
+addu $t2, $t2, $t3
+move $s0, $t2
+b $L1
+$L0:
+$L1:
+move $t1, $s0
+li $t2, 1
+addu $t1, $t1, $t2
+move $s0, $t1
+b $L3
+$L2:
+move $t0, $s0
+li $t1, 1
+subu $t0, $t0, $t1
+move $s0, $t0
+$L3:
+move $t0, $s0
+addi $v0, $0, 1
+add $a0, $t0, $0
+syscall
+b .END
+.END:
+nop

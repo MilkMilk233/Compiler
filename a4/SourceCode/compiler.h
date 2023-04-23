@@ -15,11 +15,12 @@ class token{
         string type_name;
         string token_value;
         int tr_value;
+        int end_label;
         stringstream ss;
-        token(string t_name, string t_value, int tr_val) : type_name(t_name), token_value(t_value), tr_value(tr_val) {
+        token(string t_name, string t_value, int tr_val) : type_name(t_name), token_value(t_value), tr_value(tr_val), end_label(-1) {
             ss.str("");
         }
-        token(string t_name, string t_value, int tr_val, const stringstream& _ss) : type_name(t_name), token_value(t_value), tr_value(tr_val) {
+        token(string t_name, string t_value, int tr_val, int end_l, const stringstream& _ss) : type_name(t_name), token_value(t_value), tr_value(tr_val), end_label(end_l) {
             ss.str("");
             ss << _ss.str();
         }
@@ -27,6 +28,7 @@ class token{
             type_name = other.type_name;
             token_value = other.token_value;
             tr_value = other.tr_value;
+            end_label = other.end_label;
             ss << other.ss.str();
         }
         token& operator=(const token& other) {
@@ -36,6 +38,7 @@ class token{
             type_name = other.type_name;
             token_value = other.token_value;
             tr_value = other.tr_value;
+            end_label = other.end_label;
             ss << other.ss.str();
         }
         void print_ss(){

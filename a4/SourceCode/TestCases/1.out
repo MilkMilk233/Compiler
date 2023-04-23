@@ -83,5 +83,6 @@ addu $t0, $t0, $t1
 addi $v0, $0, 1
 add $a0, $t0, $0
 syscall
+b .END
 .END:
 nop

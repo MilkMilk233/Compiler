@@ -1,0 +1,37 @@
+li $t0, 1
+move $s1, $t0
+addi $v0, $0, 5
+syscall
+add $s0,$v0, $0
+$L2:
+move $t0, $s0
+move $t1, $s1
+addu $t0, $t0, $t1
+move $s0, $t0
+move $t0, $s1
+li $t1, 1
+addu $t0, $t0, $t1
+move $s1, $t0
+move $t0, $s1
+li $t1, 100
+slt $t0, $t0, $t1
+andi $t0, $t0, 0x00ff
+move $t1, $s1
+li $t2, 0
+slt $t1, $t2, $t1
+andi $t1, $t1, 0x00ff
+beq $t0, $0, $L0
+beq $t1, $0, $L0
+li $t0, 1
+b $L1
+$L0:
+move $t0, $0
+$L1:
+bne $t0, $0, $L2
+move $t0, $s0
+addi $v0, $0, 1
+add $a0, $t0, $0
+syscall
+b .END
+.END:
+nop

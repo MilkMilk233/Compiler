@@ -2,7 +2,7 @@ using namespace std;
 #include "compiler.h"
 #include <assert.h>
 
-#define DEBUG_MODE false
+#define DEBUG_MODE true
 
 int main(int argc,char *argv[]){
     // Check the user has already fill in the file name
@@ -157,6 +157,7 @@ int main(int argc,char *argv[]){
         // There exists a reduce operation in the phasing table (Muted)
         else if(reduce_map[current_state].count(next_type.type_name)){
             int output_tr = -1;
+            int end_label = -1;
             int name_tail = path_name.size()-1;
             int num_tail = path_num.size()-1;
             vector<string> *ptr = &reduce_map[current_state][next_type.type_name];
@@ -222,7 +223,7 @@ int main(int argc,char *argv[]){
             else if(ptr->at(2) == "control_statement>do_while_statement SEMI"){
                 sout << path_name[name_tail-1].ss.str();
             }
-            else if(ptr->at(2) == "control_statement>return_statement SEMI."){
+            else if(ptr->at(2) == "control_statement>return_statement SEMI"){
                 sout << path_name[name_tail-1].ss.str();
             }
             else if(ptr->at(2) == "read_write_statement>read_statement"){
@@ -254,7 +255,62 @@ int main(int argc,char *argv[]){
                 sout << path_name[name_tail-1].ss.str();
                 sout << path_name[name_tail].ss.str();
             }
-            
+            else if(ptr->at(2) == "while_statement>WHILE LPAR exp RPAR code_block"){
+                sout << "b $L"<<label_count<<endl;
+                sout << "$L"<<label_count+1<<":"<<endl;
+                sout << path_name[name_tail].ss.str();
+                sout << "$L"<<label_count<<":"<<endl;
+                sout << path_name[name_tail-2].ss.str();
+                label_count = label_count + 2;
+                int tr_id = path_name[name_tail-2].tr_value;
+                string tr_name = "$t"+to_string(tr_id);
+                if(tr_id > 7){
+                    tr_load(tr_id);
+                    tr_name = "$t9";
+                }
+                sout << "bne "<<tr_name<<", $0, $L"<<label_count-1<<endl;
+                discard_tr(tr_id);
+            }
+            else if(ptr->at(2) == "do_while_statement>DO code_block WHILE LPAR exp RPAR"){
+                sout << "$L"<<label_count<<":"<<endl;
+                sout << path_name[name_tail-4].ss.str();
+                sout << path_name[name_tail-1].ss.str();
+                int tr_id = path_name[name_tail-1].tr_value;
+                string tr_name = "$t"+to_string(tr_id);
+                if(tr_id > 7){
+                    tr_load(tr_id);
+                    tr_name = "$t9";
+                }
+                sout << "bne "<<tr_name<<", $0, $L"<<label_count++<<endl;
+                discard_tr(tr_id);
+            }     
+            else if(ptr->at(2) == "if_stmt>IF LPAR exp RPAR code_block"){
+                sout << path_name[name_tail-2].ss.str();
+                int tr_id = path_name[name_tail-2].tr_value;
+                string tr_name = "$t"+to_string(tr_id);
+                if(tr_id > 7){
+                    tr_load(tr_id);
+                    tr_name = "$t9";
+                }
+                sout << "beq "<<tr_name<<", $0, $L"<<label_count++<<endl;
+                output_tr = label_count - 1;
+                end_label = label_count;
+                sout << path_name[name_tail].ss.str();
+                sout << "b $L"<<label_count++<<endl;
+                discard_tr(tr_id);
+            }
+            else if(ptr->at(2) == "if_statement>if_stmt"){
+                sout << path_name[name_tail].ss.str();
+                sout << "$L" << path_name[name_tail].tr_value << ":"<<endl;
+                sout << "$L" << path_name[name_tail].end_label << ":" << endl; 
+            }
+            else if(ptr->at(2) == "if_statement>if_stmt ELSE code_block"){
+                sout << path_name[name_tail-2].ss.str();
+                sout << "$L" << path_name[name_tail-2].tr_value << ":"<<endl;
+                sout << path_name[name_tail].ss.str();
+                sout << "$L" << path_name[name_tail-2].end_label << ":" << endl; 
+            }
+
             else if(ptr->at(2) == "exp10>ID"){
                 int sr_id = sr_map[path_name[name_tail].token_value];
                 string sr_name = "$s"+to_string(sr_id);
@@ -898,7 +954,7 @@ int main(int argc,char *argv[]){
 
             //  Announcement #2
             int old_current_state = path_num.back();
-            token old_next_type = token(reduce_map[current_state][next_type.type_name][1], "", output_tr, sout);
+            token old_next_type = token(reduce_map[current_state][next_type.type_name][1], "", output_tr, end_label, sout);
             path_name.push_back(old_next_type);
             path_num.push_back(shift_map[old_current_state][old_next_type.type_name]);
             current_state = shift_map[old_current_state][old_next_type.type_name];

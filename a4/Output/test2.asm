@@ -1,13 +1,35 @@
-main:
-    # Var declaration
-        li     $t0, 3
-        move   $s0, $t0
-    # 1st if statement
-        li     $t0, 3
-        sgt    $t1, $s0, $t0
-        li     $t2, 0
-        bne    $t1, $t2, .B1
-        beq    $t1, $t2, .B2
-.B1
+    if(a != 0){
+        a = a + 1;
+    }
 
-.B2
+if_stmt -> IF LPAR exp RPAR code_block
+if_statement -> if_stmt
+
+
+    if(a != 0){
+        a = a + 1;
+    }
+    else if(b != 0){
+        b = b + 1;
+    }
+    else{
+        c = c + 1;
+    }
+
+if_stmt -> IF LPAR exp RPAR code_block
+
+if_stmt -> IF LPAR exp RPAR code_block
+if_statement -> if_stmt ELSE code_block.
+
+if_statement -> if_stmt ELSE code_block.
+
+
+    if(a != 0){
+        a = a + 1;
+    }
+    else{
+        c = c + 1;
+    }
+
+if_stmt -> IF LPAR exp RPAR code_block
+if_statement -> if_stmt ELSE code_block.
