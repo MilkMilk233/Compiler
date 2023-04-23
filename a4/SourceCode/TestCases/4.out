@@ -1,174 +1,483 @@
 addi $v0, $0, 5
 syscall
 add $t8,$v0, $0
-sw $t8, 16($sp)
-li $t0, 1
-move $s0, $t0
-li $t0, 1
-move $s1, $t0
-li $t0, 1
-move $s2, $t0
+sw $t8, 48($sp)
 li $t0, 0
-move $s3, $t0
+li $t1, 1
+li $t8 4
+mul $t8, $t8, $t0
+addi $t9, $sp, 0
+add $t8, $t9, $t8
+sw $t1, 0($t8)
 li $t0, 1
-move $s4, $t0
+li $t1, 1
+li $t8 4
+mul $t8, $t8, $t0
+addi $t9, $sp, 0
+add $t8, $t9, $t8
+sw $t1, 0($t8)
+li $t0, 2
+li $t1, 1
+li $t8 4
+mul $t8, $t8, $t0
+addi $t9, $sp, 0
+add $t8, $t9, $t8
+sw $t1, 0($t8)
+li $t0, 3
+li $t1, 0
+li $t8 4
+mul $t8, $t8, $t0
+addi $t9, $sp, 0
+add $t8, $t9, $t8
+sw $t1, 0($t8)
 li $t0, 0
-move $s5, $t0
-li $t0, 0
-move $s6, $t0
+li $t1, 1
+li $t8 4
+mul $t8, $t8, $t0
+addi $t9, $sp, 16
+add $t8, $t9, $t8
+sw $t1, 0($t8)
 li $t0, 1
-move $s7, $t0
+li $t1, 0
+li $t8 4
+mul $t8, $t8, $t0
+addi $t9, $sp, 16
+add $t8, $t9, $t8
+sw $t1, 0($t8)
+li $t0, 2
+li $t1, 0
+li $t8 4
+mul $t8, $t8, $t0
+addi $t9, $sp, 16
+add $t8, $t9, $t8
+sw $t1, 0($t8)
+li $t0, 3
+li $t1, 1
+li $t8 4
+mul $t8, $t8, $t0
+addi $t9, $sp, 16
+add $t8, $t9, $t8
+sw $t1, 0($t8)
 b $L2
 $L3:
-lw $t9, 16($sp)
+lw $t9, 48($sp)
 move $t1, $t9
 li $t2, 1
 and $t1, $t1, $t2
 beq $t1, $0, $L0
-move $t2, $s4
-move $t3, $s0
-mult $t2, $t3
-mflo $t2
-move $t3, $s5
-move $t4, $s2
-mult $t3, $t4
-mflo $t3
-addu $t2, $t2, $t3
-move $t8, $t2
-sw $t8, 0($sp)
-move $t2, $s4
-move $t3, $s1
-mult $t2, $t3
-mflo $t2
-move $t3, $s5
-move $t4, $s3
-mult $t3, $t4
-mflo $t3
-addu $t2, $t2, $t3
-move $t8, $t2
-sw $t8, 4($sp)
-move $t2, $s6
-move $t3, $s0
-mult $t2, $t3
-mflo $t2
-move $t3, $s7
-move $t4, $s2
-mult $t3, $t4
-mflo $t3
-addu $t2, $t2, $t3
-move $t8, $t2
-sw $t8, 8($sp)
-move $t2, $s6
-move $t3, $s1
-mult $t2, $t3
-mflo $t2
-move $t3, $s7
-move $t4, $s3
-mult $t3, $t4
-mflo $t3
-addu $t2, $t2, $t3
-move $t8, $t2
-sw $t8, 12($sp)
-lw $t9, 0($sp)
-move $t2, $t9
+li $t2, 0
+li $t3, 0
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 16
+add $t9, $t9, $t8
+lw $t4, 0($t9)
+li $t3, 0
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t5, 0($t9)
+mult $t4, $t5
+mflo $t4
+li $t3, 1
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 16
+add $t9, $t9, $t8
+lw $t5, 0($t9)
+li $t3, 2
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t6, 0($t9)
+mult $t5, $t6
+mflo $t5
+addu $t4, $t4, $t5
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 32
+add $t8, $t9, $t8
+sw $t4, 0($t8)
+li $t2, 1
+li $t3, 0
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 16
+add $t9, $t9, $t8
+lw $t4, 0($t9)
+li $t3, 1
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t5, 0($t9)
+mult $t4, $t5
+mflo $t4
+li $t3, 1
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 16
+add $t9, $t9, $t8
+lw $t5, 0($t9)
+li $t3, 3
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t6, 0($t9)
+mult $t5, $t6
+mflo $t5
+addu $t4, $t4, $t5
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 32
+add $t8, $t9, $t8
+sw $t4, 0($t8)
+li $t2, 2
+li $t3, 2
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 16
+add $t9, $t9, $t8
+lw $t4, 0($t9)
+li $t3, 0
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t5, 0($t9)
+mult $t4, $t5
+mflo $t4
+li $t3, 3
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 16
+add $t9, $t9, $t8
+lw $t5, 0($t9)
+li $t3, 2
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t6, 0($t9)
+mult $t5, $t6
+mflo $t5
+addu $t4, $t4, $t5
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 32
+add $t8, $t9, $t8
+sw $t4, 0($t8)
+li $t2, 3
+li $t3, 2
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 16
+add $t9, $t9, $t8
+lw $t4, 0($t9)
+li $t3, 1
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t5, 0($t9)
+mult $t4, $t5
+mflo $t4
+li $t3, 3
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 16
+add $t9, $t9, $t8
+lw $t5, 0($t9)
+li $t3, 3
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t6, 0($t9)
+mult $t5, $t6
+mflo $t5
+addu $t4, $t4, $t5
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 32
+add $t8, $t9, $t8
+sw $t4, 0($t8)
+li $t2, 0
+li $t3, 0
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 32
+add $t9, $t9, $t8
+lw $t4, 0($t9)
 li $t3, 32767
-and $t2, $t2, $t3
-move $s4, $t2
-lw $t9, 4($sp)
-move $t2, $t9
+and $t4, $t4, $t3
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 16
+add $t8, $t9, $t8
+sw $t4, 0($t8)
+li $t2, 1
+li $t3, 1
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 32
+add $t9, $t9, $t8
+lw $t4, 0($t9)
 li $t3, 32767
-and $t2, $t2, $t3
-move $s5, $t2
-lw $t9, 8($sp)
-move $t2, $t9
+and $t4, $t4, $t3
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 16
+add $t8, $t9, $t8
+sw $t4, 0($t8)
+li $t2, 2
+li $t3, 2
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 32
+add $t9, $t9, $t8
+lw $t4, 0($t9)
 li $t3, 32767
-and $t2, $t2, $t3
-move $s6, $t2
-lw $t9, 12($sp)
-move $t2, $t9
+and $t4, $t4, $t3
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 16
+add $t8, $t9, $t8
+sw $t4, 0($t8)
+li $t2, 3
+li $t3, 3
+li $t8 4
+mul $t8, $t8, $t3
+addi $t9, $sp, 32
+add $t9, $t9, $t8
+lw $t4, 0($t9)
 li $t3, 32767
-and $t2, $t2, $t3
-move $s7, $t2
+and $t4, $t4, $t3
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 16
+add $t8, $t9, $t8
+sw $t4, 0($t8)
 b $L1
 $L0:
 $L1:
-lw $t9, 16($sp)
+lw $t9, 48($sp)
 move $t1, $t9
 li $t2, 1
 srav $t1, $t1, $t2
 move $t8, $t1
-sw $t8, 16($sp)
-move $t1, $s0
-move $t2, $s0
-mult $t1, $t2
-mflo $t1
-move $t2, $s1
-move $t3, $s2
-mult $t2, $t3
-mflo $t2
-addu $t1, $t1, $t2
-move $t8, $t1
-sw $t8, 0($sp)
-move $t1, $s0
-move $t2, $s1
-mult $t1, $t2
-mflo $t1
-move $t2, $s1
-move $t3, $s3
-mult $t2, $t3
-mflo $t2
-addu $t1, $t1, $t2
-move $t8, $t1
-sw $t8, 4($sp)
-move $t1, $s2
-move $t2, $s0
-mult $t1, $t2
-mflo $t1
-move $t2, $s3
-move $t3, $s2
-mult $t2, $t3
-mflo $t2
-addu $t1, $t1, $t2
-move $t8, $t1
-sw $t8, 8($sp)
-move $t1, $s2
-move $t2, $s1
-mult $t1, $t2
-mflo $t1
-move $t2, $s3
-move $t3, $s3
-mult $t2, $t3
-mflo $t2
-addu $t1, $t1, $t2
-move $t8, $t1
-sw $t8, 12($sp)
-lw $t9, 0($sp)
-move $t1, $t9
+sw $t8, 48($sp)
+li $t1, 0
+li $t2, 0
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t3, 0($t9)
+li $t2, 0
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t4, 0($t9)
+mult $t3, $t4
+mflo $t3
+li $t2, 1
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t4, 0($t9)
+li $t2, 2
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t5, 0($t9)
+mult $t4, $t5
+mflo $t4
+addu $t3, $t3, $t4
+li $t8 4
+mul $t8, $t8, $t1
+addi $t9, $sp, 32
+add $t8, $t9, $t8
+sw $t3, 0($t8)
+li $t1, 1
+li $t2, 0
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t3, 0($t9)
+li $t2, 1
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t4, 0($t9)
+mult $t3, $t4
+mflo $t3
+li $t2, 1
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t4, 0($t9)
+li $t2, 3
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t5, 0($t9)
+mult $t4, $t5
+mflo $t4
+addu $t3, $t3, $t4
+li $t8 4
+mul $t8, $t8, $t1
+addi $t9, $sp, 32
+add $t8, $t9, $t8
+sw $t3, 0($t8)
+li $t1, 2
+li $t2, 2
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t3, 0($t9)
+li $t2, 0
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t4, 0($t9)
+mult $t3, $t4
+mflo $t3
+li $t2, 3
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t4, 0($t9)
+li $t2, 2
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t5, 0($t9)
+mult $t4, $t5
+mflo $t4
+addu $t3, $t3, $t4
+li $t8 4
+mul $t8, $t8, $t1
+addi $t9, $sp, 32
+add $t8, $t9, $t8
+sw $t3, 0($t8)
+li $t1, 3
+li $t2, 2
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t3, 0($t9)
+li $t2, 1
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t4, 0($t9)
+mult $t3, $t4
+mflo $t3
+li $t2, 3
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t4, 0($t9)
+li $t2, 3
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 0
+add $t9, $t9, $t8
+lw $t5, 0($t9)
+mult $t4, $t5
+mflo $t4
+addu $t3, $t3, $t4
+li $t8 4
+mul $t8, $t8, $t1
+addi $t9, $sp, 32
+add $t8, $t9, $t8
+sw $t3, 0($t8)
+li $t1, 0
+li $t2, 0
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 32
+add $t9, $t9, $t8
+lw $t3, 0($t9)
 li $t2, 32767
-and $t1, $t1, $t2
-move $s0, $t1
-lw $t9, 4($sp)
-move $t1, $t9
+and $t3, $t3, $t2
+li $t8 4
+mul $t8, $t8, $t1
+addi $t9, $sp, 0
+add $t8, $t9, $t8
+sw $t3, 0($t8)
+li $t1, 1
+li $t2, 1
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 32
+add $t9, $t9, $t8
+lw $t3, 0($t9)
 li $t2, 32767
-and $t1, $t1, $t2
-move $s1, $t1
-lw $t9, 8($sp)
-move $t1, $t9
+and $t3, $t3, $t2
+li $t8 4
+mul $t8, $t8, $t1
+addi $t9, $sp, 0
+add $t8, $t9, $t8
+sw $t3, 0($t8)
+li $t1, 2
+li $t2, 2
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 32
+add $t9, $t9, $t8
+lw $t3, 0($t9)
 li $t2, 32767
-and $t1, $t1, $t2
-move $s2, $t1
-lw $t9, 12($sp)
-move $t1, $t9
+and $t3, $t3, $t2
+li $t8 4
+mul $t8, $t8, $t1
+addi $t9, $sp, 0
+add $t8, $t9, $t8
+sw $t3, 0($t8)
+li $t1, 3
+li $t2, 3
+li $t8 4
+mul $t8, $t8, $t2
+addi $t9, $sp, 32
+add $t9, $t9, $t8
+lw $t3, 0($t9)
 li $t2, 32767
-and $t1, $t1, $t2
-move $s3, $t1
+and $t3, $t3, $t2
+li $t8 4
+mul $t8, $t8, $t1
+addi $t9, $sp, 0
+add $t8, $t9, $t8
+sw $t3, 0($t8)
 $L2:
-lw $t9, 16($sp)
+lw $t9, 48($sp)
 move $t0, $t9
 bne $t0, $0, $L3
-move $t0, $s6
+li $t0, 2
+li $t8 4
+mul $t8, $t8, $t0
+addi $t9, $sp, 16
+add $t9, $t9, $t8
+lw $t1, 0($t9)
 addi $v0, $0, 1
-add $a0, $t0, $0
+add $a0, $t1, $0
 syscall
 .END:
 nop

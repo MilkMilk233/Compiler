@@ -1,5 +1,6 @@
 addi $v0, $0, 5
 syscall
-add $s0,$v0, $0
+add $t8,$v0, $0
+sw $t8, 0($sp)
 .END:
 nop

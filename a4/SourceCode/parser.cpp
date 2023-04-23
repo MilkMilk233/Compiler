@@ -2,7 +2,7 @@ using namespace std;
 #include "compiler.h"
 #include <assert.h>
 
-#define DEBUG_MODE true
+#define DEBUG_MODE false
 
 int main(int argc,char *argv[]){
     // Check the user has already fill in the file name
@@ -21,7 +21,7 @@ int main(int argc,char *argv[]){
     // Initialize the reduce ops in phasing table
     init_reduce_map(reduce_map);
     // Initialize the mapping between the saved registers and the name of the variables
-    int sr_count = 0;
+    int sr_count = 8;
     unordered_map<string, int> sr_map;
     // Initialize the occupation status of the temp registers
     unordered_set<int> tr_map;
@@ -328,24 +328,32 @@ int main(int argc,char *argv[]){
                 }
                 output_tr = tr_id;
             }
-            else if(ptr->at(2) == "exp10>ID LSQUARE INT_NUM RSQUARE"){
-                int array_location = stoi(path_name[name_tail-1].token_value);
-                string t_name = path_name[name_tail-3].token_value + "[" + to_string(array_location) + "]";
+            else if(ptr->at(2) == "exp10>ID LSQUARE exp RSQUARE"){
+                sout << path_name[name_tail-1].ss.str();
+                int tr_id1 = path_name[name_tail-1].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    tr_name1 = "$t9";
+                }
+                sout << "li $t8 4"<<endl;
+                sout << "mul $t8, $t8, "<<tr_name1<<endl;
+                string t_name = path_name[name_tail-3].token_value + "[0]";
                 int sr_id = sr_map[t_name];
                 string sr_name = "$s"+to_string(sr_id);
-                if(sr_id > 7){
-                    sr_load(sr_id);
-                    sr_name = "$t9";
-                }
-                int tr_id = allocate_tr();
-                if(tr_id > 7){
-                    sout << "move $t8, "<<sr_name<<endl;
-                    tr_save(tr_id);
+                sout << "addi $t9, $sp, "<< mem_map[sr_name]*4  <<endl;
+                sout << "add $t9, $t9, $t8"<<endl;
+
+                int tr_id2 = allocate_tr();
+                if(tr_id2 > 7){
+                    sout << "lw $t8, 0($t9)"<<endl;
+                    tr_save(tr_id2);
                 }
                 else{
-                    sout << "move $t" << tr_id <<", "<<sr_name<<endl;
+                    sout << "lw $t" << tr_id2 <<", 0($t9)"<<endl;
                 }
-                output_tr = tr_id;
+                output_tr = tr_id2;
+                discard_tr(tr_id1);
             }
             else if(ptr->at(2) == "declaration>ID LSQUARE INT_NUM RSQUARE"){
                 int array_len = stoi(path_name[name_tail-1].token_value);
@@ -419,9 +427,10 @@ int main(int argc,char *argv[]){
                 output_tr = path_name[name_tail].tr_value;
             }
             else if(ptr->at(2) == "exp10>LPAR exp RPAR"){
+                sout << path_name[name_tail-1].ss.str();
                 output_tr = path_name[name_tail-1].tr_value;
             }
-            else if(ptr->at(2) == "exp1>exp1 OROR exp2"){
+            else if(ptr->at(2) == "exp>exp OROR exp1"){
                 sout << path_name[name_tail-2].ss.str();
                 sout << path_name[name_tail].ss.str();
                 int tr_id1 = path_name[name_tail-2].tr_value;
@@ -437,7 +446,7 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                sout << "bne "<<tr_name2<<"$0, $L"<< label_count << endl;
+                sout << "bne "<<tr_name2<<", $0, $L"<< label_count << endl;
                 sout << "move "<<tr_name1<<", $0"<<endl;
                 sout << "b $L"<<label_count+1<<endl;
                 sout << "$L"<<label_count++<<":"<<endl;
@@ -565,7 +574,7 @@ int main(int argc,char *argv[]){
                     tr_name2 = "$t9";
                 }
                 sout << "xor "<<tr_name1<<", "<<tr_name1<<", "<<tr_name2<<endl;
-                sout << "sltu "<<tr_name1<<", "<<tr_name1<<", 1"<<endl;
+                sout << "slti "<<tr_name1<<", "<<tr_name1<<", 1"<<endl;
                 sout << "andi "<<tr_name1<<", "<<tr_name1<<", 0x00ff"<<endl;
                 if(tr_id1 > 7){
                     tr_save(tr_id1);
@@ -803,9 +812,7 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id2);
                     tr_name2 = "$t9";
                 }
-                sout << "bne "<<tr_name2<<", "<<"$0"<<", 1f"<<endl;
                 sout << "div $0, "<<tr_name1<<", "<<tr_name2<<endl;
-                sout << "break 7"<<endl;
                 sout << "mfhi "<<tr_name1<<endl;
                 sout << "mflo "<<tr_name1<<endl;
                 if(tr_id1 > 7){
@@ -822,7 +829,7 @@ int main(int argc,char *argv[]){
                     tr_load(tr_id);
                     tr_name = "$t9";
                 }
-                sout << "sltu "<<tr_name<<", "<<tr_name<<", 1"<<endl;
+                sout << "slti "<<tr_name<<", "<<tr_name<<", 1"<<endl;
                 sout << "andi "<<tr_name<<", "<<tr_name<<", 0x00ff"<<endl;
                 if(tr_id > 7){
                     sout << "move $t8, $t9"<<endl;
@@ -892,24 +899,38 @@ int main(int argc,char *argv[]){
                     sout << "move $s"<<sr_id<<", "<<tr_name<<endl;
                 }
             }
-            else if(ptr->at(2) == "assign_statement>ID LSQUARE INT_NUM RSQUARE ASSIGN exp"){
+            else if(ptr->at(2) == "assign_statement>ID LSQUARE exp RSQUARE ASSIGN exp"){
+                sout << path_name[name_tail-3].ss.str();
                 sout << path_name[name_tail].ss.str();
-                string id_name = path_name[name_tail-5].token_value + "[" + path_name[name_tail-3].token_value + "]";
-                int sr_id = sr_map[id_name];
-                int tr_id = path_name[name_tail].tr_value;
-                string tr_name = "$t" + to_string(tr_id);
-                if(tr_id > 7){
-                    tr_name = "$t9";
-                    tr_load(tr_id);
+                int tr_id1 = path_name[name_tail-3].tr_value;
+                string tr_name1 = "$t"+to_string(tr_id1);
+                if(tr_id1 > 7){
+                    tr_load(tr_id1);
+                    tr_name1 = "$t9";
                 }
-                discard_tr(tr_id);
-                if(sr_id > 7){
-                    sout << "move $t8, "<<tr_name<<endl;
-                    sr_save(sr_id);
+                sout << "li $t8 4"<<endl;
+                sout << "mul $t8, $t8, "<<tr_name1<<endl;
+                string t_name = path_name[name_tail-5].token_value + "[0]";
+                int sr_id = sr_map[t_name];
+                string sr_name = "$s"+to_string(sr_id);
+                sout << "addi $t9, $sp, "<< mem_map[sr_name]*4  <<endl;
+                sout << "add $t8, $t9, $t8"<<endl;
+                int tr_id2 = path_name[name_tail].tr_value;
+                string tr_name2 = "$t" + to_string(tr_id2);
+                if(tr_id2 > 7){
+                    tr_name2 = "$t9";
+                    tr_load(tr_id2);
+                }
+                if(tr_id2 > 7){
+                    sout << "sw $t9, 0($t8)"<<endl;
+                    tr_save(tr_id2);
                 }
                 else{
-                    sout << "move $s"<<sr_id<<", "<<tr_name<<endl;
+                    sout << "sw $t" << tr_id2 <<", 0($t8)"<<endl;
                 }
+                discard_tr(tr_id1);
+                discard_tr(tr_id2);
+
             }
             else if(ptr->at(2) == "read_statement>READ LPAR ID RPAR"){
                 sout << "addi $v0, $0, 5"<<endl;

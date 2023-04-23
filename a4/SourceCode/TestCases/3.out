@@ -1,22 +1,31 @@
 li $t0, 1
-move $s1, $t0
+move $t8, $t0
+sw $t8, 4($sp)
 addi $v0, $0, 5
 syscall
-add $s0,$v0, $0
+add $t8,$v0, $0
+sw $t8, 0($sp)
 $L2:
-move $t0, $s0
-move $t1, $s1
+lw $t9, 0($sp)
+move $t0, $t9
+lw $t9, 4($sp)
+move $t1, $t9
 addu $t0, $t0, $t1
-move $s0, $t0
-move $t0, $s1
+move $t8, $t0
+sw $t8, 0($sp)
+lw $t9, 4($sp)
+move $t0, $t9
 li $t1, 1
 addu $t0, $t0, $t1
-move $s1, $t0
-move $t0, $s1
+move $t8, $t0
+sw $t8, 4($sp)
+lw $t9, 4($sp)
+move $t0, $t9
 li $t1, 100
 slt $t0, $t0, $t1
 andi $t0, $t0, 0x00ff
-move $t1, $s1
+lw $t9, 4($sp)
+move $t1, $t9
 li $t2, 0
 slt $t1, $t2, $t1
 andi $t1, $t1, 0x00ff
@@ -28,7 +37,8 @@ $L0:
 move $t0, $0
 $L1:
 bne $t0, $0, $L2
-move $t0, $s0
+lw $t9, 0($sp)
+move $t0, $t9
 addi $v0, $0, 1
 add $a0, $t0, $0
 syscall
