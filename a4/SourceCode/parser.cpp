@@ -235,26 +235,6 @@ int main(int argc,char *argv[]){
             else if(ptr->at(2) == "return_statement>RETURN"){
                 sout << "b .END"<<endl;
             }
-            else if(ptr->at(2) == "statement>control_statement"){
-                sout << path_name[name_tail-1].ss.str();
-                sout << path_name[name_tail].ss.str();
-            }
-            else if(ptr->at(2) == "statement>control_statement"){
-                sout << path_name[name_tail-1].ss.str();
-                sout << path_name[name_tail].ss.str();
-            }
-            else if(ptr->at(2) == "statement>control_statement"){
-                sout << path_name[name_tail-1].ss.str();
-                sout << path_name[name_tail].ss.str();
-            }
-            else if(ptr->at(2) == "statement>control_statement"){
-                sout << path_name[name_tail-1].ss.str();
-                sout << path_name[name_tail].ss.str();
-            }
-            else if(ptr->at(2) == "statement>control_statement"){
-                sout << path_name[name_tail-1].ss.str();
-                sout << path_name[name_tail].ss.str();
-            }
             else if(ptr->at(2) == "while_statement>WHILE LPAR exp RPAR code_block"){
                 sout << "b $L"<<label_count<<endl;
                 sout << "$L"<<label_count+1<<":"<<endl;
@@ -838,9 +818,11 @@ int main(int argc,char *argv[]){
                 output_tr = tr_id;
             }
             else if(ptr->at(2) == "exp9>PLUS exp9"){
+                sout << path_name[name_tail].ss.str();
                 output_tr = path_name[name_tail].tr_value;
             }
             else if(ptr->at(2) == "exp9>MINUS exp9"){
+                sout << path_name[name_tail].ss.str();
                 int tr_id = path_name[name_tail].tr_value;
                 string tr_name = "$t"+to_string(tr_id);
                 if(tr_id > 7){

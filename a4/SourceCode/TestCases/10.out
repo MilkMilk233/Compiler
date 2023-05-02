@@ -1,0 +1,36 @@
+li $t0, 1
+li $t1, 1
+addu $t0, $t0, $t1
+li $t1, 1
+addu $t0, $t0, $t1
+move $t8, $t0
+sw $t8, 0($sp)
+lw $t9, 0($sp)
+move $t0, $t9
+li $t1, 5
+addu $t0, $t0, $t1
+lw $t9, 0($sp)
+move $t1, $t9
+lw $t9, 0($sp)
+move $t2, $t9
+lw $t9, 0($sp)
+move $t3, $t9
+li $t4, 1
+subu $t4, $0, $t4
+addu $t3, $t3, $t4
+addu $t2, $t2, $t3
+addu $t1, $t1, $t2
+addu $t0, $t0, $t1
+li $t1, 5
+addu $t0, $t0, $t1
+li $t1, 1
+subu $t0, $t0, $t1
+move $t8, $t0
+sw $t8, 4($sp)
+lw $t9, 4($sp)
+move $t0, $t9
+addi $v0, $0, 1
+add $a0, $t0, $0
+syscall
+.END:
+nop
