@@ -1,7 +1,3 @@
-a1/flex-bison.Dockerfile
-a1/flex-bison.tar
-a1_submission/
-csc4180-a1-120090222/
 *.Dockerfile
 *.pdf
 *.zip

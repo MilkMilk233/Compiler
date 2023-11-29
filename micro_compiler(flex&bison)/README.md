@@ -1,13 +1,13 @@
-# CSC4180 Assignment 1 Design Docs
+# Micro Compiler Design Docs
 
 [TOC]
 
 ## 1. Flex(Lex) & Bison (YACC): Introduction
 
-> flex文件是定义pattern（哪是黄豆，哪是绿豆...），通过flex处理（词法分析）将输出切分成一段一段的token（将输入的豆子一个个摘出来），从而执行不同的action（黄豆就磨豆浆（action），绿豆去做绿豆糕(action)）...
-> flex 生成的[tokens](https://www.zhihu.com/search?q=tokens&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"article"%2C"sourceId"%3A"120812270"})可以喂给Bison处理（更简便易调试），当然也可以不喂给bison而直接自己处理就得了。但是使用bison可以更方便的处理复杂的逻辑，编写简单，调试方便。
+> The flex file is defining the pattern (which is soybean, which is mungbean...) The output is cut into tokens by flex processing (lexical analysis) (picking out the input beans one by one), so that different actions are executed (soybeans grind soybean milk (action), mung beans go to make mung bean cake (action))...
+> flex generated [tokens](https://www.zhihu.com/search?q=tokens&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={" sourceType"%3A "article"%2C "sourceId"%3A "120812270"}) can be fed to Bison for processing (easier to debug), or of course you can not feed it to Bison and just process it yourself. But using bison can be more convenient to deal with complex logic, easy to write, easy to debug.
 >
-> -- By 扬眉 from [Flex(scanner)/Bison(parser)词法语法分析工作原理 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/120812270)
+> -- By Yang Mei from [Flex(scanner)/Bison(parser) lexical syntax analysis work principle - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/120812270)
 
 
 
@@ -373,8 +373,8 @@ primary : LPAREN exp RPAREN {exp_to_pri(&($2), &($$));}
 ```bash
 
 .
-|-- csc4180-a1-120090222.Dockerfile
-|-- csc4180-a1-120090222-report.pdf
+|-- micro_compiler.Dockerfile
+|-- micro_compiler-report.pdf
 `-- SourceCode
     |-- makefile
     |-- micro.l
@@ -398,8 +398,8 @@ primary : LPAREN exp RPAREN {exp_to_pri(&($2), &($$));}
    **CAUTION: ADD "`--privileged=true` ON `docker run` COMMAND"**
 
 ```bash
-(base) −> docker build -f csc4180-a1-120090222.Dockerfile -t csc4180-a1-120090222 .
-(base) −> docker run -it --privileged=true --mount type=bind,source=/root/Compiler/a1_submission/SourceCode,target=/opt/compiler_src/ csc4180-a1-120090222 bash
+(base) −> docker build -f micro_compiler.Dockerfile -t micro_compiler .
+(base) −> docker run -it --privileged=true --mount type=bind,source=/root/Compiler/a1_submission/SourceCode,target=/opt/compiler_src/ micro_compiler bash
 −> cd /opt/compiler src
 −> make clean
 −> make all
